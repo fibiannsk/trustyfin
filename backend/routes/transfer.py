@@ -23,7 +23,7 @@ def transfer():
         return jsonify({"error": "Contact your Bank , there seems to be a problem with your account "}), 404
 
     # Check pin authentication
-    if not check_password_hash(sender['pin'], pin):
+    if not sender['pin'] == pin:
         return jsonify({"error": "Invalid pin"}), 401
 
     # Check if sender has sufficient balance
