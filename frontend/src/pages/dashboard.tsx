@@ -9,7 +9,7 @@ import { SpendingChart } from "../components/dashboard/SpendingChart";
 import { Navbar } from "../components/dashboard/Navbar";
 import { DollarSign, TrendingUp, TrendingDown, Eye, EyeOff } from "lucide-react";
 
-const Index = () => {
+const UserDashboard = () => {
   const [balanceVisible, setBalanceVisible] = useState(true);
 
   const accounts = [
@@ -180,4 +180,4 @@ const Index = () => {
   );
 };
 
-export default Index;
+export default UserDashboard;

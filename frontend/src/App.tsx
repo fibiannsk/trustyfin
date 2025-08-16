@@ -8,7 +8,7 @@ import NotFound from "./pages/NotFound";
 
 import AdminDashboard from "./pages/AdminDashboard";
 import CreateAccount from "./pages/AccountForm";
-//import EditAccount from "./pages/EditAccount";
+import EditAccount from "./pages/Edit";
 import UserDashboard from "./pages/dashboard";
 import Transfer from "./pages/Transfer";
 import UserProfile from "./pages/profilepage";
@@ -32,7 +32,7 @@ const App = () => (
           {/* Admin Routes */}
         <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/admin/create-account" element={<CreateAccount />} />
-        {/*<Route path="/admin/edit-account" element={<EditAccount />} />*/}
+        <Route path="/admin/edit-account" element={<EditAccount />} />
        
 
         {/* User Routes */}

@@ -1,7 +1,7 @@
 import ChangePasswordForm from '../components/ChangePasswordForm';
 
-const Index = () => {
+const PasswdChanger = () => {
   return <ChangePasswordForm />;
 };
 
-export default Index;
+export default PasswdChanger;

@@ -1,7 +1,7 @@
 import AdminAccountForm from '../components/AdminAccountForm';
 
-const Index = () => {
+const CreateAccount = () => {
   return <AdminAccountForm />;
 };
 
-export default Index;
+export default CreateAccount;

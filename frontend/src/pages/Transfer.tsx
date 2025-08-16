@@ -1,7 +1,7 @@
 import BankTransfer from '../components/transfer/BankTransfer';
 
-const Index = () => {
+const Transfer = () => {
   return <BankTransfer />;
 };
 
-export default Index;
+export default Transfer;
