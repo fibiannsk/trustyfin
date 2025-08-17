@@ -136,3 +136,18 @@ def change_password():
 
     db.users.update_one({"_id": user_id}, {"$set": {"password": new_password}})
     return jsonify({"message": "Password changed successfully"}), 200
+
+@profile_blueprint.route('/get-picture', methods=['GET'])
+@jwt_required()
+def get_picture():
+    user_id = get_jwt_identity()
+    user = db.users.find_one({"_id": ObjectId(user_id)})
+
+    if not user or not user.get('profile_picture'):
+        return jsonify({"error": "No profile picture found"}), 404
+
+    filename = os.path.basename(user['profile_picture'])
+    public_url = url_for('static', filename=f'uploads/{filename}', _external=True)
+
+    return jsonify({"profile_picture": public_url}), 200
+
