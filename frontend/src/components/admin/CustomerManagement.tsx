@@ -12,6 +12,9 @@ export function CustomerManagement() {
     const accountform = () => {
       navigate('/admin/create-account');
     };
+    const editform = () => {
+      navigate('/admin/EditAccount');
+    };
   const customers = [
     {
       id: "CUST001",
