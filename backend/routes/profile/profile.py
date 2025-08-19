@@ -1,11 +1,11 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request, url_for
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from bson import ObjectId
 from werkzeug.utils import secure_filename
 import os
 import uuid
 
-from ..extensions import db
+from backend.extensions import db
 
 profile_blueprint = Blueprint("profile", __name__)
 
@@ -39,12 +39,9 @@ def delete_file(file_path):
 
 
 # ---------------- Profile Endpoints ----------------
-@profile_blueprint.route("/profile", methods=["GET", "OPTIONS"])
+@profile_blueprint.route("/", methods=["GET"])
 @jwt_required()
 def get_user_profile():
-
-    if request.method == "OPTIONS":
-        return "", 204  # Handle CORS preflight
 
     user_id = get_jwt_identity()
     try:
@@ -137,17 +134,17 @@ def change_password():
     db.users.update_one({"_id": user_id}, {"$set": {"password": new_password}})
     return jsonify({"message": "Password changed successfully"}), 200
 
-@profile_blueprint.route('/get-picture', methods=['GET'])
-@jwt_required()
-def get_picture():
-    user_id = get_jwt_identity()
-    user = db.users.find_one({"_id": ObjectId(user_id)})
+#@profile_blueprint.route('/get-picture', methods=['GET'])
+#@jwt_required()
+#def get_picture():
+#    user_id = get_jwt_identity()
+#    user = db.users.find_one({"_id": ObjectId(user_id)})
 
-    if not user or not user.get('profile_picture'):
-        return jsonify({"error": "No profile picture found"}), 404
+#    if not user or not user.get('profile_picture'):
+ #       return jsonify({"error": "No profile picture found"}), 404
 
-    filename = os.path.basename(user['profile_picture'])
-    public_url = url_for('static', filename=f'uploads/{filename}', _external=True)
+ #   filename = os.path.basename(user['profile_picture'])
+ #   public_url = url_for('static', filename=f'uploads/{filename}', _external=True)
 
-    return jsonify({"profile_picture": public_url}), 200
+ #   return jsonify({"profile_picture": public_url}), 200
 

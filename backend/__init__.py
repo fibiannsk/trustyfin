@@ -1,3 +1,4 @@
+import os
 from flask import Flask, jsonify
 from dotenv import load_dotenv
 from flask_jwt_extended import JWTManager
@@ -12,10 +13,6 @@ from .routes.admin.admin import admin_blueprint
 from .routes.transfer import transfer_blueprint
 from .routes.auth.auth import auth_blueprint
 
-# from .routes.init_routes import init_bp
-# from .target.dash import target
-# from .login_manager_setup import login_manager
-
 jwt = JWTManager()
 
 
@@ -23,7 +20,12 @@ def create_app(config_name="default"):
     # Load environment variables
     load_dotenv()
 
-    app = Flask(__name__)
+    # ✅ Explicitly set static folder + static URL
+    app = Flask(
+        __name__,
+        static_url_path="/static",               # URL prefix
+        static_folder=os.path.join(os.getcwd(), "static")  # actual folder path
+    )
 
     # JWT Configuration
     app.config['JWT_SECRET_KEY'] = 'super-secret'  # TODO: load from env
@@ -42,9 +44,20 @@ def create_app(config_name="default"):
     # CORS setup
     CORS(
         app,
-        supports_credentials=True,
-        origins=["http://localhost:5173"]
+        resources={r"/*": {"origins": ["http://127.0.0.1:5173", "http://localhost:5173"]}},
+        supports_credentials=True
     )
+
+    @app.after_request
+    def handle_cors(response):
+        response.headers["Access-Control-Allow-Origin"] = "*"
+        response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS"
+        response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
+        return response
+
+    @app.route("/", methods=["OPTIONS"])
+    def cors_preflight():
+        return "", 204
 
     # JWT Error Handlers
     @jwt.unauthorized_loader
@@ -67,9 +80,6 @@ def create_app(config_name="default"):
     app.register_blueprint(admin_blueprint, url_prefix="/admin")
     app.register_blueprint(transfer_blueprint, url_prefix="/transfer")
     app.register_blueprint(auth_blueprint, url_prefix="/auth")
-
-    # login_manager.init_app(app)
-    # app.register_blueprint(target)
 
     @app.route("/")
     def init_superadmin():

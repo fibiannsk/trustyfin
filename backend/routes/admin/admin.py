@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
-from .. import db
-from werkzeug.security import generate_password_hash
+from backend import db
+
 
 admin_blueprint = Blueprint('admin', __name__)
 
@@ -36,7 +36,7 @@ def create_user():
         'state': data['state'],
         'country': data['country'],
         'currency': data['currency'],
-        'password': generate_password_hash(data['password']),
+        'password': data['password'],
         'pin': data['pin'],
         'agreeToTerms': data['agreeToTerms'],
         'blocked': False
