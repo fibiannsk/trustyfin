@@ -37,44 +37,31 @@ def delete_file(file_path):
     except FileNotFoundError:
         pass
 
-
-# ---------------- Profile Endpoints ----------------
 @profile_blueprint.route("/", methods=["GET"])
 @jwt_required()
 def get_user_profile():
-
     user_id = get_jwt_identity()
     try:
         # Check if the ID belongs to a user
         user = db.users.find_one({"_id": ObjectId(user_id)})
-        if user:
-            transactions = list(db.transactions.find({"user_id": ObjectId(user_id)}))
-            for tx in transactions:
-                tx["_id"] = str(tx["_id"])
-                tx["user_id"] = str(tx["user_id"])
+        if not user:
+            return jsonify({"error": "User not found"}), 404
 
-            beneficiaries = list(db.beneficiaries.find({"user_id": ObjectId(user_id)}))
-            for ben in beneficiaries:
-                ben["_id"] = str(ben["_id"])
-                ben["user_id"] = str(ben["user_id"])
-
-            return jsonify({
-                "id": str(user["_id"]),
-                "role": "user",
-                "name": f"{user.get('firstName', '')} {user.get('lastName', '')}".strip(),
-                "email": user.get("email"),
-                "balance": user.get("balance", 0),
-                "pin": user.get("pin"),
-                "account_number": user.get("account_number") or user.get("accountNumber"),
-                "profile_picture": user.get("profile_picture"),
-                "transactions": transactions,
-                "beneficiaries": beneficiaries,
-            }), 200
-
-        return jsonify({"error": "User not found"}), 404
+        return jsonify({
+            "id": str(user["_id"]),
+            "role": "user",
+            "name": f"{user.get('firstName', '')} {user.get('lastName', '')}".strip(),
+            "email": user.get("email"),
+            "balance": user.get("balance", 0),
+            "pin": user.get("pin"),
+            "account_number": user.get("account_number") or user.get("accountNumber"),
+            "profile_picture": user.get("profile_picture"),
+        }), 200
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+
 
 
 @profile_blueprint.route("/upload-picture", methods=["POST"])

@@ -6,7 +6,11 @@ from backend import create_app  # your create_app function
 # Create Flask app
 app = create_app('development')
 
-CORS(app)
+CORS(
+    app,
+    resources={r"/*": {"origins": ["http://127.0.0.1:5173", "http://localhost:5173"]}},
+    supports_credentials=True
+    )
 
 # Setup session
 Session(app)

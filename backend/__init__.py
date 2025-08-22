@@ -2,7 +2,6 @@ import os
 from flask import Flask, jsonify
 from dotenv import load_dotenv
 from flask_jwt_extended import JWTManager
-from flask_cors import CORS
 
 from .superadmin import ensure_super_admin
 from .extensions import db
@@ -42,11 +41,6 @@ def create_app(config_name="default"):
     app.config['DEBUG'] = True
 
     # CORS setup
-    CORS(
-        app,
-        resources={r"/*": {"origins": ["http://127.0.0.1:5173", "http://localhost:5173"]}},
-        supports_credentials=True
-    )
 
     @app.after_request
     def handle_cors(response):
