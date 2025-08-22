@@ -6,7 +6,7 @@ const DataContext = createContext();
 export const useData = () => useContext(DataContext);
 
 export const DataProvider = ({ children }) => {
-  const { token, logout } = useAuth();
+  const { token, logout, user } = useAuth();
   const { toast } = useToast();
 
   const [userInfo, setUserInfo] = useState(null);
@@ -21,15 +21,17 @@ export const DataProvider = ({ children }) => {
   });
   const [summaryLoading, setSummaryLoading] = useState(false);
 
-  // 🔑 Centralized API fetcher
+  // 🚨 Centralized fetcher → ONLY runs if token exists
   const apiFetch = async (url, options = {}) => {
+    if (!token) return null; // hard guard
+
     try {
       const res = await fetch(url, {
         ...options,
         headers: {
           "Content-Type": "application/json",
           ...(options.headers || {}),
-          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+          Authorization: `Bearer ${token}`,
         },
       });
 
@@ -39,7 +41,7 @@ export const DataProvider = ({ children }) => {
           description: "Please log in again.",
           variant: "destructive",
         });
-        logout(); // 🔑 Redirects to login via window.location.href
+        logout();
         return null;
       }
 
@@ -59,60 +61,50 @@ export const DataProvider = ({ children }) => {
     }
   };
 
-  // 🔽 Fetch all data
+  // 🔽 Fetch user data only if token exists
   const fetchAllData = async () => {
-    if (!token) return;
+  if (!token || user?.role === "superadmin") return; // 🚨 skip admin
 
-    setLoading(true);
-    try {
-      const data = await apiFetch("http://localhost:5000/profile/");
-      if (!data) return; // handled in apiFetch (401)
+  setLoading(true);
+  try {
+    const data = await apiFetch("http://localhost:5000/profile/");
+    if (!data) return;
 
-      if (data.role === "user") {
-        setUserInfo({
-          id: data.id,
-          name: data.name,
-          email: data.email,
-          role: "user",
-          balance: data.balance,
-          account_number: data.account_number,
-          pin: data.pin,
-          status: data.status || "active",
-        });
-        setTransactions(data.transactions || []);
-        setBeneficiaries(data.beneficiaries || []);
-        await fetchTransactionSummary();
-        await fetchProfilePicture();
-      } else if (data.role === "admin") {
-        setUserInfo({
-          id: data.id,
-          name: data.name,
-          email: data.email,
-          role: "admin",
-          status: data.status || "active",
-          permissions: data.permissions || {},
-        });
-        setTransactions([]);
-        setBeneficiaries([]);
-      }
+    setUserInfo({
+      id: data.id,
+      name: data.name,
+      email: data.email,
+      role: "user", // or data.role if backend sends it
+      balance: data.balance,
+      account_number: data.account_number,
+      pin: data.pin,
+      status: data.status || "active",
+    });
 
-      toast({
-        title: "Welcome to our online banking experience",
-        description: `Hello, ${data.name}! Your profile has been loaded successfully.`,
-      });
-    } catch (error) {
-      console.error("Error fetching profile data:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+    setTransactions(data.transactions || []);
+    setBeneficiaries(data.beneficiaries || []);
+    await fetchTransactionSummary();
+    await fetchProfilePicture();
+
+    toast({
+      title: "Welcome back",
+      description: `Hello, ${data.name}! Your profile has been loaded successfully.`,
+    });
+  } catch (error) {
+    console.error("Error fetching profile data:", error);
+  } finally {
+    setLoading(false);
+  }
+};
 
   const fetchTransactionSummary = async () => {
-    if (!token) return;
+    if (!token) return; // safeguard
 
     setSummaryLoading(true);
     try {
-      const summary = await apiFetch("http://localhost:5000/transfer/transactions/summary");
+      const summary = await apiFetch(
+        "http://localhost:5000/transfer/transactions/summary"
+      );
       if (!summary) return;
 
       setIncomeSummary({
@@ -128,6 +120,7 @@ export const DataProvider = ({ children }) => {
   };
 
   const fetchProfilePicture = async () => {
+    if (!token) return; // safeguard
     const data = await apiFetch("http://localhost:5000/profile/get-picture");
     if (data) setProfilePictureUrl(data.profile_picture);
   };
@@ -138,9 +131,19 @@ export const DataProvider = ({ children }) => {
     if (data) setUserInfo((prev) => ({ ...prev, ...data }));
   };
 
+  // 🛑 Effect only runs when token exists
   useEffect(() => {
-    if (token) fetchAllData();
-  }, [token]);
+    if (token && user?.role !== "superadmin") {
+      fetchAllData();
+    } else {
+      // Clear old state if token disappears
+      setUserInfo(null);
+      setTransactions([]);
+      setBeneficiaries([]);
+      setProfilePictureUrl(null);
+      setIncomeSummary({ income: 0, expenses: 0, net_income: 0 });
+    }
+  }, [token, user?.role]);
 
   return (
     <DataContext.Provider
@@ -152,7 +155,7 @@ export const DataProvider = ({ children }) => {
         incomeSummary,
         summaryLoading,
         profilePictureUrl,
-        apiFetch, // 👈 expose apiFetch for components too
+        apiFetch,
         fetchAllData,
         fetchProfilePicture,
         fetchTransactionSummary,

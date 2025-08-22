@@ -15,9 +15,12 @@ import UserProfile from "./pages/profilepage";
 import PasswdChanger from "./pages/ChangePassword";
 import Transacts from "./pages/transactions";
 
-// 🔑 Import contexts
+// 🔑 Contexts
 import { AuthProvider } from "./context/AuthContext";
 import { DataProvider } from "./context/DataContext";
+
+// 🔒 Protected routes
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const queryClient = new QueryClient();
 
@@ -27,27 +30,79 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        {/* 🔑 Wrap everything inside AuthProvider + DataProvider */}
         <AuthProvider>
           <DataProvider>
             <Routes>
+              {/* Public routes */}
               <Route path="/" element={<Index />} />
-              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
 
-              {/* Admin Routes */}
-              <Route path="/admin" element={<AdminDashboard />} />
-              <Route path="/admin/create-account" element={<CreateAccount />} />
-              <Route path="/admin/edit-account" element={<EditAccount />} />
+              {/* Admin routes (protected) */}
+              <Route
+                path="/admin"
+                element={
+                  <ProtectedRoute>
+                    <AdminDashboard />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin/create-account"
+                element={
+                  <ProtectedRoute>
+                    <CreateAccount />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin/edit-account"
+                element={
+                  <ProtectedRoute>
+                    <EditAccount />
+                  </ProtectedRoute>
+                }
+              />
 
-              {/* User Routes */}
-              <Route path="/user" element={<UserDashboard />} />
-              <Route path="/user/transfer" element={<Transfer />} />
-              <Route path="/user/profile" element={<UserProfile />} />
-              <Route path="/user/transactions" element={<Transacts />} />
+              {/* User routes (protected) */}
+              <Route
+                path="/user"
+                element={
+                  <ProtectedRoute>
+                    <UserDashboard />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/user/transfer"
+                element={
+                  <ProtectedRoute>
+                    <Transfer />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/user/profile"
+                element={
+                  <ProtectedRoute>
+                    <UserProfile />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/user/transactions"
+                element={
+                  <ProtectedRoute>
+                    <Transacts />
+                  </ProtectedRoute>
+                }
+              />
               <Route
                 path="/user/profile/changepassword"
-                element={<PasswdChanger />}
+                element={
+                  <ProtectedRoute>
+                    <PasswdChanger />
+                  </ProtectedRoute>
+                }
               />
             </Routes>
           </DataProvider>

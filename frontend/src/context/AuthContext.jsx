@@ -1,76 +1,69 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
-import { useToast } from "../hooks/use-toast";
+// context/AuthContext.jsx
+import React, { createContext, useState, useEffect, useContext } from "react";
 
-// Create the context
-const AuthContext = createContext();
-
-// Hook for consuming it easily
-export const useAuth = () => useContext(AuthContext);
+export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const { toast } = useToast();
+  // ✅ Safe parse helper
+  const getStoredUser = () => {
+    try {
+      const item = localStorage.getItem("user");
+      if (!item || item === "undefined") return null;
+      return JSON.parse(item);
+    } catch {
+      return null;
+    }
+  };
 
   const [token, setToken] = useState(() => localStorage.getItem("token"));
-  const [user, setUser] = useState(null); // minimal user info after login
-  const [loading, setLoading] = useState(false);
+  const [user, setUser] = useState(() => getStoredUser());
+  const [role, setRole] = useState(() => getStoredUser()?.role || null);
 
-  // Save token to localStorage when changed
   useEffect(() => {
     if (token) {
-      localStorage.setItem("token", token);
+      const storedUser = getStoredUser();
+      setUser(storedUser);
+      setRole(storedUser?.role || null);
     } else {
-      localStorage.removeItem("token");
+      // clear state if token is missing
+      setUser(null);
+      setRole(null);
     }
   }, [token]);
 
-  // Login function
-  const login = async (email, password) => {
-    setLoading(true);
-    try {
-      const res = await fetch("http://localhost:5000/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
-
-      if (!res.ok) {
-        throw new Error("Invalid credentials");
-      }
-
-      const data = await res.json();
-      setToken(data.token); // store JWT
-      setUser(data.user);   // optional: store user info
-      toast({
-        title: "Login successful",
-        description: `Welcome back, ${data.user?.name || "User"}!`,
-      });
-    } catch (err) {
-      toast({
-        title: "Login failed",
-        description: err.message || "Unable to log in",
-        variant: "destructive",
-      });
-    } finally {
-      setLoading(false);
-    }
+  // 🟢 Login now expects: login(token, { role, ...otherUserData })
+  const login = (token, userData) => {
+    localStorage.setItem("token", token);
+    localStorage.setItem("user", JSON.stringify(userData));
+    setToken(token);
+    setUser(userData);
+    setRole(userData?.role || null);
   };
 
-  // Logout function (with redirect)
   const logout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
     setToken(null);
     setUser(null);
-    toast({
-      title: "Logged out",
-      description: "You have been signed out successfully.",
-    });
-
-    // ✅ Redirect to login page
-    window.location.href = "/login";
+    setRole(null);
+    window.location.href = "/";
   };
 
   return (
-    <AuthContext.Provider value={{ token, user, login, logout, loading }}>
+    <AuthContext.Provider
+      value={{
+        token,
+        user,
+        role, // 🎯 Now exposed
+        login,
+        logout,
+        isAuthenticated: !!token,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
 };
+
+// Custom hook for consuming AuthContext
+export const useAuth = () => useContext(AuthContext);

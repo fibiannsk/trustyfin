@@ -1,100 +1,70 @@
-import { useState } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
 import { Button } from "../components/ui/button";
-//import { Badge } from "@/components/ui/badge";
-import { AccountCard } from "../components/dashboard/AccountCard";
 import { TransactionList } from "../components/dashboard/TransactionList";
 import { QuickActions } from "../components/dashboard/QuickActions";
 import { SpendingChart } from "../components/dashboard/SpendingChart";
 import { Navbar } from "../components/dashboard/Navbar";
-import { DollarSign, TrendingUp, TrendingDown, Eye, EyeOff } from "lucide-react";
+import { TrendingUp, TrendingDown, Eye, EyeOff } from "lucide-react";
+import { useData } from "../context/DataContext";
+import { useNavigate } from "react-router-dom";
 
 const UserDashboard = () => {
   const [balanceVisible, setBalanceVisible] = useState(true);
+  const {
+    userInfo,
+    transactions,
+    incomeSummary,
+    summaryLoading,
+    token,
+    refetchUserInfo,
+  } = useData();
+  const navigate = useNavigate();
 
-  const accounts = [
-    {
-      id: 1,
-      name: "Primary Checking",
-      type: "checking",
-      balance: 2847.63,
-      accountNumber: "****1234",
-      color: "bg-gradient-to-r from-blue-600 to-blue-700"
-    },
-    {
-      id: 2,
-      name: "High Yield Savings",
-      type: "savings",
-      balance: 15420.89,
-      accountNumber: "****5678",
-      color: "bg-gradient-to-r from-green-600 to-green-700"
-    },
-    {
-      id: 3,
-      name: "Rewards Credit Card",
-      type: "credit",
-      balance: -1245.32,
-      accountNumber: "****9012",
-      color: "bg-gradient-to-r from-purple-600 to-purple-700"
+  // ✅ Refetch user info whenever token changes or page refreshes
+  useEffect(() => {
+    if (token) {
+      refetchUserInfo();
     }
-  ];
+  }, [token, refetchUserInfo]);
 
-  const totalBalance = accounts.reduce((sum, account) => {
-    return account.type === "credit" ? sum + account.balance : sum + account.balance;
-  }, 0);
+  // ✅ Safely compute available balance
+  const totalBalance = userInfo?.balance || 0;
 
-  const recentTransactions = [
-    {
-      id: 1,
-      description: "Amazon Purchase",
-      amount: -89.99,
-      date: "2024-06-11",
-      category: "Shopping",
-      account: "Primary Checking"
-    },
-    {
-      id: 2,
-      description: "Salary Deposit",
-      amount: 3200.00,
-      date: "2024-06-10",
-      category: "Income",
-      account: "Primary Checking"
-    },
-    {
-      id: 3,
-      description: "Coffee Shop",
-      amount: -4.75,
-      date: "2024-06-10",
-      category: "Food & Dining",
-      account: "Primary Checking"
-    },
-    {
-      id: 4,
-      description: "Transfer to Savings",
-      amount: -500.00,
-      date: "2024-06-09",
-      category: "Transfer",
-      account: "Primary Checking"
-    },
-    {
-      id: 5,
-      description: "Netflix Subscription",
-      amount: -15.99,
-      date: "2024-06-09",
-      category: "Entertainment",
-      account: "Primary Checking"
-    }
-  ];
+  // ✅ Calculate balance change percentage
+  const percentageChange = useMemo(() => {
+    if (!incomeSummary) return 0;
+    const { income, expenses, net_income } = incomeSummary;
+    const lastMonthNet = income - expenses; // Simplified assumption
+    if (lastMonthNet === 0) return 0;
+    return ((net_income - lastMonthNet) / Math.abs(lastMonthNet)) * 100;
+  }, [incomeSummary]);
+
+  // ✅ Dynamic trend icon & color
+  const isPositive = percentageChange >= 0;
+
+  // ✅ Get recent 5 transactions
+  const recentTransactions = useMemo(() => {
+    return [...(transactions || [])]
+      .sort((a, b) => {
+        const aTime = a?.timestamp ? new Date(a.timestamp).getTime() : 0;
+        const bTime = b?.timestamp ? new Date(b.timestamp).getTime() : 0;
+        return bTime - aTime;
+      })
+      .slice(0, 5);
+  }, [transactions]);
 
   return (
     <div className="min-h-screen bg-gray-50">
       <Navbar />
-      
+
       <main className="container mx-auto px-4 py-8 space-y-8">
         {/* Welcome Section */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Welcome back, Sarah</h1>
+            <h1 className="text-3xl font-bold text-gray-900">
+              Welcome back, {userInfo?.name || "User"}
+            </h1>
           </div>
           <Button
             variant="outline"
@@ -103,7 +73,7 @@ const UserDashboard = () => {
             className="flex items-center gap-2"
           >
             {balanceVisible ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-            {balanceVisible ? "Hide" : "Show"} Balances
+            {balanceVisible ? "Hide" : "Show"} Balance
           </Button>
         </div>
 
@@ -111,20 +81,34 @@ const UserDashboard = () => {
         <Card className="bg-gradient-to-r from-slate-900 to-slate-800 text-white">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-lg">
-              <DollarSign className="h-5 w-5" />
               Available Balance
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-4xl font-bold">
-              {balanceVisible ? `$${totalBalance.toLocaleString('en-US', { minimumFractionDigits: 2 })}` : "••••••"}
+              {balanceVisible
+                ? `$${totalBalance.toLocaleString("en-US", {
+                    minimumFractionDigits: 2,
+                  })}`
+                : "••••••"}
             </div>
-            <div className="flex items-center gap-2 mt-2 text-green-400">
-              <TrendingUp className="h-4 w-4" />
-              <span className="text-sm">+2.5% from last month</span>
+            <div
+              className={`flex items-center gap-2 mt-2 ${
+                isPositive ? "text-green-400" : "text-red-400"
+              }`}
+            >
+              {isPositive ? (
+                <TrendingUp className="h-4 w-4" />
+              ) : (
+                <TrendingDown className="h-4 w-4" />
+              )}
+              <span className="text-sm">
+                {percentageChange.toFixed(2)}% from last month
+              </span>
             </div>
           </CardContent>
         </Card>
+
         {/* Quick Actions */}
         <QuickActions />
 
@@ -133,8 +117,15 @@ const UserDashboard = () => {
           {/* Recent Transactions */}
           <div className="lg:col-span-2">
             <Card>
-              <CardHeader>
+              <CardHeader className="flex items-center justify-between">
                 <CardTitle>Recent Transactions</CardTitle>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => navigate("/transactions")}
+                >
+                  View All
+                </Button>
               </CardHeader>
               <CardContent>
                 <TransactionList transactions={recentTransactions} />
@@ -142,7 +133,7 @@ const UserDashboard = () => {
             </Card>
           </div>
 
-          {/* Spending Insights */}
+          {/* Spending Insights & Quick Stats */}
           <div className="space-y-6">
             <Card>
               <CardHeader>
@@ -161,15 +152,28 @@ const UserDashboard = () => {
               <CardContent className="space-y-4">
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-gray-600">Income</span>
-                  <span className="font-semibold text-green-600">+$6,400</span>
+                  <span className="font-semibold text-green-600">
+                    +${incomeSummary?.income?.toLocaleString() || 0}
+                  </span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-gray-600">Expenses</span>
-                  <span className="font-semibold text-red-600">-$2,156</span>
+                  <span className="font-semibold text-red-600">
+                    -${incomeSummary?.expenses?.toLocaleString() || 0}
+                  </span>
                 </div>
                 <div className="flex items-center justify-between border-t pt-2">
                   <span className="text-sm font-medium">Net Income</span>
-                  <span className="font-bold text-green-600">+$4,244</span>
+                  <span
+                    className={`font-bold ${
+                      (incomeSummary?.net_income || 0) >= 0
+                        ? "text-green-600"
+                        : "text-red-600"
+                    }`}
+                  >
+                    {incomeSummary?.net_income >= 0 ? "+" : ""}
+                    ${incomeSummary?.net_income?.toLocaleString() || 0}
+                  </span>
                 </div>
               </CardContent>
             </Card>

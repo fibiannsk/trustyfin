@@ -1,12 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { motion } from 'framer-motion';
-import { Eye, EyeOff, Lock, Mail, Shield } from 'lucide-react';
+import { Eye, EyeOff, Lock, Mail, Shield, Fingerprint } from 'lucide-react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
 import { Checkbox } from './ui/checkbox';
 import { Card } from './ui/card';
 import logotrustyfin from '../assets/logotrustyfin.png';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
+import { toast } from '../hooks/use-toast';
 
 const LoginForm = () => {
   const [formData, setFormData] = useState({
@@ -16,7 +19,7 @@ const LoginForm = () => {
   });
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [errors, setErrors] = useState<{[key: string]: string}>({});
 
   const validateEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -24,36 +27,103 @@ const LoginForm = () => {
   };
 
   const validateForm = () => {
-    const newErrors: { [key: string]: string } = {};
-
+    const newErrors: {[key: string]: string} = {};
+    
     if (!formData.email) {
       newErrors.email = 'Email is required';
     } else if (!validateEmail(formData.email)) {
       newErrors.email = 'Please enter a valid email address';
     }
-
+    
     if (!formData.password) {
       newErrors.password = 'Password is required';
     } else if (formData.password.length < 8) {
       newErrors.password = 'Password must be at least 8 characters';
     }
-
+    
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const navigate = useNavigate();
+   const { login } = useAuth(); // ✅ use AuthContext login
+
+    const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!validateForm()) return;
 
     setIsLoading(true);
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    setIsLoading(false);
 
-    console.log('Login successful:', formData);
+    try {
+      const response = await fetch("http://localhost:5000/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: formData.email,      // ✅ use email
+          password: formData.password // ✅ password
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        if (data.role === "superadmin" && data.token) {
+          // ✅ Admin: no token, go straight to dashboard
+          toast({
+            title: "Admin Login Successful",
+            description: "Redirecting to admin dashboard...",
+          });
+
+          login(data.token, { 
+            id: data.id,
+            email: data.email,
+            role: data.role 
+          }); // AuthContext login
+
+          navigate("/admin");
+        } else if (data.role === "user" && data.token) {
+          // ✅ User: store token and call AuthContext
+          toast({
+            title: "Login Successful",
+            description: "Redirecting to your dashboard...",
+          });
+
+          login(data.token, { 
+            id: data.id,
+            email: data.email,
+            role: data.role 
+          }); // AuthContext login
+
+          navigate("/user");
+        } else {
+          toast({
+            title: "Login Failed",
+            description: "Unexpected response from server.",
+            variant: "destructive",
+          });
+        }
+      } else {
+        toast({
+          title: "Login Failed",
+          description: data.error || "Invalid credentials. Please try again.",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Network or server error occurred.",
+        variant: "destructive",
+      });
+      console.error("Login error:", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
+
 
   const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -62,55 +132,48 @@ const LoginForm = () => {
     }
   };
 
-  const isFormValid =
-    formData.email &&
-    formData.password &&
-    validateEmail(formData.email) &&
-    formData.password.length >= 8;
+  const isFormValid = formData.email && formData.password && validateEmail(formData.email) && formData.password.length >= 8;
 
   return (
-    <div className="min-h-screen flex items-center justify-center 
-                    bg-gradient-to-br from-blue-300 via-white to-red-300 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-red-50 px-4">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, ease: 'easeOut' }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
         className="w-full max-w-md"
       >
         <Card className="glass-card p-8 space-y-6">
           {/* Logo and Header */}
-          <motion.div
+          <motion.div 
             className="text-center space-y-4"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.5 }}
           >
-            <img
-              src={logotrustyfin}
-              alt="Bank of America"
+            <img 
+              src={logotrustyfin} 
+              alt="trustyfin logo" 
               className="h-16 w-auto mx-auto"
             />
             <div>
               <h1 className="text-2xl font-bold text-primary">Secure Login</h1>
-              <p className="text-sm text-muted-foreground">
-                Access your account safely
-              </p>
+              <p className="text-sm text-muted-foreground">Access your account safely</p>
             </div>
           </motion.div>
 
           {/* Trust Signal */}
-          <motion.div
+          <motion.div 
             className="flex items-center justify-center space-x-2 text-xs text-muted-foreground bg-muted/30 rounded-lg p-3"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4, duration: 0.5 }}
           >
             <Shield className="h-4 w-4 text-primary" />
-            <span>Bank-grade encryption applied</span>
+            <span>Top-grade encryption applied</span>
           </motion.div>
 
           {/* Login Form */}
-          <motion.form
+          <motion.form 
             onSubmit={handleSubmit}
             className="space-y-5"
             initial={{ opacity: 0 }}
@@ -129,14 +192,12 @@ const LoginForm = () => {
                   type="email"
                   placeholder="Enter your email"
                   value={formData.email}
-                  onChange={e => handleInputChange('email', e.target.value)}
-                  className={`input-bank pl-10 ${
-                    errors.email ? 'border-destructive' : ''
-                  }`}
+                  onChange={(e) => handleInputChange('email', e.target.value)}
+                  className={`input-bank pl-10 ${errors.email ? 'border-destructive' : ''}`}
                 />
               </div>
               {errors.email && (
-                <motion.p
+                <motion.p 
                   className="text-xs text-destructive"
                   initial={{ opacity: 0, x: -10 }}
                   animate={{ opacity: 1, x: 0 }}
@@ -159,25 +220,19 @@ const LoginForm = () => {
                   type={showPassword ? 'text' : 'password'}
                   placeholder="Enter your password"
                   value={formData.password}
-                  onChange={e => handleInputChange('password', e.target.value)}
-                  className={`input-bank pl-10 pr-10 ${
-                    errors.password ? 'border-destructive' : ''
-                  }`}
+                  onChange={(e) => handleInputChange('password', e.target.value)}
+                  className={`input-bank pl-10 pr-10 ${errors.password ? 'border-destructive' : ''}`}
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
                 >
-                  {showPassword ? (
-                    <EyeOff className="h-4 w-4" />
-                  ) : (
-                    <Eye className="h-4 w-4" />
-                  )}
+                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                 </button>
               </div>
               {errors.password && (
-                <motion.p
+                <motion.p 
                   className="text-xs text-destructive"
                   initial={{ opacity: 0, x: -10 }}
                   animate={{ opacity: 1, x: 0 }}
@@ -191,17 +246,14 @@ const LoginForm = () => {
             {/* Remember Me and Forgot Password */}
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-2">
-                <Checkbox
+                <Checkbox 
                   id="remember"
                   checked={formData.rememberMe}
-                  onCheckedChange={checked =>
+                  onCheckedChange={(checked) => 
                     setFormData(prev => ({ ...prev, rememberMe: !!checked }))
                   }
                 />
-                <Label
-                  htmlFor="remember"
-                  className="text-sm text-muted-foreground"
-                >
+                <Label htmlFor="remember" className="text-sm text-muted-foreground">
                   Remember me
                 </Label>
               </div>
@@ -221,9 +273,7 @@ const LoginForm = () => {
               <Button
                 type="submit"
                 disabled={!isFormValid || isLoading}
-                className="w-full py-3 text-base font-semibold 
-                           bg-red-600 hover:bg-red-700 text-white 
-                           disabled:opacity-50 disabled:cursor-not-allowed"
+                className="btn-bank-primary w-full py-3 text-base font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isLoading ? (
                   <motion.div
@@ -239,10 +289,27 @@ const LoginForm = () => {
                 )}
               </Button>
             </motion.div>
+
+            {/* Biometric Login Option */}
+            <motion.div 
+              className="pt-4 border-t border-border"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.6, duration: 0.5 }}
+            >
+              <Button
+                type="button"
+                variant="outline"
+                className="w-full py-3 text-base font-medium border-2 hover:bg-muted/50 transition-all duration-300"
+              >
+                <Fingerprint className="h-5 w-5 mr-2 text-primary" />
+                Login with Biometric
+              </Button>
+            </motion.div>
           </motion.form>
 
           {/* Footer Links */}
-          <motion.div
+          <motion.div 
             className="text-center text-xs text-muted-foreground space-y-2"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}

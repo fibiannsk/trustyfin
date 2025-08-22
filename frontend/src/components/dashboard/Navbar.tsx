@@ -10,10 +10,13 @@ import {
   DropdownMenuTrigger,
 } from "../../components/ui/dropdown-menu";
 import { useNavigate } from 'react-router-dom';
+import logotrustyfin from '../../assets/logotrustyfin.png';
+import { useAuth } from '../../context/AuthContext';
  
 
 export const Navbar = () => {
 
+  const { logout } = useAuth();
    const navigate = useNavigate();
 
    const dashboardmv = () => {
@@ -38,10 +41,12 @@ export const Navbar = () => {
           {/* Logo and Brand */}
           <div className="flex items-center space-x-4">
             <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-blue-700 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-sm">B</span>
-              </div>
-              <span className="text-xl font-bold text-gray-900">BankDash</span>
+              <img 
+                  src={logotrustyfin} 
+                  alt="trustyfin logo" 
+                  className="h-16 w-auto mx-auto"
+              />
+              <span className="text-xl font-bold text-gray-900">TrustyFin Bank</span>
             </div>
           </div>
 
@@ -100,7 +105,10 @@ export const Navbar = () => {
                   <span>Notifications</span>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem className="text-red-600">
+                <DropdownMenuItem
+                  className="text-red-600 cursor-pointer" 
+                  onClick={logout}
+                >
                   <LogOut className="mr-2 h-4 w-4" />
                   <span>Sign out</span>
                 </DropdownMenuItem>
