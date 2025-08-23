@@ -57,7 +57,11 @@ def create_user():
         "pin": data['pin'],
         "agreeToTerms": data.get('agreeToTerms', True),
         "blocked": False,
-        "accountNumber": generate_unique_account_number()
+        "accountNumber": generate_unique_account_number(),
+        "balance": 0.0,
+        "createdAt": datetime.utcnow(),
+        "updatedAt": datetime.utcnow(),
+        "role": "user"  # default role
     }
 
     db.users.insert_one(user_data)

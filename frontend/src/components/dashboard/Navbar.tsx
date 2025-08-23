@@ -12,12 +12,15 @@ import {
 import { useNavigate } from 'react-router-dom';
 import logotrustyfin from '../../assets/logotrustyfin.png';
 import { useAuth } from '../../context/AuthContext';
- 
+import { useData } from "../../context/DataContext";
+
+
 
 export const Navbar = () => {
 
   const { logout } = useAuth();
-   const navigate = useNavigate();
+  const { userInfo } = useData();
+  const navigate = useNavigate();
 
    const dashboardmv = () => {
     navigate('/user');
@@ -88,7 +91,7 @@ export const Navbar = () => {
                     <AvatarImage src="/placeholder.svg" alt="Sarah Johnson" />
                     <AvatarFallback className="bg-blue-600 text-white">SJ</AvatarFallback>
                   </Avatar>
-                  <span className="hidden md:block text-sm font-medium">Sarah Johnson</span>
+                  <span className="hidden md:block text-sm font-medium">{userInfo?.name}</span>
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-56">

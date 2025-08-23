@@ -46,8 +46,13 @@ export const AuthProvider = ({ children }) => {
     setToken(null);
     setUser(null);
     setRole(null);
-    window.location.href = "/";
   };
+
+  const logoutAndRedirect = () => {
+    logout();
+    window.location.href = "/"; // full reload + redirect to homepage
+  };
+
 
   return (
     <AuthContext.Provider
@@ -57,6 +62,7 @@ export const AuthProvider = ({ children }) => {
         role, // 🎯 Now exposed
         login,
         logout,
+        logoutAndRedirect,
         isAuthenticated: !!token,
       }}
     >

@@ -12,6 +12,7 @@ import { CalendarIcon, User, Lock } from 'lucide-react';
 import { format } from 'date-fns';
 import { cn } from '../lib/utils';
 import { useToast } from '../hooks/use-toast';
+import { useAuth } from '../context/AuthContext';
 
 interface FormData {
   firstName: string;
@@ -59,6 +60,8 @@ const AdminAccountForm = () => {
 
   const [errors, setErrors] = useState<FormErrors>({});
   const [touched, setTouched] = useState<{ [key: string]: boolean }>({});
+  const [loading, setLoading] = useState(false);
+  const { logoutAndRedirect } = useAuth(); // logout function from context
 
   const validateField = (name: string, value: any): string => {
     switch (name) {
@@ -130,49 +133,131 @@ const AdminAccountForm = () => {
     return allRequiredFilled && passwordsMatch && noErrors;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    // Validate all fields
-    const newErrors: FormErrors = {};
-    Object.keys(formData).forEach(key => {
-      const error = validateField(key, formData[key as keyof FormData]);
-      if (error) newErrors[key] = error;
+  // --------------------------
+// 1️⃣ Label Components
+// --------------------------
+const RequiredLabel: React.FC<{ children: React.ReactNode; htmlFor: string }> = ({ children, htmlFor }) => (
+  <Label htmlFor={htmlFor} className="text-banking-text font-medium">
+    {children} <span className="text-required ml-1">✱</span>
+  </Label>
+);
+
+const OptionalLabel: React.FC<{ children: React.ReactNode; htmlFor: string }> = ({ children, htmlFor }) => (
+  <Label htmlFor={htmlFor} className="text-banking-text font-medium">
+    {children}
+  </Label>
+);
+
+// --------------------------
+// 2️⃣ Main handleSubmit function
+// --------------------------
+const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
+  e.preventDefault();
+  setLoading(true);
+
+  // Validate all fields
+  const newErrors: FormErrors = {};
+  Object.keys(formData).forEach(key => {
+    const error = validateField(key, formData[key as keyof FormData]);
+    if (error) newErrors[key] = error;
+  });
+
+  setErrors(newErrors);
+  setTouched(Object.keys(formData).reduce((acc, key) => ({ ...acc, [key]: true }), {}));
+
+  if (Object.keys(newErrors).length === 0 && isFormValid()) {
+    toast({
+      title: "Account Created Successfully",
+      description: "The new user account has been created and is ready for use.",
     });
+    console.log('Form submitted:', formData);
+  }
 
-    setErrors(newErrors);
-    setTouched(Object.keys(formData).reduce((acc, key) => ({ ...acc, [key]: true }), {}));
-
-    if (Object.keys(newErrors).length === 0 && isFormValid()) {
-      toast({
-        title: "Account Created Successfully",
-        description: "The new user account has been created and is ready for use.",
-      });
-      console.log('Form submitted:', formData);
-    }
+  const payload = {
+    ...formData,
+    dateOfBirth: formData.dateOfBirth?.toISOString().split("T")[0],
   };
 
-  const RequiredLabel: React.FC<{ children: React.ReactNode; htmlFor: string }> = ({ children, htmlFor }) => (
-    <Label htmlFor={htmlFor} className="text-banking-text font-medium">
-      {children} <span className="text-required ml-1">✱</span>
-    </Label>
-  );
+  try {
+    const response = await fetch("http://localhost:5000/admin/users", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
 
-  const OptionalLabel: React.FC<{ children: React.ReactNode; htmlFor: string }> = ({ children, htmlFor }) => (
-    <Label htmlFor={htmlFor} className="text-banking-text font-medium">
-      {children}
-    </Label>
-  );
+    if (response.status === 401) {
+      toast({
+        title: "Session Expired",
+        description: "Your login has expired. Please log in again.",
+        variant: "destructive",
+      });
+      logoutAndRedirect();
+      return;
+    }
+
+    const data = await response.json();
+    console.log("Server response:", data);
+
+    if (response.ok) {
+      toast({
+        title: "Account Created Successfully",
+        description: data.message || "The new user account has been created.",
+      });
+
+      // Reset form
+      setFormData({
+        firstName: "",
+        middleName: "",
+        lastName: "",
+        email: "",
+        gender: "",
+        dateOfBirth: undefined,
+        accountType: "",
+        address: "",
+        postalCode: "",
+        state: "",
+        country: "",
+        currency: "",
+        password: "",
+        confirmPassword: "",
+        pin: "",
+        agreeToTerms: false,
+      });
+      setTouched({});
+      setErrors({});
+    } else {
+      toast({
+        title: "Account Creation Failed",
+        description: data.error || "Something went wrong. Please try again.",
+        variant: "destructive",
+      });
+    }
+  } catch (err: any) {
+    console.error("Account creation failed:", err.message);
+    toast({
+      title: "Network Error",
+      description: "Unable to reach the server. Please try again later.",
+      variant: "destructive",
+    });
+  } finally {
+    setLoading(false);
+  }
+};
+
+
 
   return (
-    <div className="min-h-screen bg-yellow py-8 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-blue-300 via-white to-red-300 py-8 px-4">
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-banking-text mb-2">Bank Admin Portal</h1>
           <p className="text-muted-foreground">Create New User Account</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-8">
+        <form
+          onSubmit={handleSubmit} // just pass the function directly
+          className="space-y-8"
+        >
           {/* Personal Information Section */}
           <Card className="border-form-border">
             <CardHeader className="bg-banking-blue-light/50">
@@ -473,12 +558,12 @@ const AdminAccountForm = () => {
           <div className="flex justify-center pt-6">
             <Button
               type="submit"
-              variant="banking-submit"
+              variant="destructive"
               size="lg"
-              disabled={!isFormValid()}
+              disabled={!isFormValid() || loading}
               className="w-full md:w-auto px-12"
             >
-              Create Account
+              {loading ? "Creating..." : "Create Account"}
             </Button>
           </div>
         </form>

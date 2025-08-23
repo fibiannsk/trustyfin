@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Eye, EyeOff, Lock, Mail, Shield, Fingerprint } from 'lucide-react';
 import { Button } from './ui/button';
@@ -7,7 +7,7 @@ import { Label } from './ui/label';
 import { Checkbox } from './ui/checkbox';
 import { Card } from './ui/card';
 import logotrustyfin from '../assets/logotrustyfin.png';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useNavigationType } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { toast } from '../hooks/use-toast';
 
@@ -46,7 +46,14 @@ const LoginForm = () => {
   };
 
   const navigate = useNavigate();
-   const { login } = useAuth(); // ✅ use AuthContext login
+  const navigationType = useNavigationType();
+   const { login, logout } = useAuth(); // ✅ use AuthContext login
+
+   useEffect(() => {
+    if (navigationType === "POP") {
+      logout();
+    }
+  }, [navigationType, logout]);
 
     const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
