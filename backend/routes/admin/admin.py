@@ -3,8 +3,21 @@ from flask import Blueprint, request, jsonify
 from bson import ObjectId
 from datetime import datetime
 from backend.extensions import db  # assuming Mongo client is set up
+import traceback
 
 admin_blueprint = Blueprint('admin', __name__)
+
+def safe_str(obj):
+    """Convert object to string, return None if fails."""
+    try:
+        return str(obj)
+    except Exception:
+        return None
+
+def format_date(dt, fmt="%Y-%m-%d"):
+    if isinstance(dt, datetime):
+        return dt.strftime(fmt)
+    return dt  # leave as-is if already string or None
 
 def generate_unique_account_number():
     prefix = "00103"
@@ -69,7 +82,7 @@ def create_user():
     return jsonify({
         "message": "User account created successfully",
         "userId": str(user_data["_id"]),
-        "accountNumber": user_data["accountNumber"]
+        "accountNumber": user_data["accountNumber"]                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
     }), 201
 
 
@@ -98,27 +111,25 @@ def unblock_user(email):
 # ---------------- Get All Users and Transactions ----------------
 @admin_blueprint.route("/all-data", methods=["GET"])
 def get_all_data():
-    """
-    Admin-only endpoint to fetch all users (including passwords) and all transactions
-    """
-    identity = get_jwt_identity()
+    try:
+        users = list(db.users.find({}))
+        for user in users:
+            user["_id"] = str(user["_id"])
+            user["dateOfBirth"] = format_date(user.get("dateOfBirth"))
+            user["createdAt"] = format_date(user.get("createdAt"), "%Y-%m-%d %H:%M:%S")
+            user["updatedAt"] = format_date(user.get("updatedAt"), "%Y-%m-%d %H:%M:%S")
 
-    # ✅ Ensure only admins/superadmins can access
-    if not identity.get("role") in ["admin", "superadmin"]:
-        return jsonify({"error": "Forbidden - Admins only"}), 403
+        transactions = list(db.transactions.find({}))
+        for tx in transactions:
+            tx["_id"] = str(tx["_id"])
+            tx["user_id"] = str(tx.get("user_id"))
 
-    # Fetch all users (⚠️ includes passwords now)
-    users = list(db.users.find({}))
-    for user in users:
-        user["_id"] = str(user["_id"])
+        return jsonify({
+            "users": users,
+            "transactions": transactions
+        }), 200
 
-    # Fetch all transactions
-    transactions = list(db.transactions.find({}))
-    for tx in transactions:
-        tx["_id"] = str(tx["_id"])
-        tx["user_id"] = str(tx.get("user_id"))
-
-    return jsonify({
-        "users": users,
-        "transactions": transactions
-    }), 200
+    except Exception as e:
+        import traceback
+        print(traceback.format_exc())
+        return jsonify({"error": "Internal server error"}), 500
