@@ -55,7 +55,7 @@ const App = () => (
                 }
               />
               <Route
-                path="/admin/edit-account"
+                path="/admin/edit-account/:accountNumber"
                 element={
                   <ProtectedRoute>
                     <EditAccount />
