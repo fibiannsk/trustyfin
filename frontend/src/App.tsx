@@ -22,6 +22,13 @@ import { DataProvider } from "./context/DataContext";
 // 🔒 Protected routes
 import ProtectedRoute from "./components/ProtectedRoute";
 
+// 📊 Admin section components
+import { DashboardOverview } from "./components/admin/DashboardOverview";
+import { CustomerManagement } from "./components/admin/CustomerManagement";
+import { TransactionMonitoring } from "./components/admin/TransactionMonitoring";
+import { SecurityCenter } from "./components/admin/SecurityCenter";
+import { Card, CardContent, CardHeader, CardTitle } from "./components/ui/card";
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -37,7 +44,7 @@ const App = () => (
               <Route path="/" element={<Index />} />
               <Route path="*" element={<NotFound />} />
 
-              {/* Admin routes (protected) */}
+              {/* Admin routes (protected, nested) */}
               <Route
                 path="/admin"
                 element={
@@ -45,7 +52,92 @@ const App = () => (
                     <AdminDashboard />
                   </ProtectedRoute>
                 }
-              />
+              >
+                <Route index element={<DashboardOverview />} />
+                <Route path="customers" element={<CustomerManagement />} />
+                <Route path="transactions" element={<TransactionMonitoring />} />
+                <Route path="security" element={<SecurityCenter />} />
+
+                <Route
+                  path="accounts"
+                  element={
+                    <Card>
+                      <CardHeader>
+                        <CardTitle>Account Management</CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <p className="text-slate-600">
+                          Account management features will be available here.
+                        </p>
+                      </CardContent>
+                    </Card>
+                  }
+                />
+                <Route
+                  path="reports"
+                  element={
+                    <Card>
+                      <CardHeader>
+                        <CardTitle>Reports & Analytics</CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <p className="text-slate-600">
+                          Financial reports and analytics will be available here.
+                        </p>
+                      </CardContent>
+                    </Card>
+                  }
+                />
+                <Route
+                  path="alerts"
+                  element={
+                    <Card>
+                      <CardHeader>
+                        <CardTitle>System Alerts</CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <p className="text-slate-600">
+                          System alerts and notifications will be managed here.
+                        </p>
+                      </CardContent>
+                    </Card>
+                  }
+                />
+                <Route
+                  path="notifications"
+                  element={
+                    <Card>
+                      <CardHeader>
+                        <CardTitle>Notification Center</CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <p className="text-slate-600">
+                          Customer notifications and communication tools will be
+                          available here.
+                        </p>
+                      </CardContent>
+                    </Card>
+                  }
+                />
+                <Route
+                  path="settings"
+                  element={
+                    <Card>
+                      <CardHeader>
+                        <CardTitle>System Settings</CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <p className="text-slate-600">
+                          System configuration and settings will be managed
+                          here.
+                        </p>
+                      </CardContent>
+                    </Card>
+                  }
+                />
+              </Route>
+
+              {/* Admin standalone forms */}
               <Route
                 path="/admin/create-account"
                 element={

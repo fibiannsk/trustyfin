@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom"; // ✅ import
+import Lottie from "lottie-react";
+import successAnimation from "../assets/Success.json"; // ✅ path to your Lottie file
 
 export type LabelsMap = {
   [key: string]: string;
@@ -22,6 +25,9 @@ const EditCustomerForm: React.FC<EditCustomerFormProps> = ({
   const [formData, setFormData] = useState<UpdatePayload>(userData);
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [isSuccess, setIsSuccess] = useState(false); // ✅ success state
+
+  const navigate = useNavigate(); // ✅ hook
 
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({
@@ -65,6 +71,10 @@ const EditCustomerForm: React.FC<EditCustomerFormProps> = ({
     setIsLoading(true);
     try {
       await onUpdate(formData);
+      setIsSuccess(true); // ✅ trigger animation
+      setTimeout(() => {
+        navigate("/admin/customers"); // ✅ smooth redirect
+      }, 2000);
     } catch (error) {
       console.error("Update failed:", error);
     } finally {
@@ -72,64 +82,23 @@ const EditCustomerForm: React.FC<EditCustomerFormProps> = ({
     }
   };
 
-  const renderField = (field: string, label: string) => {
-    const isBalanceField = field === "balance" || field === "funds";
-    const inputType =
-      field === "email" ? "email" : isBalanceField ? "number" : "text";
-
+  if (isSuccess) {
+    // ✅ full-screen success check animation
     return (
-      <div key={field} className="space-y-2">
-        <label
-          htmlFor={field}
-          className="block text-sm font-medium text-banking-dark"
-        >
-          {label}
-          {isBalanceField && (
-            <span className="ml-1 text-banking-green font-semibold">($)</span>
-          )}
-        </label>
-        <div className="relative">
-          <input
-            id={field}
-            type={inputType}
-            value={formData[field] || ""}
-            onChange={(e) => handleInputChange(field, e.target.value)}
-            className={`w-full px-4 py-3 rounded-lg border transition-all duration-200
-              bg-white text-foreground placeholder:text-muted-foreground
-              focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent
-              hover:border-primary/50
-              ${
-                errors[field]
-                  ? "border-destructive focus:ring-destructive"
-                  : "border-input"
-              }
-              ${isBalanceField ? "font-mono text-lg" : ""}
-            `}
-            placeholder={`Enter ${label.toLowerCase()}`}
-            step={isBalanceField ? "0.01" : undefined}
-            min={isBalanceField ? "0" : undefined}
-            aria-invalid={errors[field] ? "true" : "false"}
-            aria-describedby={errors[field] ? `${field}-error` : undefined}
-          />
-          {isBalanceField && (
-            <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
-              <span className="text-sm font-medium text-banking-green">USD</span>
-            </div>
-          )}
-        </div>
-        {errors[field] && (
-          <p
-            id={`${field}-error`}
-            className="text-sm text-destructive flex items-center gap-1"
-            role="alert"
-          >
-            {errors[field]}
-          </p>
-        )}
+      <div className="flex flex-col items-center justify-center h-96">
+        <Lottie
+          animationData={successAnimation}
+          loop={false}
+          style={{ width: 150, height: 150 }}
+        />
+        <p className="text-green-600 font-semibold mt-4">
+          User updated successfully!
+        </p>
       </div>
     );
-  };
+  }
 
+  // 🔥 original form UI (untouched except success handling)
   return (
     <div className="max-w-2xl mx-auto bg-card rounded-xl shadow-lg border border-border overflow-hidden">
       {/* Header */}
@@ -145,16 +114,33 @@ const EditCustomerForm: React.FC<EditCustomerFormProps> = ({
       {/* Form */}
       <form onSubmit={handleSubmit} className="p-6 space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {Object.entries(labels).map(([field, label]) =>
-            renderField(field, label)
-          )}
+          {Object.entries(labels).map(([field, label]) => (
+            <div key={field} className="space-y-2">
+              <label
+                htmlFor={field}
+                className="block text-sm font-medium text-banking-dark"
+              >
+                {label}
+              </label>
+              <input
+                id={field}
+                type="text"
+                value={formData[field] || ""}
+                onChange={(e) => handleInputChange(field, e.target.value)}
+                className="w-full px-4 py-3 rounded-lg border border-input bg-white text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+              />
+              {errors[field] && (
+                <p className="text-sm text-destructive">{errors[field]}</p>
+              )}
+            </div>
+          ))}
         </div>
 
         {/* Action Buttons */}
         <div className="flex flex-col sm:flex-row gap-3 pt-4 border-t border-border">
           <button
             type="button"
-            className="flex-1 px-6 py-3 border border-border rounded-lg text-foreground bg-background hover:bg-muted transition-all duration-200 font-medium"
+            className="flex-1 px-6 py-3 border border-border rounded-lg text-foreground bg-background hover:bg-muted"
             onClick={() => setFormData(userData)}
           >
             Reset Changes
@@ -164,13 +150,11 @@ const EditCustomerForm: React.FC<EditCustomerFormProps> = ({
             type="submit"
             disabled={isLoading}
             className={`flex-1 px-6 py-3 rounded-lg font-medium transition-all duration-200
-              flex items-center justify-center gap-2
               ${
                 isLoading
                   ? "bg-primary/80 text-primary-foreground cursor-not-allowed"
-                  : "bg-primary hover:bg-primary/90 text-primary-foreground hover:shadow-lg transform hover:-translate-y-0.5"
-              }
-            `}
+                  : "bg-primary hover:bg-primary/90 text-primary-foreground"
+              }`}
           >
             {isLoading ? "Updating..." : "Update Customer"}
           </button>

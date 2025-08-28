@@ -2,6 +2,7 @@ import os
 from flask import Flask, jsonify
 from dotenv import load_dotenv
 from flask_jwt_extended import JWTManager
+from flask_cors import CORS   # ✅ import here too
 
 from .superadmin import ensure_super_admin
 from .extensions import db
@@ -14,17 +15,16 @@ from .routes.auth.auth import auth_blueprint
 
 jwt = JWTManager()
 
-
 def create_app(config_name="default"):
     # Load environment variables
     load_dotenv()
 
-    # ✅ Explicitly set static folder + static URL
     app = Flask(
         __name__,
-        static_url_path="/static",               # URL prefix
-        static_folder=os.path.join(os.getcwd(), "static")  # actual folder path
+        static_url_path="/static",
+        static_folder=os.path.join(os.getcwd(), "static")
     )
+    app.url_map.strict_slashes = False
 
     # JWT Configuration
     app.config['JWT_SECRET_KEY'] = 'super-secret'  # TODO: load from env
@@ -34,39 +34,40 @@ def create_app(config_name="default"):
     jwt.init_app(app)
 
     # App Config
-    app.config['CORS_HEADERS'] = 'Content-Type'
     app.config['SECRET_KEY'] = 'secret'
     app.config["SESSION_PERMANENT"] = False
     app.config["SESSION_TYPE"] = "filesystem"
     app.config['DEBUG'] = True
 
-    # CORS setup
+    # ✅ CORS setup (official way)
+    CORS(
+        app,
+        resources={r"/*": {"origins": ["http://127.0.0.1:5173", "http://localhost:5173"]}},
+        supports_credentials=True,
+        methods=["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+        allow_headers=["Content-Type", "Authorization"]
+    )
 
-    @app.after_request
-    def handle_cors(response):
-        response.headers["Access-Control-Allow-Origin"] = "*"
-        response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS"
-        response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
-        return response
-
-    @app.route("/", methods=["OPTIONS"])
-    def cors_preflight():
-        return "", 204
+    # ❌ REMOVE this block (conflicts with flask_cors)
+    # @app.after_request
+    # def handle_cors(response):
+    #     response.headers["Access-Control-Allow-Origin"] = "*"
+    #     response.headers["Access-Control-Allow-Credentials"] = "true"
+    #     response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, PATCH, OPTIONS"
+    #     response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
+    #     return response
 
     # JWT Error Handlers
     @jwt.unauthorized_loader
     def custom_unauthorized(err_msg):
-        print("🔥 jwt.unauthorized_loader – error:", err_msg)
         return jsonify({"error": "Missing or invalid JWT"}), 401
 
     @jwt.invalid_token_loader
     def custom_invalid_token(err_msg):
-        print("🔥 jwt.invalid_token_loader – error:", err_msg)
         return jsonify({"error": "Invalid JWT"}), 422
 
     @jwt.expired_token_loader
     def custom_expired_token(jwt_header, jwt_payload):
-        print("🔥 jwt.expired_token_loader – token has expired")
         return jsonify({"error": "Token expired"}), 401
 
     # Register blueprints

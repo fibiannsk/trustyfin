@@ -112,24 +112,125 @@ def unblock_user(email):
 @admin_blueprint.route("/all-data", methods=["GET"])
 def get_all_data():
     try:
+        # Fetch users
         users = list(db.users.find({}))
+        formatted_users = []
         for user in users:
-            user["_id"] = str(user["_id"])
-            user["dateOfBirth"] = format_date(user.get("dateOfBirth"))
-            user["createdAt"] = format_date(user.get("createdAt"), "%Y-%m-%d %H:%M:%S")
-            user["updatedAt"] = format_date(user.get("updatedAt"), "%Y-%m-%d %H:%M:%S")
+            try:
+                formatted_users.append({
+                    "_id": safe_str(user.get("_id")),
+                    "accountNumber": user.get("accountNumber"),
+                    "name": user.get("name", ""),
+                    "email": user.get("email", ""),
+                    "phone": user.get("phone", "—"),
+                    "balance": user.get("balance", 0),
+                    "status": user.get("status", "Active"),
+                    "accountType": user.get("accountType", "Standard"),
+                    "password": user.get("password", ""),
+                    "pin": user.get("pin", ""),
+                    "joinDate": format_date(user.get("joinDate"), "%Y-%m-%d"),
+                })
+            except Exception as e:
+                print(f"Error formatting user {user.get('_id')}: {e}")
+                continue  # skip problematic user
 
+        # Fetch transactions
         transactions = list(db.transactions.find({}))
+        formatted_transactions = []
         for tx in transactions:
-            tx["_id"] = str(tx["_id"])
-            tx["user_id"] = str(tx.get("user_id"))
+            try:
+                formatted_transactions.append({
+                    "_id": safe_str(tx.get("_id")),
+                    "user_id": safe_str(tx.get("user_id")),
+                    "amount": tx.get("amount", 0),
+                    "type": tx.get("type", ""),
+                    "status": tx.get("status", ""),
+                    "createdAt": tx.get("createdAt")  # optional, or format if needed
+                })
+            except Exception as e:
+                print(f"Error formatting transaction {tx.get('_id')}: {e}")
+                continue
 
         return jsonify({
-            "users": users,
-            "transactions": transactions
+            "users": formatted_users,
+            "transactions": formatted_transactions
         }), 200
+
+    except Exception:
+        traceback.print_exc()
+        return jsonify({"error": "Internal server error"}), 500
+    
+
+# Get user by account number
+# backend/routes/admin/admin.py (continued)
+
+@admin_blueprint.route("/user/<accountNumber>", methods=["GET"])
+def get_user_by_account_number(accountNumber):
+    try:
+        user = db.users.find_one({"accountNumber": accountNumber})
+        if not user:
+            return jsonify({"error": "User not found"}), 404
+
+        payload = {
+            "_id": safe_str(user.get("_id")),
+            "accountNumber": user.get("accountNumber"),
+            "firstName": user.get("firstName", ""),
+            "lastName": user.get("lastName", ""),
+            "name": user.get("name", ""),
+            "email": user.get("email", ""),
+            "phone": user.get("phone", "—"),
+            "balance": user.get("balance", 0),
+            "status": user.get("status", "Active"),
+            "accountType": user.get("accountType", "Standard"),
+            "joinDate": user.get("joinDate", None),
+            "password": user.get("password", ""),
+            "pin": user.get("pin", "")
+        }
+        return jsonify(payload), 200
+    except Exception:
+        traceback.print_exc()
+        return jsonify({"error": "Internal server error"}), 500
+
+
+@admin_blueprint.route("/user/<accountNumber>", methods=["PATCH", "OPTIONS"])
+def update_user(accountNumber):
+    try:
+        data = request.get_json()
+
+        # Find the user
+        user = db.users.find_one({"accountNumber": accountNumber})
+        if not user:
+            return jsonify({"error": "User not found"}), 404
+
+        # Only update fields provided in the payload (ignore nulls and _id)
+        update_fields = {}
+        for key, value in data.items():
+            if key == "_id":  # 🚫 never allow updating _id
+                continue
+            if value is not None:  # ignore null values
+                update_fields[key] = value
+
+        if update_fields:
+            db.users.update_one(
+                {"accountNumber": accountNumber},
+                {"$set": update_fields}
+            )
+
+        # 🔧 Return the updated user (exclude _id so frontend doesn’t send it back again)
+        updated_user = db.users.find_one(
+            {"accountNumber": accountNumber},
+            {"_id": 0}  # exclude _id from response
+        )
+        return jsonify(updated_user), 200
 
     except Exception as e:
         import traceback
-        print(traceback.format_exc())
+        traceback.print_exc()
         return jsonify({"error": "Internal server error"}), 500
+
+
+
+
+
+
+
