@@ -13,6 +13,7 @@ import logotrustyfin from '../../assets/logotrustyfin.png';
 
 export function CustomerManagement() {
   const navigate = useNavigate();
+  
   const { toast } = useToast();
   const { logoutAndRedirect } = useAuth();
 

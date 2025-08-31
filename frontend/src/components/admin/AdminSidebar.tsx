@@ -10,7 +10,6 @@ import {
   Bell
 } from "lucide-react";
 import { NavLink } from "react-router-dom";
-
 const menuItems = [
   { id: "dashboard", label: "Dashboard", icon: BarChart3, path: "/admin" },
   { id: "customers", label: "Customers", icon: Users, path: "/admin/customers" },

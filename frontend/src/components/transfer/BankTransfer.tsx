@@ -7,114 +7,79 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { Textarea } from '../ui/textarea';
 import { useToast } from '../../hooks/use-toast';
 import { ArrowLeft, CreditCard, Lock, Receipt, X, Check, AlertTriangle } from 'lucide-react';
-import { Navbar } from '../dashboard/Navbar';
-
-// Mock data for saved beneficiaries
-const SAVED_BENEFICIARIES = [
-  {
-    id: 1,
-    name: "John Smith",
-    bank: "GTBank",
-    accountNumber: "0123456789",
-  },
-  {
-    id: 2,
-    name: "Sarah Johnson", 
-    bank: "First Bank",
-    accountNumber: "9876543210",
-  },
-  {
-    id: 3,
-    name: "Mike Williams",
-    bank: "Access Bank",
-    accountNumber: "5555666777",
-  },
-];
-
-// Mock accounts
-const USER_ACCOUNTS = [
-  {
-    accountNumber: "1234567890",
-    balance: 6000.00,
-    type: "Savings"
-  },
-  {
-    accountNumber: "1234567891", 
-    balance: 12500.50,
-    type: "Current"
-  }
-];
+import { useData } from "../../context/DataContext";
 
 const BANKS = [
-  "GTBank", "First Bank", "Access Bank", "UBA", "Zenith Bank", 
-  "Sterling Bank", "Fidelity Bank", "Unity Bank", "Wema Bank"
+"GTBank", "First Bank", "Access Bank", "UBA", "Zenith Bank",
+"Sterling Bank", "Fidelity Bank", "Unity Bank", "Wema Bank"
 ];
 
+
 interface TransferFormData {
-  fromAccount: string;
-  beneficiaryBank: string;
-  beneficiaryAccount: string;
-  beneficiaryName: string;
-  amount: string;
-  narration: string;
+fromAccount: string;
+beneficiaryBank: string;
+beneficiaryAccount: string;
+beneficiaryName: string;
+amount: string;
+narration: string;
 }
 
-interface Layer {
-  FORM: 'form';
-  BENEFICIARIES: 'beneficiaries';
-  CONFIRMATION: 'confirmation';
-  PIN: 'pin';
-  SUCCESS: 'success';
-}
 
-const LAYERS: Layer = {
-  FORM: 'form',
-  BENEFICIARIES: 'beneficiaries', 
-  CONFIRMATION: 'confirmation',
-  PIN: 'pin',
-  SUCCESS: 'success'
+type Layer = 'form' | 'beneficiaries' | 'confirmation' | 'pin' | 'success';
+
+
+const LAYERS = {
+FORM: 'form' as Layer,
+BENEFICIARIES: 'beneficiaries' as Layer,
+CONFIRMATION: 'confirmation' as Layer,
+PIN: 'pin' as Layer,
+SUCCESS: 'success' as Layer
 };
 
 export default function BankTransfer() {
+  const { userInfo, beneficiaries, apiFetch } = useData();
   const [bank, setBank] = useState<any>('');
-  const [currentLayer, setCurrentLayer] = useState<string>(LAYERS.FORM);
+  const [currentLayer, setCurrentLayer] = useState<Layer>(LAYERS.FORM);
   const [formData, setFormData] = useState<TransferFormData>({
     fromAccount: '',
-    beneficiaryBank: '',
-    beneficiaryAccount: '',
-    beneficiaryName: '',
-    amount: '',
-    narration: ''
-  });
+  beneficiaryBank: '',
+  beneficiaryAccount: '',
+  beneficiaryName: '',
+  amount: '',
+  narration: ''
+});
   const [pin, setPin] = useState('');
   const [pinError, setPinError] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
   const { toast } = useToast();
-
-  const selectedAccount = USER_ACCOUNTS.find(acc => acc.accountNumber === formData.fromAccount);
+ 
+  const selectedAccount = userInfo?.account_number === formData.fromAccount
+  ? { accountNumber: userInfo.account_number, balance: userInfo.balance, type: 'Main' }
+  : null;
 
   const handleInputChange = (field: keyof TransferFormData, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
-  const handleSelectBeneficiary = (beneficiary: typeof SAVED_BENEFICIARIES[0]) => {
-    setFormData(prev => ({
-      ...prev,
-      beneficiaryBank: beneficiary.bank,
-      beneficiaryAccount: beneficiary.accountNumber,
-      beneficiaryName: beneficiary.name
-    }));
-    setCurrentLayer(LAYERS.FORM);
-    toast({
-      title: "Beneficiary Selected",
-      description: `${beneficiary.name} has been selected`,
-    });
-  };
+
+ const handleSelectBeneficiary = (beneficiary: typeof beneficiaries[0]) => {
+  setFormData(prev => ({
+    ...prev,
+    beneficiaryBank: beneficiary.bank,
+    beneficiaryAccount: beneficiary.accountNumber,
+    beneficiaryName: beneficiary.name
+  }));
+  setCurrentLayer(LAYERS.FORM);
+  toast({
+    title: "Beneficiary Selected",
+    description: `${beneficiary.name} has been selected`,
+  });
+};
 
   const validateForm = () => {
     const amount = parseFloat(formData.amount);
     const balance = selectedAccount?.balance || 0;
-
+    
     if (!formData.fromAccount) {
       toast({
         title: "Validation Error",
@@ -123,16 +88,16 @@ export default function BankTransfer() {
       });
       return false;
     }
-
+    
     if (!formData.beneficiaryBank || !formData.beneficiaryAccount || !formData.beneficiaryName) {
       toast({
-        title: "Validation Error", 
+        title: "Validation Error",
         description: "Please fill in all beneficiary details",
         variant: "destructive"
       });
       return false;
     }
-
+    
     if (!amount || amount <= 0) {
       toast({
         title: "Validation Error",
@@ -141,7 +106,7 @@ export default function BankTransfer() {
       });
       return false;
     }
-
+    
     if (amount > balance) {
       toast({
         title: "Insufficient Funds",
@@ -150,9 +115,9 @@ export default function BankTransfer() {
       });
       return false;
     }
-
-    return true;
-  };
+  
+  return true;
+};
 
   const handleProceed = () => {
     if (validateForm()) {
@@ -160,18 +125,18 @@ export default function BankTransfer() {
     }
   };
 
-  const handleConfirm = () => {
-    setCurrentLayer(LAYERS.PIN);
-    setPin('');
-    setPinError('');
-  };
+ const handleConfirm = () => {
+  setCurrentLayer(LAYERS.PIN);
+  setPin('');
+  setPinError('');
+};
 
   const handlePinSubmit = async () => {
-    if (pin !== '1234') {
+    if (pin !== userInfo?.pin) {
       setPinError('Incorrect PIN. Please try again.');
       return;
     }
-
+    
     setIsProcessing(true);
     setPinError('');
 

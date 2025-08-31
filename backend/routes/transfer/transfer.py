@@ -16,50 +16,66 @@ def transfer():
     beneficiary_bank = data.get('beneficiaryBank')
     beneficiary_account = data.get('beneficiaryAccount')
     beneficiary_name = data.get('beneficiaryName')
-    amount = float(data.get('amount'))
     narration = data.get('narration')
     pin = data.get('pin')
+
+    # Ensure amount is valid
+    try:
+        amount = float(data.get('amount'))
+        if amount <= 0:
+            return jsonify({"error": "Transfer amount must be greater than zero"}), 400
+    except (TypeError, ValueError):
+        return jsonify({"error": "Invalid transfer amount"}), 400
+
+    # Prevent self-transfer
+    if from_account == beneficiary_account:
+        return jsonify({"error": "You cannot transfer to the same account"}), 400
 
     # Find sender
     sender = db.users.find_one({'account_number': from_account})
     if not sender:
         return jsonify({"error": "Contact your Bank, there seems to be a problem with your account"}), 404
 
-    if sender['pin'] != pin:
+    # ✅ Normalize PIN comparison
+    if str(sender['pin']) != str(pin):
         return jsonify({"error": "Invalid pin"}), 401
 
+    # Check balance
     if sender['balance'] < amount:
         return jsonify({"error": "Oops! Insufficient balance"}), 400
 
     # Deduct from sender
-    db.users.update_one({'account_number': from_account}, {'$inc': {'balance': -amount}})
+    db.users.update_one(
+        {'account_number': from_account},
+        {'$inc': {'balance': -amount}}
+    )
 
     # Debit transaction for sender
     sender_transaction = {
-        'user_id': sender_id,   # ✅ link to sender
+        'user_id': sender_id,
         'from_account': from_account,
         'beneficiary_bank': beneficiary_bank,
         'beneficiary_account': beneficiary_account,
         'beneficiary_name': beneficiary_name,
         'amount': amount,
         'narration': narration,
-        'timestamp': datetime.now(),   # ✅ stored as datetime
+        'timestamp': datetime.now(),
         'type': 'debit'
     }
     db.transactions.insert_one(sender_transaction)
 
-    # Expense for sender
+    # Expense record for sender
     expense = {
         'user_id': sender_id,
         'account_number': from_account,
         'amount': amount,
         'narration': narration,
         'category': 'Transfer',
-        'timestamp': datetime.now(),   # ✅ stored as datetime
+        'timestamp': datetime.now(),
     }
     db.expenses.insert_one(expense)
 
-    # Credit transaction for beneficiary (if they exist)
+    # Credit transaction for beneficiary (if they exist in our bank)
     beneficiary = db.users.find_one({'account_number': beneficiary_account})
     if beneficiary:
         db.users.update_one(
@@ -70,17 +86,18 @@ def transfer():
         beneficiary_transaction = {
             'user_id': str(beneficiary['_id']),
             'from_account': beneficiary_account,
-            'beneficiary_bank': '',
+            'beneficiary_bank': '',   # since it’s internal
             'beneficiary_account': from_account,
             'beneficiary_name': sender['name'],
             'amount': amount,
             'narration': narration,
-            'timestamp': datetime.now(),   # ✅ stored as datetime
+            'timestamp': datetime.now(),
             'type': 'credit'
         }
         db.transactions.insert_one(beneficiary_transaction)
 
     return jsonify({"message": "Transfer successful"}), 200
+
 
 
 # ----------------- Transaction Summary -----------------

@@ -81,6 +81,7 @@ export const DataProvider = ({ children }) => {
       status: data.status || "active",
     });
 
+    console.log("Profile saved to context:", data);
     setTransactions(data.transactions || []);
     setBeneficiaries(data.beneficiaries || []);
     await fetchTransactionSummary();
