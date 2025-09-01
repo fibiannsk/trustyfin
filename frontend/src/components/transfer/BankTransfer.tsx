@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import Lottie from "lottie-react";
+import successAnim from "../../assets/Success.json";
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
@@ -8,6 +10,7 @@ import { Textarea } from '../ui/textarea';
 import { useToast } from '../../hooks/use-toast';
 import { ArrowLeft, CreditCard, Lock, Receipt, X, Check, AlertTriangle } from 'lucide-react';
 import { useData } from "../../context/DataContext";
+import { useNavigate } from 'react-router-dom';
 
 const BANKS = [
 "GTBank", "First Bank", "Access Bank", "UBA", "Zenith Bank",
@@ -52,6 +55,11 @@ export default function BankTransfer() {
   const [pinError, setPinError] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
   const { toast } = useToast();
+
+  const navigate = useNavigate();
+    const handleBackClick = () => {
+      navigate('/user');
+    };
  
   const selectedAccount = userInfo?.account_number === formData.fromAccount
   ? { accountNumber: userInfo.account_number, balance: userInfo.balance, type: 'Main' }
@@ -107,7 +115,7 @@ export default function BankTransfer() {
       return false;
     }
     
-    if (amount > balance) {
+    if (amount > (userInfo?.balance || 0)) {
       toast({
         title: "Insufficient Funds",
         description: "Transfer amount exceeds available balance",
@@ -140,17 +148,40 @@ export default function BankTransfer() {
     setIsProcessing(true);
     setPinError('');
 
-    // Simulate processing delay
-    setTimeout(() => {
-      setIsProcessing(false);
-      setCurrentLayer(LAYERS.SUCCESS);
-      toast({
-        title: "Transfer Successful!",
-        description: `$${formData.amount} sent to ${formData.beneficiaryName}`,
-        variant: "default"
-      });
-    }, 2000);
-  };
+    try {
+      const response = await apiFetch("http://localhost:5000/transfer/", {
+        method: "POST",
+        body: JSON.stringify({
+          fromAccount: formData.fromAccount,
+          beneficiaryBank: formData.beneficiaryBank,
+          beneficiaryAccount: formData.beneficiaryAccount,
+          beneficiaryName: formData.beneficiaryName,
+          amount: formData.amount,
+          narration: formData.narration,
+          pin: pin
+        })
+    });
+
+    if (response?.error) {
+      setPinError(response.error || "Transfer failed. Try again.");
+      return;
+    }
+
+
+    // ✅ Success
+    toast({
+      title: "Transfer Successful!",
+      description: `${formData.amount} sent to ${formData.beneficiaryName}`,
+    });
+
+    setCurrentLayer(LAYERS.SUCCESS);
+  } catch (err) {
+    // apiFetch already showed toast, just update UI
+    setPinError("Transfer failed. Please try again.");
+  } finally {
+    setIsProcessing(false);
+  }
+};
 
   const handlePrintReceipt = () => {
     const receiptWindow = window.open('', '_blank');
@@ -209,8 +240,17 @@ export default function BankTransfer() {
   // Layer 1: Transfer Form
   if (currentLayer === LAYERS.FORM) {
     return (
-      <div className="min-h-screen bg-slate-900 py-8 px-4 flex justify-center items-start">
-        <div className="w-full max-w-lg bg-slate-700 p-6 rounded-xl shadow-lg">
+      <div className="relative">
+              {/* Back Button Overlay */}
+              <button
+                onClick={handleBackClick}
+                className="absolute top-4 left-4 z-50 text-gray-500 hover:text-blue-600 transition-colors"
+                aria-label="Go back to dashboard"
+            >
+              <ArrowLeft size={24} />
+            </button>
+      <div className="min-h-screen bg-gradient-to-br from-white via-gray-600 to-red-400 py-8 px-4 flex justify-center items-start">
+        <div className="w-full max-w-lg bg-card p-6 rounded-2xl shadow-lg border border-border">
           <Card className="shadow-elevated bg-gradient-card">
             <CardHeader className="text-center">
               <CardTitle className="flex items-center justify-center gap-2 text-2xl">
@@ -229,32 +269,48 @@ export default function BankTransfer() {
                     <SelectValue placeholder="Select your account" />
                   </SelectTrigger>
                   <SelectContent>
-                    {USER_ACCOUNTS.map((account) => (
-                      <SelectItem key={account.accountNumber} value={account.accountNumber}>
-                        {account.accountNumber} ({account.type}) - ₦{account.balance.toLocaleString()}
-                      </SelectItem>
-                    ))}
+                    <SelectItem
+                      key={userInfo?.account_number}
+                      value={userInfo?.account_number || ""}
+                    >
+                      {userInfo?.account_number} – ${Number(userInfo?.balance || 0).toLocaleString()}
+                    </SelectItem>
                   </SelectContent>
                 </Select>
-                {selectedAccount && (
+                {userInfo && (
                   <p className="text-sm text-muted-foreground">
-                    Available Balance: ${selectedAccount.balance.toLocaleString()}
+                    Available Balance: ${Number(userInfo.balance || 0).toLocaleString()}
                   </p>
                 )}
               </div>
 
               <div className="space-y-2">
                 <Label htmlFor="beneficiaryBank">Beneficiary Bank</Label>
-                <Select value={formData.beneficiaryBank} onValueChange={(value) => handleInputChange('beneficiaryBank', value)}>
+                <Select 
+                  onValueChange={(value) => {
+                     if (value === "trustyfin") {
+                      handleInputChange("beneficiaryBank", "Trustyfin Bank");
+                     } else {
+                      handleInputChange("beneficiaryBank", ""); // reset until user types
+                     }
+                    }}>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select bank" />
+                    <SelectValue placeholder="Select bank option" />
                   </SelectTrigger>
-                  <Input
-                    type="text"
-                    placeholder="Enter bank name"
-                    value={bank}
-                    onChange={(e) => setBank(e.target.value)}
-                   />
+                  <SelectContent>
+                    <SelectItem value="trustyfin">Trustyfin Bank</SelectItem>
+                    <SelectItem value="others">Others</SelectItem>
+                  </SelectContent>
+                  {formData.beneficiaryBank !== "Trustyfin Bank" && (
+                    <Input
+                      type="text"
+                      placeholder="Enter bank name"
+                      value={formData.beneficiaryBank}
+                      onChange={(e) => 
+                        setFormData((prev) => ({ ...prev, beneficiaryBank: e.target.value }))
+                      }
+                    />
+                )}
                 </Select>
               </div>
 
@@ -316,14 +372,15 @@ export default function BankTransfer() {
               <Button 
                 onClick={handleProceed}
                 className="w-full"
-                variant="banking"
-                size="xl"
+                variant="destructive"
+                size="sm"
               >
                 Proceed
               </Button>
             </CardContent>
           </Card>
         </div>
+      </div>
       </div>
     );
   }
@@ -338,7 +395,11 @@ export default function BankTransfer() {
               <div className="flex items-center justify-between">
                 <div>
                   <CardTitle>Saved Beneficiaries</CardTitle>
-                  <CardDescription>Select a beneficiary from your saved list</CardDescription>
+                  <CardDescription>
+                    {beneficiaries && beneficiaries.length > 0
+                      ? "Select a beneficiary from your saved list"
+                      : "You don’t have any saved beneficiaries yet"}
+                  </CardDescription>
                 </div>
                 <Button
                   variant="ghost"
@@ -350,7 +411,8 @@ export default function BankTransfer() {
               </div>
             </CardHeader>
             <CardContent className="space-y-3">
-              {SAVED_BENEFICIARIES.map((beneficiary) => (
+              {beneficiaries && beneficiaries.length > 0 ? (
+                beneficiaries.map((beneficiary) => (
                 <Card
                   key={beneficiary.id}
                   className="cursor-pointer hover:shadow-md transition-all duration-200 hover:scale-[1.02]"
@@ -369,7 +431,12 @@ export default function BankTransfer() {
                     </div>
                   </CardContent>
                 </Card>
-              ))}
+              ))
+             ) : (
+              <p className="text-center text-sm text-muted-foreground py-6">
+                No beneficiaries saved. Add one during your next transfer.
+              </p>
+            )}
             </CardContent>
           </Card>
         </div>
@@ -409,11 +476,11 @@ export default function BankTransfer() {
               <div className="space-y-4">
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">From Account:</span>
-                  <span className="font-medium">{formData.fromAccount}</span>
+                  <span className="font-medium">{userInfo?.account_number ?? formData.fromAccount}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">Available Balance:</span>
-                  <span className="font-medium">₦{selectedAccount?.balance.toLocaleString()}</span>
+                  <span className="font-medium">${userInfo?.balance?.toLocaleString() ?? "0"}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">Beneficiary Name:</span>
@@ -429,11 +496,11 @@ export default function BankTransfer() {
                 </div>
                 <div className="flex justify-between items-center p-3 bg-primary-light rounded-lg">
                   <span className="text-primary font-semibold">Amount:</span>
-                  <span className="text-xl font-bold text-primary">${formData.amount}</span>
+                  <span className="text-xl font-bold text-primary">${Number(formData.amount).toLocaleString()}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">Narration:</span>
-                  <span className="font-medium">{formData.narration}</span>
+                  <span className="font-medium"> {formData.narration || "—"}</span>
                 </div>
               </div>
 
@@ -447,7 +514,7 @@ export default function BankTransfer() {
                 </Button>
                 <Button
                   onClick={handleConfirm}
-                  variant="banking"
+                  variant="destructive"
                   className="flex-1"
                 >
                   Confirm
@@ -529,7 +596,7 @@ export default function BankTransfer() {
               </Button>
               <Button
                 onClick={handlePinSubmit}
-                variant="banking"
+                variant="destructive"
                 className="flex-1"
                 disabled={pin.length !== 4 || isProcessing}
               >
@@ -548,9 +615,14 @@ export default function BankTransfer() {
       <div className="min-h-screen bg-gradient-to-br from-success-light to-primary-light p-4 flex items-center justify-center">
         <Card className="w-full max-w-md shadow-modal bg-gradient-card animate-fade-in">
           <CardHeader className="text-center">
-            <div className="mx-auto w-16 h-16 bg-success rounded-full flex items-center justify-center mb-4">
-              <Check className="w-8 h-8 text-white" />
-            </div>
+            {/* ✅ Success Animation */}
+            <div className="mx-auto w-24 h-24 mb-4">
+              <Lottie
+                animationData={successAnim}
+                loop={false}
+                autoplay
+            />
+          </div>
             <CardTitle className="text-success">Transfer Successful!</CardTitle>
             <CardDescription>
               Your transaction has been completed successfully
@@ -583,7 +655,7 @@ export default function BankTransfer() {
               </Button>
               <Button
                 onClick={resetTransfer}
-                variant="banking"
+                variant="destructive"
                 className="flex-1"
               >
                 New Transfer
