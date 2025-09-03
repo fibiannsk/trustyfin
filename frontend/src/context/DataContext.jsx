@@ -76,16 +76,16 @@ export const DataProvider = ({ children }) => {
       email: data.email,
       role: "user", // or data.role if backend sends it
       balance: data.balance,
-      account_number: data.account_number,
+      account_number: data.accountNumber,
       pin: data.pin,
       status: data.status || "active",
+      profile_picture: data.profile_picture,
     });
 
     console.log("Profile saved to context:", data);
     setTransactions(data.transactions || []);
     setBeneficiaries(data.beneficiaries || []);
     await fetchTransactionSummary();
-    await fetchProfilePicture();
 
     toast({
       title: "Welcome back",
@@ -120,11 +120,6 @@ export const DataProvider = ({ children }) => {
     }
   };
 
-  const fetchProfilePicture = async () => {
-    if (!token) return; // safeguard
-    const data = await apiFetch("http://localhost:5000/profile/get-picture");
-    if (data) setProfilePictureUrl(data.profile_picture);
-  };
 
   const refetchUserInfo = async () => {
     if (!token) return;
@@ -141,7 +136,6 @@ export const DataProvider = ({ children }) => {
       setUserInfo(null);
       setTransactions([]);
       setBeneficiaries([]);
-      setProfilePictureUrl(null);
       setIncomeSummary({ income: 0, expenses: 0, net_income: 0 });
     }
   }, [token, user?.role]);
@@ -155,10 +149,8 @@ export const DataProvider = ({ children }) => {
         loading,
         incomeSummary,
         summaryLoading,
-        profilePictureUrl,
         apiFetch,
         fetchAllData,
-        fetchProfilePicture,
         fetchTransactionSummary,
         refetchUserInfo,
       }}

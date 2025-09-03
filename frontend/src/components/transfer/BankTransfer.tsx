@@ -269,12 +269,12 @@ export default function BankTransfer() {
                     <SelectValue placeholder="Select your account" />
                   </SelectTrigger>
                   <SelectContent>
+                     {userInfo?.account_number && (
                     <SelectItem
-                      key={userInfo?.account_number}
-                      value={userInfo?.account_number || ""}
+                      value={userInfo?.account_number}
                     >
                       {userInfo?.account_number} – ${Number(userInfo?.balance || 0).toLocaleString()}
-                    </SelectItem>
+                    </SelectItem>)}
                   </SelectContent>
                 </Select>
                 {userInfo && (
@@ -286,12 +286,13 @@ export default function BankTransfer() {
 
               <div className="space-y-2">
                 <Label htmlFor="beneficiaryBank">Beneficiary Bank</Label>
-                <Select 
+                <Select
+                  value={formData.beneficiaryBank === "Trustyfin Bank" ? "trustyfin" : "others"} 
                   onValueChange={(value) => {
                      if (value === "trustyfin") {
                       handleInputChange("beneficiaryBank", "Trustyfin Bank");
                      } else {
-                      handleInputChange("beneficiaryBank", ""); // reset until user types
+                      handleInputChange("beneficiaryBank", "others"); // reset until user types
                      }
                     }}>
                   <SelectTrigger>

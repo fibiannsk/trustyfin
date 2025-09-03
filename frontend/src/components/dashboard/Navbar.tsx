@@ -77,19 +77,17 @@ export const Navbar = () => {
 
           {/* Right side actions */}
           <div className="flex items-center space-x-4">
-            {/* Notifications */}
-            <Button variant="ghost" size="icon" className="relative">
-              <Bell className="h-5 w-5" />
-              <span className="absolute -top-1 -right-1 h-3 w-3 bg-red-500 rounded-full"></span>
-            </Button>
-
             {/* User Menu */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="flex items-center space-x-2 hover:bg-gray-100">
                   <Avatar className="h-8 w-8">
-                    <AvatarImage src="/placeholder.svg" alt="Sarah Johnson" />
-                    <AvatarFallback className="bg-blue-600 text-white">SJ</AvatarFallback>
+                    <AvatarImage
+                      src={`http://localhost:5000/${userInfo?.profile_picture}` || "/default-avatar.png"} 
+                      alt="User profile"
+                      className="h-8 w-8 rounded-full object-cover cursor-pointer"
+                    />
+                    <AvatarFallback className="bg-blue-600 text-white"></AvatarFallback>
                   </Avatar>
                   <span className="hidden md:block text-sm font-medium">{userInfo?.name}</span>
                 </Button>

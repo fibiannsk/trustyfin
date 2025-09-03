@@ -72,24 +72,58 @@ const ChangePasswordForm = () => {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (validateForm()) {
-      // Simulate password change success
+  const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+
+  if (!validateForm()) return;
+
+  try {
+    const token = localStorage.getItem("token"); // adjust if you store JWT differently
+
+    const response = await fetch("http://localhost:5000/profile/change-password", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        old_password: oldPassword,
+        new_password: newPassword,
+      }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
       toast({
-        title: "Password Changed Successfully",
-        description: "Your password has been updated securely.",
-        variant: "default",
+        title: "Error",
+        description: data.error || "Password change failed",
+        variant: "destructive",
       });
-      
-      // Clear form
-      setOldPassword('');
-      setNewPassword('');
-      setConfirmPassword('');
-      setErrors({});
+      return;
     }
-  };
+
+    toast({
+      title: "Password Changed Successfully",
+      description: "Your password has been updated securely.",
+      variant: "default",
+    });
+
+    // Clear form
+    setOldPassword("");
+    setNewPassword("");
+    setConfirmPassword("");
+    setErrors({});
+  } catch (error) {
+    console.error("Password change error:", error);
+    toast({
+      title: "Error",
+      description: "Something went wrong. Please try again later.",
+      variant: "destructive",
+    });
+  }
+};
+
 
   const isFormValid = oldPassword && 
                      newPassword && 
@@ -264,13 +298,14 @@ const ChangePasswordForm = () => {
           {/* Submit Button */}
           <button
             type="submit"
-            disabled={!isFormValid}
+            disabled={!oldPassword || !newPassword || !confirmPassword}
             className={`w-full py-2 rounded-md font-semibold transition-colors duration-300 ease-in-out ${
               isFormValid
-                ? 'bg-banking-red text-banking-red-foreground hover:bg-banking-red-hover'
-                : 'bg-muted text-muted-foreground cursor-not-allowed'
+                ? 'bg-destructive text-destructive-foreground hover:bg-destructive/90'
+                : 'bg-banking-red text-destructive-foreground hover:bg-destructive-hover'
             }`}
           >
+
             Change Password
           </button>
         </form>
