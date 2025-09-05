@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import React, { useEffect } from "react";
 import {
   ChevronLeft,
   ChevronRight,
@@ -10,23 +10,20 @@ import { Button } from "../ui/button";
 import { Navbar } from "../dashboard/Navbar";
 import { useData } from "../../context/DataContext";
 
-const ITEMS_PER_PAGE = 5;
+const ITEMS_PER_PAGE = 10; // 👈 larger limit for full history
 
 const TransactionHistory = () => {
-  const { transactions, loading } = useData();
-  const [currentPage, setCurrentPage] = useState(1);
+  const { transactions, txMeta, txLoading, fetchTransactions } = useData();
 
-  // ✅ derived data
-  const totalPages = Math.ceil((transactions?.length || 0) / ITEMS_PER_PAGE);
-  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const endIndex = startIndex + ITEMS_PER_PAGE;
-  const currentTransactions = useMemo(
-    () => transactions?.slice(startIndex, endIndex) || [],
-    [transactions, startIndex, endIndex]
-  );
+ 
 
-  const formatAmount = (amount: number): string => {
-    const sign = amount >= 0 ? "+" : "";
+  // Load first page on mount
+  useEffect(() => {
+    fetchTransactions(1, ITEMS_PER_PAGE);
+  }, [fetchTransactions]);
+
+  const formatAmount = (amount: number, type: string): string => {
+    const sign = type === "credit" ? "+" : "-";
     return `${sign}$${Math.abs(amount).toLocaleString("en-US", {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
@@ -46,16 +43,14 @@ const TransactionHistory = () => {
     return `${day} ${month} ${year}, ${time}`;
   };
 
-  const goToPreviousPage = () => {
-    setCurrentPage((prev) => Math.max(prev - 1, 1));
-  };
-
-  const goToNextPage = () => {
-    setCurrentPage((prev) => Math.min(prev + 1, totalPages));
+  const goToPage = (page: number) => {
+    if (page >= 1 && page <= (txMeta?.pages || 1)) {
+      fetchTransactions(page, ITEMS_PER_PAGE);
+    }
   };
 
   // 🔄 Loading state
-  if (loading) {
+  if (txLoading) {
     return (
       <div className="min-h-screen bg-background p-4">
         <Navbar />
@@ -99,9 +94,9 @@ const TransactionHistory = () => {
 
         {/* Transaction Cards */}
         <div className="space-y-3 mb-8">
-          {currentTransactions.map((transaction) => (
+          {transactions.map((tx) => (
             <article
-              key={transaction.id}
+              key={tx.transaction_id}
               className="w-full max-w-4xl mx-auto rounded-lg border border-border shadow-sm p-6 bg-card hover:shadow-md transition-shadow duration-200"
             >
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -111,17 +106,17 @@ const TransactionHistory = () => {
                     Amount
                   </label>
                   <div className="flex items-center gap-2">
-                    {transaction.type === "credit" ? (
+                    {tx.type === "credit" ? (
                       <ArrowUpRight className="h-4 w-4 text-credit" />
                     ) : (
                       <ArrowDownRight className="h-4 w-4 text-debit" />
                     )}
                     <span
                       className={`text-lg font-bold ${
-                        transaction.amount >= 0 ? "text-credit" : "text-debit"
+                        tx.type === "credit" ? "text-credit" : "text-debit"
                       }`}
                     >
-                      {formatAmount(transaction.amount)}
+                      {formatAmount(tx.amount, tx.type)}
                     </span>
                   </div>
                 </div>
@@ -132,7 +127,7 @@ const TransactionHistory = () => {
                     Description
                   </label>
                   <p className="text-base font-medium text-card-foreground">
-                    {transaction.description || "—"}
+                    {tx.narration || tx.description || "—"}
                   </p>
                 </div>
 
@@ -142,7 +137,7 @@ const TransactionHistory = () => {
                     Reference
                   </label>
                   <p className="text-base font-mono text-card-foreground bg-muted/30 px-2 py-1 rounded text-sm">
-                    {transaction.reference || "N/A"}
+                    {tx.transaction_id || "N/A"}
                   </p>
                 </div>
 
@@ -152,7 +147,7 @@ const TransactionHistory = () => {
                     Transaction Date
                   </label>
                   <p className="text-base text-card-foreground">
-                    {formatDate(transaction.date)}
+                    {formatDate(tx.timestamp)}
                   </p>
                 </div>
               </div>
@@ -163,17 +158,17 @@ const TransactionHistory = () => {
         {/* Pagination */}
         <div className="flex items-center justify-between bg-card border border-border rounded-lg p-4">
           <div className="text-sm text-muted-foreground">
-            Showing {startIndex + 1} to{" "}
-            {Math.min(endIndex, transactions.length)} of {transactions.length}{" "}
-            transactions
+            Showing {(txMeta.page - 1) * txMeta.limit + 1} to{" "}
+            {Math.min(txMeta.page * txMeta.limit, txMeta.total)} of{" "}
+            {txMeta.total} transactions
           </div>
 
           <div className="flex items-center gap-2">
             <Button
               variant="outline"
               size="sm"
-              onClick={goToPreviousPage}
-              disabled={currentPage === 1}
+              onClick={() => goToPage(txMeta.page - 1)}
+              disabled={txMeta.page <= 1}
               className="flex items-center gap-1"
             >
               <ChevronLeft className="h-4 w-4" />
@@ -181,13 +176,13 @@ const TransactionHistory = () => {
             </Button>
 
             <div className="flex items-center gap-1">
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+              {Array.from({ length: txMeta.pages }, (_, i) => i + 1).map(
                 (page) => (
                   <Button
                     key={page}
-                    variant={currentPage === page ? "default" : "outline"}
+                    variant={txMeta.page === page ? "default" : "outline"}
                     size="sm"
-                    onClick={() => setCurrentPage(page)}
+                    onClick={() => goToPage(page)}
                     className="w-8 h-8 p-0"
                   >
                     {page}
@@ -199,8 +194,8 @@ const TransactionHistory = () => {
             <Button
               variant="outline"
               size="sm"
-              onClick={goToNextPage}
-              disabled={currentPage === totalPages}
+              onClick={() => goToPage(txMeta.page + 1)}
+              disabled={txMeta.page >= txMeta.pages}
               className="flex items-center gap-1"
             >
               Next

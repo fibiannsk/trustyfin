@@ -3,6 +3,7 @@ import Lottie from "lottie-react";
 import successAnim from "../../assets/Success.json";
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
+import { Switch } from "../ui/switch"
 import { Label } from '../ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
@@ -19,7 +20,6 @@ const BANKS = [
 
 
 interface TransferFormData {
-fromAccount: string;
 beneficiaryBank: string;
 beneficiaryAccount: string;
 beneficiaryName: string;
@@ -42,9 +42,10 @@ SUCCESS: 'success' as Layer
 export default function BankTransfer() {
   const { userInfo, beneficiaries, apiFetch } = useData();
   const [bank, setBank] = useState<any>('');
+  const [saveBeneficiary, setSaveBeneficiary] = useState(false);
   const [currentLayer, setCurrentLayer] = useState<Layer>(LAYERS.FORM);
+  const [transactionId, setTransactionId] = useState<string | null>(null);
   const [formData, setFormData] = useState<TransferFormData>({
-    fromAccount: '',
   beneficiaryBank: '',
   beneficiaryAccount: '',
   beneficiaryName: '',
@@ -60,10 +61,15 @@ export default function BankTransfer() {
     const handleBackClick = () => {
       navigate('/user');
     };
- 
-  const selectedAccount = userInfo?.account_number === formData.fromAccount
-  ? { accountNumber: userInfo.account_number, balance: userInfo.balance, type: 'Main' }
+  
+    
+  console.log("User info in BankTransfer:", userInfo?.account_number);
+
+
+  const selectedAccount = userInfo?.account_number 
+  ? { accountNumber: userInfo.account_number, balance: userInfo.balance, type: "Main" }
   : null;
+
 
   const handleInputChange = (field: keyof TransferFormData, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -88,10 +94,10 @@ export default function BankTransfer() {
     const amount = parseFloat(formData.amount);
     const balance = selectedAccount?.balance || 0;
     
-    if (!formData.fromAccount) {
+    if (!userInfo?.account_number) {
       toast({
-        title: "Validation Error",
-        description: "Please select an account",
+        title: "Account Error",
+        description: "Unable to load your account information",
         variant: "destructive"
       });
       return false;
@@ -148,17 +154,24 @@ export default function BankTransfer() {
     setIsProcessing(true);
     setPinError('');
 
+    const fakeTxnId = `TXN${Date.now().toString().slice(-8)}`;
+
     try {
       const response = await apiFetch("http://localhost:5000/transfer/", {
         method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
         body: JSON.stringify({
-          fromAccount: formData.fromAccount,
+          fromAccount: userInfo?.account_number,
           beneficiaryBank: formData.beneficiaryBank,
           beneficiaryAccount: formData.beneficiaryAccount,
           beneficiaryName: formData.beneficiaryName,
           amount: formData.amount,
           narration: formData.narration,
-          pin: pin
+          pin: pin,
+          saveBeneficiary,
+          transactionId: fakeTxnId,
         })
     });
 
@@ -167,6 +180,7 @@ export default function BankTransfer() {
       return;
     }
 
+    setTransactionId(fakeTxnId);
 
     // ✅ Success
     toast({
@@ -207,7 +221,8 @@ export default function BankTransfer() {
               <p>Transaction Date: ${currentDate}</p>
             </div>
             <div class="details">
-              <div class="row"><span class="label">From Account:</span> <span>${formData.fromAccount}</span></div>
+              <div class="row"><span class="label">Transaction ID:</span> <span>${transactionId}</span></div>
+              <div class="row"><span class="label">From Account:</span> <span>${userInfo?.account_number}</span></div>
               <div class="row"><span class="label">To Account:</span> <span>${formData.beneficiaryAccount}</span></div>
               <div class="row"><span class="label">Beneficiary:</span> <span>${formData.beneficiaryName}</span></div>
               <div class="row"><span class="label">Bank:</span> <span>${formData.beneficiaryBank}</span></div>
@@ -224,18 +239,18 @@ export default function BankTransfer() {
   };
 
   const resetTransfer = () => {
-    setCurrentLayer(LAYERS.FORM);
-    setFormData({
-      fromAccount: '',
-      beneficiaryBank: '',
-      beneficiaryAccount: '',
-      beneficiaryName: '',
-      amount: '',
-      narration: ''
-    });
-    setPin('');
-    setPinError('');
-  };
+  setCurrentLayer(LAYERS.FORM);
+  setFormData({
+    beneficiaryBank: '',
+    beneficiaryAccount: '',
+    beneficiaryName: '',
+    amount: '',
+    narration: ''
+  });
+  setPin('');
+  setPinError('');
+};
+
 
   // Layer 1: Transfer Form
   if (currentLayer === LAYERS.FORM) {
@@ -264,19 +279,14 @@ export default function BankTransfer() {
             <CardContent className="space-y-6">
               <div className="space-y-2">
                 <Label htmlFor="fromAccount">From Account</Label>
-                <Select value={formData.fromAccount} onValueChange={(value) => handleInputChange('fromAccount', value)}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select your account" />
-                  </SelectTrigger>
-                  <SelectContent>
-                     {userInfo?.account_number && (
-                    <SelectItem
-                      value={userInfo?.account_number}
-                    >
-                      {userInfo?.account_number} – ${Number(userInfo?.balance || 0).toLocaleString()}
-                    </SelectItem>)}
-                  </SelectContent>
-                </Select>
+                <Input
+                  id="fromAccount"
+                  value={userInfo?.account_number || ''}
+                  readOnly
+                  disabled
+                  placeholder="Loading account..."
+                  className="font-mono bg-gray-50 cursor-not-allowed"
+                />
                 {userInfo && (
                   <p className="text-sm text-muted-foreground">
                     Available Balance: ${Number(userInfo.balance || 0).toLocaleString()}
@@ -302,7 +312,8 @@ export default function BankTransfer() {
                     <SelectItem value="trustyfin">Trustyfin Bank</SelectItem>
                     <SelectItem value="others">Others</SelectItem>
                   </SelectContent>
-                  {formData.beneficiaryBank !== "Trustyfin Bank" && (
+                </Select>
+                {formData.beneficiaryBank !== "Trustyfin Bank" && (
                     <Input
                       type="text"
                       placeholder="Enter bank name"
@@ -312,12 +323,23 @@ export default function BankTransfer() {
                       }
                     />
                 )}
-                </Select>
               </div>
 
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <Label htmlFor="savedBeneficiaries">Saved Beneficiaries</Label>
+                  <div className="flex items-center gap-2">
+                    <Switch
+                      id="savedBeneficiaries"
+                      checked={saveBeneficiary}
+                      onCheckedChange={setSaveBeneficiary}
+                    />
+                    <Label
+                      htmlFor="savedBeneficiaries"
+                      className="cursor-pointer select-none"
+                    >
+                      Save Beneficiary
+                    </Label>
+                  </div>
                   <button
                     type="button"
                     onClick={() => setCurrentLayer(LAYERS.BENEFICIARIES)}
@@ -641,7 +663,7 @@ export default function BankTransfer() {
               </div>
               <div className="flex justify-between">
                 <span className="text-sm text-muted-foreground">Transaction ID:</span>
-                <span className="font-mono text-sm">TXN{Date.now().toString().slice(-8)}</span>
+                <span className="font-mono text-sm">{transactionId}</span>
               </div>
             </div>
 

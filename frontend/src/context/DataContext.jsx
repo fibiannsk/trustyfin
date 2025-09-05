@@ -11,9 +11,10 @@ export const DataProvider = ({ children }) => {
 
   const [userInfo, setUserInfo] = useState(null);
   const [transactions, setTransactions] = useState([]);
+  const [txMeta, setTxMeta] = useState({ page: 1, limit: 10, total: 0, pages: 1 });
+  const [txLoading, setTxLoading] = useState(false);
   const [beneficiaries, setBeneficiaries] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [profilePictureUrl, setProfilePictureUrl] = useState(null);
   const [incomeSummary, setIncomeSummary] = useState({
     income: 0,
     expenses: 0,
@@ -76,16 +77,16 @@ export const DataProvider = ({ children }) => {
       email: data.email,
       role: "user", // or data.role if backend sends it
       balance: data.balance,
-      account_number: data.accountNumber,
+      account_number: data.account_number,
       pin: data.pin,
       status: data.status || "active",
       profile_picture: data.profile_picture,
     });
 
     console.log("Profile saved to context:", data);
-    setTransactions(data.transactions || []);
-    setBeneficiaries(data.beneficiaries || []);
+    await fetchTransactions(1, 5);
     await fetchTransactionSummary();
+    await fetchBeneficiaries();
 
     toast({
       title: "Welcome back",
@@ -120,6 +121,54 @@ export const DataProvider = ({ children }) => {
     }
   };
 
+  // ✅ Fetch paginated transactions from backend (/transfer/transactions)
+// Supports optional filters: type, start, end
+const fetchTransactions = React.useCallback(
+  async (page = 1, limit = 5, { type = null, start = null, end = null } = {}) => {
+    if (!token) return null; // safeguard
+
+    setTxLoading(true);
+    try {
+      let url = `http://localhost:5000/transfer/transactions?page=${page}&limit=${limit}`;
+      if (type) url += `&type=${encodeURIComponent(type)}`; // "debit" | "credit"
+      if (start) url += `&start=${encodeURIComponent(start)}`; // YYYY-MM-DD
+      if (end) url += `&end=${encodeURIComponent(end)}`; // YYYY-MM-DD
+
+      const res = await apiFetch(url);
+      if (!res) return null;
+
+      // ⬇️ Save list + pagination metadata in context
+      setTransactions(res.transactions || []);
+      setTxMeta({
+        page: res.page || page,
+        limit: res.limit || limit,
+        total: res.total || 0,
+        pages: res.pages || 1,
+      });
+
+      return res; // so callers can use metadata directly
+    } catch (error) {
+      console.error("Error fetching transactions:", error);
+      return null;
+    } finally {
+      setTxLoading(false);
+    }
+  },
+  [token]
+);
+
+
+  const fetchBeneficiaries = async () => {
+    if (!token) return; // safeguard
+  try {
+    const res = await apiFetch("http://localhost:5000/transfer/beneficiaries");
+    if (res) {
+      setBeneficiaries(res);
+    }
+  } catch (err) {
+    console.error("Failed to load beneficiaries:", err);
+  }
+};
 
   const refetchUserInfo = async () => {
     if (!token) return;
@@ -135,6 +184,7 @@ export const DataProvider = ({ children }) => {
       // Clear old state if token disappears
       setUserInfo(null);
       setTransactions([]);
+      setTxMeta({ page: 1, limit: 10, total: 0, pages: 1 });
       setBeneficiaries([]);
       setIncomeSummary({ income: 0, expenses: 0, net_income: 0 });
     }
@@ -145,13 +195,17 @@ export const DataProvider = ({ children }) => {
       value={{
         userInfo,
         transactions,
+        txMeta,
         beneficiaries,
         loading,
+        txLoading,
         incomeSummary,
         summaryLoading,
         apiFetch,
         fetchAllData,
+        fetchTransactions,
         fetchTransactionSummary,
+        fetchBeneficiaries,
         refetchUserInfo,
       }}
     >

@@ -54,7 +54,7 @@ def get_user_profile():
             "email": user.get("email"),
             "balance": user.get("balance", 0),
             "pin": user.get("pin"),
-            "account_number": user.get("account_number") or user.get("accountNumber"),
+            "account_number": user.get("accountNumber"),
             "profile_picture": user.get("profile_picture"),
         }), 200
 

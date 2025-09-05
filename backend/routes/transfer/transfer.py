@@ -11,6 +11,7 @@ transfer_blueprint = Blueprint('transfer', __name__)
 def transfer():
     sender_id = get_jwt_identity()
     data = request.get_json()
+    print("📩 Full Incoming Data:", data)
 
     from_account = data.get('fromAccount')
     beneficiary_bank = data.get('beneficiaryBank')
@@ -18,6 +19,13 @@ def transfer():
     beneficiary_name = data.get('beneficiaryName')
     narration = data.get('narration')
     pin = data.get('pin')
+    save_beneficiary = data.get('saveBeneficiary', False)
+    transaction_id = data.get('transactionId')
+    
+    print("🔎 Incoming transaction_id:", transaction_id)  # Debug log
+
+    if not transaction_id:
+        return jsonify({"error": "Transaction ID missing"}), 400
 
     # Validate amount
     try:
@@ -55,10 +63,10 @@ def transfer():
     )
 
 
-
     # Record debit transaction
     sender_transaction = {
         'user_id': sender_id,
+        "transaction_id": transaction_id,
         'from_account': from_account,
         'beneficiary_bank': beneficiary_bank,
         'beneficiary_account': beneficiary_account,
@@ -81,32 +89,31 @@ def transfer():
     }
     db.expenses.insert_one(expense)
 
-    # 🔑 Internal Transfer: Trustyfin Bank
-    if beneficiary_bank.lower() == "trustyfin bank":
-        beneficiary = db.users.find_one({'accountNumber': beneficiary_account})
-        if beneficiary:
-            new_balance = int(beneficiary['balance']) + int(amount)
-            
-            db.users.update_one(
-                {"accountNumber": beneficiary_account},
-                {"$set": {"balance": new_balance}}
-            )
+    # ----------------- HANDLE CREDIT (if internal) -----------------
+    recipient = db.users.find_one({'accountNumber': beneficiary_account})
+    if recipient:  # ✅ only if beneficiary exists in your system
+        recipient_new_balance = float(recipient['balance']) + amount
+        db.users.update_one(
+            {"accountNumber": beneficiary_account},
+            {"$set": {"balance": recipient_new_balance}}
+        )
 
-            beneficiary_transaction = {
-                'user_id': str(beneficiary['_id']),
-                'from_account': beneficiary_account,
-                'beneficiary_bank': '',
-                'beneficiary_account': from_account,
-                'beneficiary_name': sender['name'],
-                'amount': amount,
-                'narration': narration,
-                'timestamp': datetime.now(),
-                'type': 'credit'
-            }
-            db.transactions.insert_one(beneficiary_transaction)
+        credit_transaction = {
+            'user_id': str(recipient['_id']),  # recipient's user ID
+            "transaction_id": transaction_id,
+            'from_account': from_account,
+            'beneficiary_bank': beneficiary_bank,
+            'beneficiary_account': beneficiary_account,
+            'beneficiary_name': beneficiary_name,
+            'amount': amount,
+            'narration': narration,
+            'timestamp': datetime.now(),
+            'type': 'credit'
+        }
+        db.transactions.insert_one(credit_transaction)
 
-    # 🔑 External Transfer: Save Beneficiary if not Trustyfin
-    else:
+    # ✅ Save Beneficiary (for both internal & external transfers)
+    if save_beneficiary:
         db.beneficiaries.update_one(
             {
                 "user_id": sender_id,
@@ -124,7 +131,10 @@ def transfer():
             upsert=True
         )
 
-    return jsonify({"message": "Transfer successful"}), 200
+    return jsonify({
+        "message": "Transfer successful",
+         "transaction_id": transaction_id
+        }), 200
 
 
 
@@ -173,4 +183,69 @@ def get_transaction_summary():
         "net_income": net_income,
         "transactions": formatted_transactions,
         "beneficiaries": list(beneficiaries.values())  # ✅ unique list
+    }), 200
+
+@transfer_blueprint.route("/beneficiaries", methods=['GET'])
+@jwt_required()
+def get_beneficiaries():
+    user_id = get_jwt_identity()
+
+    beneficiaries = list(db.beneficiaries.find({"user_id": user_id}))
+    for b in beneficiaries:
+        b["_id"] = str(b["_id"])  # convert ObjectId to string
+    return jsonify(beneficiaries), 200
+
+# ----------------- Get User Transactions (Paginated) -----------------
+@transfer_blueprint.route("/transactions", methods=["GET"])
+@jwt_required()
+def get_transactions():
+    user_id = get_jwt_identity()
+
+    # Optional filters
+    txn_type = request.args.get("type")  # "debit" | "credit" | None
+    page = int(request.args.get("page", 1))       # default: 1
+    limit = int(request.args.get("limit", 10))    # default: 10
+
+    if page < 1: 
+        page = 1
+    if limit < 1: 
+        limit = 10
+
+    query = {"user_id": user_id}
+    if txn_type in ["debit", "credit"]:
+        query["type"] = txn_type
+
+    # Total count for pagination
+    total = db.transactions.count_documents(query)
+
+    # Fetch transactions with skip & limit
+    transactions = (
+        db.transactions.find(query)
+        .sort("timestamp", -1)
+        .skip((page - 1) * limit)
+        .limit(limit)
+    )
+
+    # Format response
+    formatted = []
+    for t in transactions:
+        formatted.append({
+            "_id": str(t["_id"]),
+            "transaction_id": t.get("transaction_id"),
+            "from_account": t.get("from_account"),
+            "beneficiary_bank": t.get("beneficiary_bank"),
+            "beneficiary_account": t.get("beneficiary_account"),
+            "beneficiary_name": t.get("beneficiary_name"),
+            "amount": t.get("amount"),
+            "narration": t.get("narration"),
+            "type": t.get("type"),
+            "timestamp": t.get("timestamp").isoformat() if "timestamp" in t else None
+        })
+
+    return jsonify({
+        "page": page,
+        "limit": limit,
+        "total": total,
+        "pages": (total + limit - 1) // limit,  # total pages (ceiling division)
+        "transactions": formatted
     }), 200
