@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Task Tamer Pro</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+  <div class="app">
+    <header class="header">
+      <h1>Task Tamer Pro</h1>
+      <p>Organize your life, one task at a time</p>
+    </header>
+
+    <main class="card">
+      <form id="todo-form" class="todo-input">
+        <input 
+          type="text" 
+          id="todo-input" 
+          placeholder="Add a new task..." 
+          required 
+        />
+        <button type="submit" id="add-btn">
+          <i data-lucide="plus"></i>
+        </button>
+      </form>
+
+      <div id="todo-list-container">
+        <div id="empty-state" class="empty">
+          <div class="emoji">📝</div>
+          <p>No tasks yet</p>
+          <small>Add a task above to get started</small>
+        </div>
+        <div id="todo-stats" class="stats"></div>
+        <ul id="todo-list"></ul>
+      </div>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
