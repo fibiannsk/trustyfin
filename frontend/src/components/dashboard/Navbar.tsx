@@ -1,4 +1,4 @@
-
+import { useState } from "react";
 import { Button } from "../ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Bell, Settings, LogOut, Menu } from "lucide-react";
@@ -13,6 +13,8 @@ import { useNavigate } from 'react-router-dom';
 import logotrustyfin from '../../assets/logotrustyfin.png';
 import { useAuth } from '../../context/AuthContext';
 import { useData } from "../../context/DataContext";
+import BankUserSidebar from "./BankUserSidebar";
+
 
 
 
@@ -21,6 +23,7 @@ export const Navbar = () => {
   const { logout } = useAuth();
   const { userInfo } = useData();
   const navigate = useNavigate();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
    const dashboardmv = () => {
     navigate('/user');
@@ -38,6 +41,7 @@ export const Navbar = () => {
     navigate('/user/transactions');
  };
   return (
+    <>
     <nav className="bg-white border-b border-gray-200 shadow-sm">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
@@ -117,12 +121,27 @@ export const Navbar = () => {
             </DropdownMenu>
 
             {/* Mobile menu button */}
-            <Button variant="ghost" size="icon" className="md:hidden">
+            <Button variant="ghost" size="icon" className="md:hidden" onClick={() => setSidebarOpen(true)}>
               <Menu className="h-5 w-5" />
             </Button>
           </div>
         </div>
       </div>
     </nav>
+
+     {/* Mobile Sidebar Overlay */}
+     {sidebarOpen && (
+      <div className="fixed inset-0 z-50 flex">
+        {/* Sidebar */}
+        <BankUserSidebar onClose={() => setSidebarOpen(false)} />
+
+         {/* Backdrop */}
+         <div
+            className="flex-1 bg-black bg-opacity-50"
+            onClick={() => setSidebarOpen(false)}
+          />
+      </div>
+    )}
+  </>
   );
 };
