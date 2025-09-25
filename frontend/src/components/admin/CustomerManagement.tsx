@@ -4,6 +4,7 @@ import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Badge } from "../ui/badge";
 import { Search, Plus, Edit, Eye, Ban } from "lucide-react";
+import BlockToggleButton from "./button"; // adjust path
 import { useNavigate } from "react-router-dom";
 import { useToast } from '../../hooks/use-toast';
 import { useAuth } from '../../context/AuthContext';
@@ -81,6 +82,15 @@ export function CustomerManagement() {
     navigate(`/admin/edit-account/${accountNumber}`);
   };
 
+  const handleStatusChange = (userId, newBlocked) => {
+    setCustomers((prev) =>
+      prev.map((c) =>
+        c.id === userId
+          ? { ...c, blocked: newBlocked, status: newBlocked ? "Blocked" : "Active" }
+          : c
+      )
+    );
+  };
   // Filter by name or email only
   const filteredCustomers = customers.filter(
     (c) =>
@@ -224,9 +234,12 @@ export function CustomerManagement() {
                               >
                                 <Edit className="w-4 h-4" />
                               </Button>
-                              <Button size="sm" variant="ghost">
-                                <Ban className="w-4 h-4" />
-                              </Button>
+                              {/* ⭐ Replace Ban with BlockToggleButton */}
+                              <BlockToggleButton
+                                userId={customer.id}
+                                initialBlocked={customer.blocked}
+                                onStatusChange={handleStatusChange}
+                              />
                             </div>
                           </td>
                         </tr>

@@ -46,6 +46,17 @@ export const DataProvider = ({ children }) => {
         return null;
       }
 
+      if (res.status === 403) {
+        toast({
+          title: "Account Blocked",
+          description: "Your account is blocked. Please contact support.",
+          variant: "destructive",
+        });
+        setUserInfo((prev) => ({ ...prev, blocked: true }));
+        //logout();
+      }
+
+
       if (!res.ok) {
         const errText = await res.text();
         throw new Error(errText || `Request failed: ${res.statusText}`);
@@ -81,6 +92,7 @@ export const DataProvider = ({ children }) => {
       pin: data.pin,
       status: data.status || "active",
       profile_picture: data.profile_picture,
+      blocked: data.blocked,
     });
 
     console.log("Profile saved to context:", data);
@@ -173,7 +185,7 @@ const fetchTransactions = React.useCallback(
   const refetchUserInfo = async () => {
     if (!token) return;
     const data = await apiFetch("http://localhost:5000/profile/");
-    if (data) setUserInfo((prev) => ({ ...prev, ...data }));
+    if (data) setUserInfo((prev) => ({ ...prev, ...data, blocked: data.blocked }));
   };
 
   // 🛑 Effect only runs when token exists

@@ -1,0 +1,5377 @@
+/* main */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 0px;
+gap: 128px;
+
+position: absolute;
+width: 1440px;
+height: 5076px;
+left: calc(50% - 1440px/2);
+top: 32px;
+
+
+
+/* navbar */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: center;
+padding: 0px;
+gap: 258px;
+
+width: 1240px;
+height: 48px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* logo */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 0px;
+gap: 12px;
+
+margin: 0 auto;
+width: 140px;
+height: 24px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Exclude */
+
+width: 24px;
+height: 24px;
+
+background: #2BB32A;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* GreenBank */
+
+width: 104px;
+height: 24px;
+
+font-family: 'M PLUS 1';
+font-style: normal;
+font-weight: 700;
+font-size: 20px;
+line-height: 24px;
+/* identical to box height, or 120% */
+letter-spacing: -0.03em;
+
+color: #FFFFFF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* menu */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 0px;
+gap: 32px;
+
+margin: 0 auto;
+width: 462px;
+height: 23px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Why Us */
+
+width: 58px;
+height: 23px;
+
+font-family: 'M PLUS 1';
+font-style: normal;
+font-weight: 500;
+font-size: 16px;
+line-height: 23px;
+
+color: #FFFFFF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Services */
+
+width: 65px;
+height: 23px;
+
+font-family: 'M PLUS 1';
+font-style: normal;
+font-weight: 500;
+font-size: 16px;
+line-height: 23px;
+
+color: #FFFFFF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Our Process */
+
+width: 94px;
+height: 23px;
+
+font-family: 'M PLUS 1';
+font-style: normal;
+font-weight: 500;
+font-size: 16px;
+line-height: 23px;
+
+color: #FFFFFF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+
+/* Payments */
+
+width: 76px;
+height: 23px;
+
+font-family: 'M PLUS 1';
+font-style: normal;
+font-weight: 500;
+font-size: 16px;
+line-height: 23px;
+
+color: #FFFFFF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 3;
+flex-grow: 0;
+
+
+/* FAQs */
+
+width: 41px;
+height: 23px;
+
+font-family: 'M PLUS 1';
+font-style: normal;
+font-weight: 500;
+font-size: 16px;
+line-height: 23px;
+
+color: #FFFFFF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 4;
+flex-grow: 0;
+
+
+/* Frame 7 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 12px 32px;
+gap: 10px;
+
+margin: 0 auto;
+width: 128px;
+height: 48px;
+
+border: 2px solid #2BB32A;
+border-radius: 64px;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+
+/* Contact */
+
+width: 64px;
+height: 24px;
+
+font-family: 'M PLUS 1';
+font-style: normal;
+font-weight: 700;
+font-size: 16px;
+line-height: 24px;
+/* identical to box height, or 150% */
+
+color: #2BB32A;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* banner */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: flex-start;
+padding: 0px;
+gap: 32px;
+
+width: 1240px;
+height: 539px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 31px;
+isolation: isolate;
+
+width: 604px;
+height: 405px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Discover the Perfect Credit Card for You */
+
+width: 604px;
+height: 128px;
+
+font-family: 'M PLUS 1';
+font-style: normal;
+font-weight: 700;
+font-size: 56px;
+line-height: 64px;
+/* or 114% */
+letter-spacing: -0.025em;
+
+color: #FFFFFF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+z-index: 0;
+
+
+/* Discover the power of our secure and rewarding credit cards. Explore our range of credit cards and take control of your finances today. */
+
+width: 498px;
+height: 72px;
+
+font-family: 'M PLUS 1';
+font-style: normal;
+font-weight: 400;
+font-size: 18px;
+line-height: 24px;
+/* or 133% */
+
+color: #ADB2B1;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+z-index: 1;
+
+
+/* Frame 23 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 16px 32px;
+gap: 16px;
+
+width: 195.5px;
+height: 56px;
+
+background: #2BB32A;
+border-radius: 64px;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+z-index: 2;
+
+
+/* Get Started */
+
+width: 93px;
+height: 24px;
+
+font-family: 'M PLUS 1';
+font-style: normal;
+font-weight: 500;
+font-size: 16px;
+line-height: 24px;
+/* identical to box height, or 150% */
+
+color: #FFFFFF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Vector 7 */
+
+width: 22.5px;
+height: 16.5px;
+
+border: 2px solid #EFF8F0;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame 21 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 16px;
+
+width: 313px;
+height: 56px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 3;
+flex-grow: 0;
+z-index: 3;
+
+
+/* Frame 19 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: flex-end;
+padding: 0px;
+
+width: 120px;
+height: 48px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Ellipse */
+
+width: 48px;
+height: 48px;
+
+background: url(.png);
+border: 2px solid #FFFFFF;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+margin: 0px -12px;
+
+
+/* Ellipse */
+
+width: 48px;
+height: 48px;
+
+background: url(.png);
+border: 2px solid #FFFFFF;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+margin: 0px -12px;
+
+
+/* Ellipse */
+
+width: 48px;
+height: 48px;
+
+background: url(.png);
+border: 2px solid #FFFFFF;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+
+/* Frame 20 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+
+width: 177px;
+height: 56px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* 10.2k+ */
+
+width: 56px;
+height: 24px;
+
+font-family: 'M PLUS 1';
+font-style: normal;
+font-weight: 700;
+font-size: 16px;
+line-height: 24px;
+/* identical to box height, or 150% */
+
+color: #FFFFFF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Active users around the wordls */
+
+width: 177px;
+height: 32px;
+
+font-family: 'M PLUS 1';
+font-style: normal;
+font-weight: 400;
+font-size: 12px;
+line-height: 16px;
+/* or 133% */
+
+color: #ADB2B1;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Vector 4 */
+
+position: absolute;
+width: 359px;
+height: 100px;
+left: -10px;
+top: 62px;
+
+border: 2px solid #2BB32A;
+
+/* Inside auto layout */
+flex: none;
+order: 4;
+flex-grow: 0;
+z-index: 4;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 48px;
+isolation: isolate;
+
+width: 604px;
+height: 539px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Group 21 */
+
+position: absolute;
+width: 793px;
+height: 539px;
+left: -16px;
+top: -1px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+z-index: 0;
+
+
+/* Group 9 */
+
+position: absolute;
+width: 492px;
+height: 492px;
+left: 285px;
+top: 46px;
+
+
+
+/* Ellipse 1 */
+
+position: absolute;
+width: 492px;
+height: 492px;
+left: 285px;
+top: 46px;
+
+background: #2BB32A;
+
+
+/* credit-card */
+
+position: absolute;
+width: 551.3px;
+height: 348.19px;
+left: -16px;
+top: -1px;
+
+filter: drop-shadow(0px 4px 20px rgba(0, 0, 0, 0.25));
+transform: rotate(15deg);
+
+
+/* Rectangle 1 */
+
+position: absolute;
+width: 551.3px;
+height: 348.19px;
+left: -16px;
+top: -1px;
+
+background: linear-gradient(112.54deg, rgba(255, 255, 255, 0.37) 10.29%, rgba(255, 255, 255, 0) 100.35%);
+backdrop-filter: blur(37.5px);
+/* Note: backdrop-filter has minimal browser support */
+border-radius: 32px;
+transform: rotate(15deg);
+
+
+/* Group 20 */
+
+position: absolute;
+width: 461.75px;
+height: 274.2px;
+left: 46.64px;
+top: 49.7px;
+
+transform: rotate(15deg);
+
+
+/* Name */
+
+position: absolute;
+width: 56.58px;
+height: 29.02px;
+left: 61.46px;
+top: 242.44px;
+
+font-family: 'M PLUS 1';
+font-style: normal;
+font-weight: 600;
+font-size: 14px;
+line-height: 20px;
+
+color: #B9BEBD;
+
+transform: rotate(15deg);
+
+
+/* Credit Card No. */
+
+position: absolute;
+width: 155.23px;
+height: 29.02px;
+left: 91.12px;
+top: 131.73px;
+
+font-family: 'M PLUS 1';
+font-style: normal;
+font-weight: 600;
+font-size: 14px;
+line-height: 20px;
+
+color: #B9BEBD;
+
+transform: rotate(15deg);
+
+
+/* Exp. */
+
+position: absolute;
+width: 43.52px;
+height: 29.02px;
+left: 235.33px;
+top: 283.02px;
+
+font-family: 'M PLUS 1';
+font-style: normal;
+font-weight: 600;
+font-size: 14px;
+line-height: 20px;
+
+color: #B9BEBD;
+
+transform: rotate(15deg);
+
+
+/* 09/11 */
+
+position: absolute;
+width: 53.68px;
+height: 24.66px;
+left: 226.59px;
+top: 325.44px;
+
+font-family: 'M PLUS 1';
+font-style: normal;
+font-weight: 600;
+font-size: 12px;
+line-height: 17px;
+
+color: #FFFFFF;
+
+transform: rotate(15deg);
+
+
+/* REHAN RAIHAN */
+
+position: absolute;
+width: 134.92px;
+height: 24.66px;
+left: 52.82px;
+top: 278.88px;
+
+font-family: 'M PLUS 1';
+font-style: normal;
+font-weight: 500;
+font-size: 12px;
+line-height: 17px;
+
+color: #FFFFFF;
+
+transform: rotate(15deg);
+
+
+/* Exclude */
+
+position: absolute;
+width: 58.37px;
+height: 34.82px;
+left: 108.6px;
+top: 49.7px;
+
+background: #FFFFFF;
+transform: rotate(15deg);
+
+
+/* Vector (Stroke) */
+
+position: absolute;
+width: 25.32px;
+height: 46.43px;
+left: 524.92px;
+top: 162.06px;
+
+background: #FFFFFF;
+transform: rotate(15deg);
+
+
+/* 1602 0911 2019 2021 */
+
+position: absolute;
+width: 382.35px;
+height: 34.82px;
+left: 75.93px;
+top: 171.62px;
+
+font-family: 'M PLUS 1 Code';
+font-style: normal;
+font-weight: 700;
+font-size: 32px;
+line-height: 24px;
+/* or 75% */
+
+color: #FFFFFF;
+
+transform: rotate(15deg);
+
+
+/* Vector */
+
+position: absolute;
+width: 58.43px;
+height: 46.43px;
+left: 436.21px;
+top: 374.1px;
+
+background: #FFFFFF;
+transform: rotate(15deg);
+
+
+/* about */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: flex-start;
+padding: 64px;
+
+width: 1240px;
+height: 216px;
+
+background: rgba(61, 84, 77, 0.24);
+backdrop-filter: blur(8px);
+/* Note: backdrop-filter has minimal browser support */
+border-radius: 32px;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+padding: 0px;
+gap: 8px;
+
+width: 278px;
+height: 88px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* 16y */
+
+width: 89px;
+height: 56px;
+
+font-family: 'M PLUS 1';
+font-style: normal;
+font-weight: 700;
+font-size: 48px;
+line-height: 56px;
+/* identical to box height, or 117% */
+letter-spacing: -0.32px;
+
+color: #FFFFFF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Experience */
+
+width: 86px;
+height: 24px;
+
+font-family: 'M PLUS 1';
+font-style: normal;
+font-weight: 500;
+font-size: 16px;
+line-height: 24px;
+/* identical to box height, or 150% */
+
+color: #2BB32A;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+padding: 0px;
+gap: 8px;
+
+width: 278px;
+height: 88px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* 250+ */
+
+width: 126px;
+height: 56px;
+
+font-family: 'M PLUS 1';
+font-style: normal;
+font-weight: 700;
+font-size: 48px;
+line-height: 56px;
+/* identical to box height, or 117% */
+letter-spacing: -0.32px;
+
+color: #FFFFFF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Merchant Partner */
+
+width: 138px;
+height: 24px;
+
+font-family: 'M PLUS 1';
+font-style: normal;
+font-weight: 500;
+font-size: 16px;
+line-height: 24px;
+/* identical to box height, or 150% */
+
+color: #2BB32A;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+padding: 0px;
+gap: 8px;
+
+width: 278px;
+height: 88px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+
+/* 18+ */
+
+width: 95px;
+height: 56px;
+
+font-family: 'M PLUS 1';
+font-style: normal;
+font-weight: 700;
+font-size: 48px;
+line-height: 56px;
+/* identical to box height, or 117% */
+letter-spacing: -0.32px;
+
+color: #FFFFFF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Years Experience */
+
+width: 132px;
+height: 24px;
+
+font-family: 'M PLUS 1';
+font-style: normal;
+font-weight: 500;
+font-size: 16px;
+line-height: 24px;
+/* identical to box height, or 150% */
+
+color: #2BB32A;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+padding: 0px;
+gap: 8px;
+
+width: 278px;
+height: 88px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 3;
+flex-grow: 0;
+
+
+/* 10.2k+ */
+
+width: 166px;
+height: 56px;
+
+font-family: 'M PLUS 1';
+font-style: normal;
+font-weight: 700;
+font-size: 48px;
+line-height: 56px;
+/* identical to box height, or 117% */
+letter-spacing: -0.32px;
+
+color: #FFFFFF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Worldwide Clients */
+
+width: 140px;
+height: 24px;
+
+font-family: 'M PLUS 1';
+font-style: normal;
+font-weight: 500;
+font-size: 16px;
+line-height: 24px;
+/* identical to box height, or 150% */
+
+color: #2BB32A;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* logo slider */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: flex-start;
+padding: 0px;
+gap: 24px;
+
+width: 1240px;
+height: 32px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 3;
+flex-grow: 0;
+
+
+/* upwork */
+
+margin: 0 auto;
+width: 105.53px;
+height: 32px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Vector */
+
+position: absolute;
+left: 0%;
+right: -0.08%;
+top: 0%;
+bottom: 0%;
+
+background: #3D544D;
+
+
+/* petal */
+
+margin: 0 auto;
+width: 90.48px;
+height: 32px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Vector */
+
+position: absolute;
+left: 0%;
+right: 0%;
+top: 0%;
+bottom: 0%;
+
+background: #3D544D;
+
+
+/* rakuten */
+
+margin: 0 auto;
+width: 107.53px;
+height: 32px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+
+/* Vector */
+
+position: absolute;
+left: 0%;
+right: 0%;
+top: 0%;
+bottom: 0%;
+
+background: #3D544D;
+
+
+/* nyt */
+
+margin: 0 auto;
+width: 236.8px;
+height: 32px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 3;
+flex-grow: 0;
+
+
+/* Vector */
+
+position: absolute;
+left: 0%;
+right: 0.49%;
+top: 1.6%;
+bottom: 1.6%;
+
+background: #3D544D;
+
+
+/* vice */
+
+margin: 0 auto;
+width: 101.71px;
+height: 32px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 4;
+flex-grow: 0;
+
+
+/* Vector */
+
+position: absolute;
+left: 0%;
+right: 0%;
+top: 0%;
+bottom: 0%;
+
+background: #3D544D;
+
+
+/* dell */
+
+margin: 0 auto;
+width: 100.57px;
+height: 32px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 5;
+flex-grow: 0;
+
+
+/* Vector */
+
+position: absolute;
+left: 0%;
+right: 0%;
+top: 0%;
+bottom: 0%;
+
+background: #3D544D;
+
+
+/* features */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 0px;
+gap: 64px;
+
+width: 1240px;
+height: 211px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 4;
+flex-grow: 0;
+
+
+/* What do we offer? */
+
+width: 360px;
+height: 58px;
+
+font-family: 'M PLUS 1';
+font-style: normal;
+font-weight: 700;
+font-size: 40px;
+line-height: 58px;
+/* identical to box height */
+
+color: #FFFFFF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Frame 16 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: flex-start;
+padding: 0px;
+gap: 32px;
+
+width: 1240px;
+height: 89px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame 12 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: flex-start;
+padding: 0px;
+gap: 24px;
+
+width: 392px;
+height: 89px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* f */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: flex-start;
+padding: 16px;
+gap: 10px;
+
+width: 64px;
+height: 64px;
+
+background: #3D544D;
+border-radius: 24px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* icon/security */
+
+width: 32px;
+height: 32px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Polygon */
+
+position: absolute;
+left: 16.67%;
+right: 16.67%;
+top: 12.5%;
+bottom: 12.5%;
+
+background: #FFFFFF;
+border: 1.5px solid #FFFFFF;
+
+
+/* Frame 11 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 8px;
+
+width: 304px;
+height: 89px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 1;
+
+
+/* Security Guarantee */
+
+width: 227px;
+height: 35px;
+
+font-family: 'M PLUS 1';
+font-style: normal;
+font-weight: 500;
+font-size: 24px;
+line-height: 35px;
+/* identical to box height */
+
+color: #FFFFFF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Your data and funds will be securely protected. */
+
+width: 286px;
+height: 46px;
+
+font-family: 'M PLUS 1';
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 23px;
+
+color: #ADB2B1;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame 13 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: flex-start;
+padding: 0px;
+gap: 24px;
+
+width: 392px;
+height: 89px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* f */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: flex-start;
+padding: 16px;
+gap: 10px;
+
+width: 64px;
+height: 64px;
+
+background: #3D544D;
+border-radius: 24px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* pie */
+
+width: 32px;
+height: 32px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Group */
+
+position: absolute;
+width: 24px;
+height: 24px;
+left: 4px;
+top: 4px;
+
+
+
+/* Ellipse */
+
+position: absolute;
+left: 12.5%;
+right: 12.5%;
+top: 14.34%;
+bottom: 12.5%;
+
+background: #FFFFFF;
+border: 1.5px solid #FFFFFF;
+
+
+/* Ellipse */
+
+position: absolute;
+left: 53.33%;
+right: 23.75%;
+top: 12.5%;
+bottom: 57.5%;
+
+background: #FFFFFF;
+border: 1.5px solid #FFFFFF;
+transform: rotate(-90deg);
+
+
+/* Frame 11 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 8px;
+
+width: 304px;
+height: 89px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 1;
+
+
+/* Investing */
+
+width: 108px;
+height: 35px;
+
+font-family: 'M PLUS 1';
+font-style: normal;
+font-weight: 500;
+font-size: 24px;
+line-height: 35px;
+/* identical to box height */
+
+color: #FFFFFF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Your data and funds will be securely protected. */
+
+width: 286px;
+height: 46px;
+
+font-family: 'M PLUS 1';
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 23px;
+
+color: #ADB2B1;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame 14 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: flex-start;
+padding: 0px;
+gap: 24px;
+
+width: 392px;
+height: 89px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+
+/* f */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: flex-start;
+padding: 16px;
+gap: 10px;
+
+width: 64px;
+height: 64px;
+
+background: #3D544D;
+border-radius: 24px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* icon/analytics */
+
+width: 32px;
+height: 32px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Rectangle */
+
+position: absolute;
+left: 12.5%;
+right: 12.5%;
+top: 12.5%;
+bottom: 12.5%;
+
+background: #FFFFFF;
+border: 1.5px solid #FFFFFF;
+
+
+/* Frame 11 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 8px;
+
+width: 304px;
+height: 89px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 1;
+
+
+/* Multiple Method */
+
+width: 192px;
+height: 35px;
+
+font-family: 'M PLUS 1';
+font-style: normal;
+font-weight: 500;
+font-size: 24px;
+line-height: 35px;
+/* identical to box height */
+
+color: #FFFFFF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Your data and funds will be securely protected. */
+
+width: 286px;
+height: 46px;
+
+font-family: 'M PLUS 1';
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 23px;
+
+color: #ADB2B1;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* section */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 10px;
+
+width: 1240px;
+height: 519.39px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 5;
+flex-grow: 0;
+
+
+/* Group 17 */
+
+width: 1240px;
+height: 519.39px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Frame 24 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 24px;
+
+position: absolute;
+width: 604px;
+height: 292px;
+left: 0px;
+top: 114px;
+
+
+
+/* Design your personalized credit card. */
+
+width: 604px;
+height: 116px;
+
+font-family: 'M PLUS 1';
+font-style: normal;
+font-weight: 700;
+font-size: 40px;
+line-height: 58px;
+
+color: #FFFFFF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* You have the freedom to personalize the design of your credit card, ensuring a truly unique experience that makes you feel extraordinary */
+
+width: 424px;
+height: 72px;
+
+/* regular/p */
+font-family: 'Poppins';
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 24px;
+/* or 150% */
+
+color: #ADB2B1;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame 23 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 16px 32px;
+gap: 16px;
+
+width: 233.5px;
+height: 56px;
+
+background: #2BB32A;
+border-radius: 64px;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+
+/* Create New Card */
+
+width: 131px;
+height: 24px;
+
+font-family: 'M PLUS 1';
+font-style: normal;
+font-weight: 500;
+font-size: 16px;
+line-height: 24px;
+/* identical to box height, or 150% */
+
+color: #FFFFFF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Vector 7 */
+
+width: 22.5px;
+height: 16.5px;
+
+border: 2px solid #EFF8F0;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Group 16 */
+
+position: absolute;
+width: 695px;
+height: 519.39px;
+left: 545px;
+top: 0px;
+
+
+
+/* Group 14 */
+
+position: absolute;
+width: 534.15px;
+height: 489.82px;
+left: 705.85px;
+top: 0px;
+
+
+
+/* card */
+
+position: absolute;
+width: 435.05px;
+height: 274.77px;
+left: 710.98px;
+top: 231.62px;
+
+filter: drop-shadow(3.41884px 19.6583px 20.513px rgba(0, 0, 0, 0.08));
+transform: matrix(1, 0, -0.34, 0.94, 0, 0);
+
+
+/* Rectangle 1 */
+
+position: absolute;
+width: 435.05px;
+height: 274.77px;
+left: 710.98px;
+top: 231.62px;
+
+background: #FFFFFF;
+border-radius: 36.6355px;
+transform: matrix(1, 0, -0.34, 0.94, 0, 0);
+
+
+/* Name */
+
+position: absolute;
+width: 44px;
+height: 23px;
+left: 779.06px;
+top: 406.98px;
+
+font-family: 'M PLUS 1';
+font-style: normal;
+font-weight: 600;
+font-size: 16.028px;
+line-height: 23px;
+
+color: #ADADAD;
+
+transform: matrix(1, 0, -0.34, 0.94, 0, 0);
+
+
+/* Credit Card No. */
+
+position: absolute;
+width: 122px;
+height: 23px;
+left: 809.99px;
+top: 321.99px;
+
+font-family: 'M PLUS 1';
+font-style: normal;
+font-weight: 600;
+font-size: 16.028px;
+line-height: 23px;
+
+color: #ADADAD;
+
+transform: matrix(1, 0, -0.34, 0.94, 0, 0);
+
+
+/* Exp. */
+
+position: absolute;
+width: 34px;
+height: 23px;
+left: 921.44px;
+top: 402.68px;
+
+font-family: 'M PLUS 1';
+font-style: normal;
+font-weight: 600;
+font-size: 16.028px;
+line-height: 23px;
+
+color: #ADADAD;
+
+transform: matrix(1, 0, -0.34, 0.94, 0, 0);
+
+
+/* 09/11 */
+
+position: absolute;
+width: 43px;
+height: 20px;
+left: 911.86px;
+top: 434.95px;
+
+font-family: 'M PLUS 1';
+font-style: normal;
+font-weight: 600;
+font-size: 13.7383px;
+line-height: 20px;
+/* identical to box height */
+
+color: #1A1E1C;
+
+transform: matrix(1, 0, -0.34, 0.94, 0, 0);
+
+
+/* REHAN RAIHAN */
+
+position: absolute;
+width: 106px;
+height: 20px;
+left: 769.9px;
+top: 434.95px;
+
+font-family: 'M PLUS 1';
+font-style: normal;
+font-weight: 500;
+font-size: 13.7383px;
+line-height: 20px;
+/* identical to box height */
+
+color: #1A1E1C;
+
+transform: matrix(1, 0, -0.34, 0.94, 0, 0);
+
+
+/* Exclude */
+
+position: absolute;
+width: 46.06px;
+height: 27.48px;
+left: 828.88px;
+top: 259.6px;
+
+background: #1A1E1C;
+transform: matrix(1, 0, -0.34, 0.94, 0, 0);
+
+
+/* Vector (Stroke) */
+
+position: absolute;
+width: 27.12px;
+height: 36.64px;
+left: 1161.19px;
+top: 259.6px;
+
+background: #1A1E1C;
+transform: matrix(1, 0, -0.34, 0.94, 0, 0);
+
+
+/* 1602 0911 2019 2021 */
+
+position: absolute;
+width: 252px;
+height: 28px;
+left: 794.64px;
+top: 353.19px;
+
+font-family: 'M PLUS 1 Code';
+font-style: normal;
+font-weight: 700;
+font-size: 22.8972px;
+line-height: 27px;
+/* identical to box height, or 120% */
+
+color: #1A1E1C;
+
+transform: matrix(1, 0, -0.34, 0.94, 0, 0);
+
+
+/* Vector */
+
+position: absolute;
+width: 46.11px;
+height: 36.64px;
+left: 1082.54px;
+top: 428.5px;
+
+background: #1A1E1C;
+transform: matrix(1, 0, -0.34, 0.94, 0, 0);
+
+
+/* card */
+
+position: absolute;
+width: 435.05px;
+height: 274.77px;
+left: 710.98px;
+top: 107.69px;
+
+transform: matrix(1, 0, -0.34, 0.94, 0, 0);
+
+
+/* Rectangle 1 */
+
+position: absolute;
+width: 435.05px;
+height: 274.77px;
+left: 710.98px;
+top: 107.69px;
+
+background: #2BB32A;
+border-radius: 36.6355px;
+transform: matrix(1, 0, -0.34, 0.94, 0, 0);
+
+
+/* Name */
+
+position: absolute;
+width: 44px;
+height: 23px;
+left: 779.06px;
+top: 283.05px;
+
+font-family: 'M PLUS 1';
+font-style: normal;
+font-weight: 600;
+font-size: 16.028px;
+line-height: 23px;
+
+color: #595959;
+
+transform: matrix(1, 0, -0.34, 0.94, 0, 0);
+
+
+/* Credit Card No. */
+
+position: absolute;
+width: 122px;
+height: 23px;
+left: 809.99px;
+top: 198.06px;
+
+font-family: 'M PLUS 1';
+font-style: normal;
+font-weight: 600;
+font-size: 16.028px;
+line-height: 23px;
+
+color: #595959;
+
+transform: matrix(1, 0, -0.34, 0.94, 0, 0);
+
+
+/* Exp. */
+
+position: absolute;
+width: 34px;
+height: 23px;
+left: 921.44px;
+top: 278.75px;
+
+font-family: 'M PLUS 1';
+font-style: normal;
+font-weight: 600;
+font-size: 16.028px;
+line-height: 23px;
+
+color: #595959;
+
+transform: matrix(1, 0, -0.34, 0.94, 0, 0);
+
+
+/* 09/11 */
+
+position: absolute;
+width: 43px;
+height: 20px;
+left: 911.86px;
+top: 311.02px;
+
+font-family: 'M PLUS 1';
+font-style: normal;
+font-weight: 600;
+font-size: 13.7383px;
+line-height: 20px;
+/* identical to box height */
+
+color: #424242;
+
+transform: matrix(1, 0, -0.34, 0.94, 0, 0);
+
+
+/* REHAN RAIHAN */
+
+position: absolute;
+width: 106px;
+height: 20px;
+left: 769.9px;
+top: 311.02px;
+
+font-family: 'M PLUS 1';
+font-style: normal;
+font-weight: 500;
+font-size: 13.7383px;
+line-height: 20px;
+/* identical to box height */
+
+color: #424242;
+
+transform: matrix(1, 0, -0.34, 0.94, 0, 0);
+
+
+/* Exclude */
+
+position: absolute;
+width: 46.06px;
+height: 27.48px;
+left: 828.88px;
+top: 135.66px;
+
+background: #424242;
+transform: matrix(1, 0, -0.34, 0.94, 0, 0);
+
+
+/* Vector (Stroke) */
+
+position: absolute;
+width: 27.12px;
+height: 36.64px;
+left: 1161.19px;
+top: 135.66px;
+
+background: #424242;
+transform: matrix(1, 0, -0.34, 0.94, 0, 0);
+
+
+/* 1602 0911 2019 2021 */
+
+position: absolute;
+width: 252px;
+height: 28px;
+left: 794.63px;
+top: 229.26px;
+
+font-family: 'M PLUS 1 Code';
+font-style: normal;
+font-weight: 700;
+font-size: 22.8972px;
+line-height: 27px;
+/* identical to box height, or 120% */
+
+color: #424242;
+
+transform: matrix(1, 0, -0.34, 0.94, 0, 0);
+
+
+/* Vector */
+
+position: absolute;
+width: 46.11px;
+height: 36.64px;
+left: 1082.54px;
+top: 304.57px;
+
+background: #424242;
+transform: matrix(1, 0, -0.34, 0.94, 0, 0);
+
+
+/* card */
+
+position: absolute;
+width: 435.05px;
+height: 274.77px;
+left: 705.85px;
+top: 0px;
+
+transform: matrix(1, 0, -0.34, 0.94, 0, 0);
+
+
+/* Rectangle 1 */
+
+position: absolute;
+width: 435.05px;
+height: 274.77px;
+left: 705.85px;
+top: 0px;
+
+background: rgba(255, 255, 255, 0.1);
+backdrop-filter: blur(6.83767px);
+/* Note: backdrop-filter has minimal browser support */
+border-radius: 36.6355px;
+transform: matrix(1, 0, -0.34, 0.94, 0, 0);
+
+
+/* Name */
+
+position: absolute;
+width: 44px;
+height: 23px;
+left: 773.93px;
+top: 175.36px;
+
+font-family: 'M PLUS 1';
+font-style: normal;
+font-weight: 600;
+font-size: 16.028px;
+line-height: 23px;
+
+color: #EDEDED;
+
+transform: matrix(1, 0, -0.34, 0.94, 0, 0);
+
+
+/* Credit Card No. */
+
+position: absolute;
+width: 122px;
+height: 23px;
+left: 804.86px;
+top: 90.37px;
+
+font-family: 'M PLUS 1';
+font-style: normal;
+font-weight: 600;
+font-size: 16.028px;
+line-height: 23px;
+
+color: #EDEDED;
+
+transform: matrix(1, 0, -0.34, 0.94, 0, 0);
+
+
+/* Exp. */
+
+position: absolute;
+width: 34px;
+height: 23px;
+left: 916.31px;
+top: 171.05px;
+
+font-family: 'M PLUS 1';
+font-style: normal;
+font-weight: 600;
+font-size: 16.028px;
+line-height: 23px;
+
+color: #EDEDED;
+
+transform: matrix(1, 0, -0.34, 0.94, 0, 0);
+
+
+/* 09/11 */
+
+position: absolute;
+width: 43px;
+height: 20px;
+left: 906.74px;
+top: 203.33px;
+
+font-family: 'M PLUS 1';
+font-style: normal;
+font-weight: 600;
+font-size: 13.7383px;
+line-height: 20px;
+/* identical to box height */
+
+color: #FFFFFF;
+
+transform: matrix(1, 0, -0.34, 0.94, 0, 0);
+
+
+/* REHAN RAIHAN */
+
+position: absolute;
+width: 106px;
+height: 20px;
+left: 764.77px;
+top: 203.33px;
+
+font-family: 'M PLUS 1';
+font-style: normal;
+font-weight: 500;
+font-size: 13.7383px;
+line-height: 20px;
+/* identical to box height */
+
+color: #FFFFFF;
+
+transform: matrix(1, 0, -0.34, 0.94, 0, 0);
+
+
+/* Exclude */
+
+position: absolute;
+width: 46.06px;
+height: 27.48px;
+left: 823.75px;
+top: 27.97px;
+
+background: #FFFFFF;
+transform: matrix(1, 0, -0.34, 0.94, 0, 0);
+
+
+/* Vector (Stroke) */
+
+position: absolute;
+width: 27.12px;
+height: 36.64px;
+left: 1156.06px;
+top: 27.97px;
+
+background: #FFFFFF;
+transform: matrix(1, 0, -0.34, 0.94, 0, 0);
+
+
+/* 1602 0911 2019 2021 */
+
+position: absolute;
+width: 252px;
+height: 28px;
+left: 789.51px;
+top: 121.57px;
+
+font-family: 'M PLUS 1 Code';
+font-style: normal;
+font-weight: 700;
+font-size: 22.8972px;
+line-height: 27px;
+/* identical to box height, or 120% */
+
+color: #FFFFFF;
+
+transform: matrix(1, 0, -0.34, 0.94, 0, 0);
+
+
+/* Vector */
+
+position: absolute;
+width: 46.11px;
+height: 36.64px;
+left: 1077.42px;
+top: 196.87px;
+
+background: #FFFFFF;
+transform: matrix(1, 0, -0.34, 0.94, 0, 0);
+
+
+/* Star 17 */
+
+position: absolute;
+width: 279.49px;
+height: 279.49px;
+left: 545px;
+top: 149.41px;
+
+transform: rotate(-24.4deg);
+
+
+/* section */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 10px;
+
+width: 1240px;
+height: 490.86px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 6;
+flex-grow: 0;
+
+
+/* Frame 17 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 32px;
+
+width: 1240px;
+height: 490.86px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Group 16 */
+
+width: 604px;
+height: 490.86px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Group 14 */
+
+position: absolute;
+width: 454.38px;
+height: 488.36px;
+left: 0px;
+top: 0px;
+
+
+
+/* card */
+
+position: absolute;
+width: 412.27px;
+height: 260.38px;
+left: 0px;
+top: 154.09px;
+
+transform: matrix(0.98, 0.19, 0.19, 0.98, 0, 0);
+
+
+/* Rectangle 1 */
+
+position: absolute;
+width: 412.27px;
+height: 260.38px;
+left: 0px;
+top: 154.09px;
+
+background: #2BB32A;
+border-radius: 34.7175px;
+transform: matrix(0.98, 0.19, 0.19, 0.98, 0, 0);
+
+
+/* Name */
+
+position: absolute;
+width: 42px;
+height: 22px;
+left: 76.34px;
+top: 335.97px;
+
+font-family: 'M PLUS 1';
+font-style: normal;
+font-weight: 600;
+font-size: 15.1889px;
+line-height: 22px;
+/* identical to box height */
+
+color: #595959;
+
+transform: matrix(0.98, 0.19, 0.19, 0.98, 0, 0);
+
+
+/* Credit Card No. */
+
+position: absolute;
+width: 116px;
+height: 22px;
+left: 59.99px;
+top: 251.83px;
+
+font-family: 'M PLUS 1';
+font-style: normal;
+font-weight: 600;
+font-size: 15.1889px;
+line-height: 22px;
+/* identical to box height */
+
+color: #595959;
+
+transform: matrix(0.98, 0.19, 0.19, 0.98, 0, 0);
+
+
+/* Exp. */
+
+position: absolute;
+width: 32px;
+height: 22px;
+left: 206.51px;
+top: 357.17px;
+
+font-family: 'M PLUS 1';
+font-style: normal;
+font-weight: 600;
+font-size: 15.1889px;
+line-height: 22px;
+/* identical to box height */
+
+color: #595959;
+
+transform: matrix(0.98, 0.19, 0.19, 0.98, 0, 0);
+
+
+/* 09/11 */
+
+position: absolute;
+width: 40px;
+height: 19px;
+left: 213.78px;
+top: 389.33px;
+
+font-family: 'M PLUS 1';
+font-style: normal;
+font-weight: 600;
+font-size: 13.019px;
+line-height: 19px;
+/* identical to box height */
+
+color: #424242;
+
+transform: matrix(0.98, 0.19, 0.19, 0.98, 0, 0);
+
+
+/* REHAN RAIHAN */
+
+position: absolute;
+width: 100px;
+height: 19px;
+left: 81.72px;
+top: 363.66px;
+
+font-family: 'M PLUS 1';
+font-style: normal;
+font-weight: 500;
+font-size: 13.019px;
+line-height: 19px;
+/* identical to box height */
+
+color: #424242;
+
+transform: matrix(0.98, 0.19, 0.19, 0.98, 0, 0);
+
+
+/* Exclude */
+
+position: absolute;
+width: 43.65px;
+height: 26.04px;
+left: 45.85px;
+top: 189.65px;
+
+background: #424242;
+transform: matrix(0.98, 0.19, 0.19, 0.98, 0, 0);
+
+
+/* Vector (Stroke) */
+
+position: absolute;
+width: 25.7px;
+height: 34.72px;
+left: 357.89px;
+top: 250.3px;
+
+background: #424242;
+transform: matrix(0.98, 0.19, 0.19, 0.98, 0, 0);
+
+
+/* 1602 0911 2019 2021 */
+
+position: absolute;
+width: 239px;
+height: 27px;
+left: 63.86px;
+top: 282.3px;
+
+font-family: 'M PLUS 1 Code';
+font-style: normal;
+font-weight: 700;
+font-size: 21.6984px;
+line-height: 26px;
+/* or 120% */
+
+color: #424242;
+
+transform: matrix(0.98, 0.19, 0.19, 0.98, 0, 0);
+
+
+/* Vector */
+
+position: absolute;
+width: 43.7px;
+height: 34.72px;
+left: 374.42px;
+top: 414.4px;
+
+background: #424242;
+transform: matrix(0.98, 0.19, 0.19, 0.98, 0, 0);
+
+
+/* card */
+
+position: absolute;
+width: 412.27px;
+height: 260.38px;
+left: 20.85px;
+top: 0px;
+
+transform: matrix(1, 0, 0.03, 1, 0, 0);
+
+
+/* Rectangle 1 */
+
+position: absolute;
+width: 412.27px;
+height: 260.38px;
+left: 20.85px;
+top: 0px;
+
+background: rgba(255, 255, 255, 0.1);
+backdrop-filter: blur(6.47968px);
+/* Note: backdrop-filter has minimal browser support */
+border-radius: 34.7175px;
+transform: matrix(1, 0, 0.03, 1, 0, 0);
+
+
+/* Name */
+
+position: absolute;
+width: 42px;
+height: 22px;
+left: 70.42px;
+top: 176.73px;
+
+font-family: 'M PLUS 1';
+font-style: normal;
+font-weight: 600;
+font-size: 15.1889px;
+line-height: 22px;
+/* identical to box height */
+
+color: #EDEDED;
+
+transform: matrix(1, 0, 0.03, 1, 0, 0);
+
+
+/* Credit Card No. */
+
+position: absolute;
+width: 116px;
+height: 22px;
+left: 67.43px;
+top: 91.08px;
+
+font-family: 'M PLUS 1';
+font-style: normal;
+font-weight: 600;
+font-size: 15.1889px;
+line-height: 22px;
+/* identical to box height */
+
+color: #EDEDED;
+
+transform: matrix(1, 0, 0.03, 1, 0, 0);
+
+
+/* Exp. */
+
+position: absolute;
+width: 32px;
+height: 22px;
+left: 203.71px;
+top: 172.4px;
+
+font-family: 'M PLUS 1';
+font-style: normal;
+font-weight: 600;
+font-size: 15.1889px;
+line-height: 22px;
+/* identical to box height */
+
+color: #EDEDED;
+
+transform: matrix(1, 0, 0.03, 1, 0, 0);
+
+
+/* 09/11 */
+
+position: absolute;
+width: 40px;
+height: 19px;
+left: 205.93px;
+top: 204.92px;
+
+font-family: 'M PLUS 1';
+font-style: normal;
+font-weight: 600;
+font-size: 13.019px;
+line-height: 19px;
+/* identical to box height */
+
+color: #FFFFFF;
+
+transform: matrix(1, 0, 0.03, 1, 0, 0);
+
+
+/* REHAN RAIHAN */
+
+position: absolute;
+width: 100px;
+height: 19px;
+left: 71.4px;
+top: 204.92px;
+
+font-family: 'M PLUS 1';
+font-style: normal;
+font-weight: 500;
+font-size: 13.019px;
+line-height: 19px;
+/* identical to box height */
+
+color: #FFFFFF;
+
+transform: matrix(1, 0, 0.03, 1, 0, 0);
+
+
+/* Exclude */
+
+position: absolute;
+width: 43.65px;
+height: 26.04px;
+left: 63.06px;
+top: 28.19px;
+
+background: #FFFFFF;
+transform: matrix(1, 0, 0.03, 1, 0, 0);
+
+
+/* Vector (Stroke) */
+
+position: absolute;
+width: 25.7px;
+height: 34.72px;
+left: 380.94px;
+top: 28.19px;
+
+background: #FFFFFF;
+transform: matrix(1, 0, 0.03, 1, 0, 0);
+
+
+/* 1602 0911 2019 2021 */
+
+position: absolute;
+width: 239px;
+height: 27px;
+left: 66.35px;
+top: 122.52px;
+
+font-family: 'M PLUS 1 Code';
+font-style: normal;
+font-weight: 700;
+font-size: 21.6984px;
+line-height: 26px;
+/* or 120% */
+
+color: #FFFFFF;
+
+transform: matrix(1, 0, 0.03, 1, 0, 0);
+
+
+/* Vector */
+
+position: absolute;
+width: 43.7px;
+height: 34.72px;
+left: 370.61px;
+top: 198.42px;
+
+background: #FFFFFF;
+transform: matrix(1, 0, 0.03, 1, 0, 0);
+
+
+/* Star 17 */
+
+position: absolute;
+width: 264.86px;
+height: 264.86px;
+left: 294.06px;
+top: 180.92px;
+
+transform: rotate(-100.84deg);
+
+
+/* Frame 24 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 24px;
+
+width: 604px;
+height: 340px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Find the Perfect Credit Card for You */
+
+width: 604px;
+height: 116px;
+
+font-family: 'M PLUS 1';
+font-style: normal;
+font-weight: 700;
+font-size: 40px;
+line-height: 58px;
+
+color: #FFFFFF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Discover your ideal credit card with ease. Our comprehensive selection caters to every financial need and lifestyle. Whether you seek cashback rewards, travel perks, or building credit, we have the perfect credit card waiting for you. Unleash the possibilities and find the credit card that fits your unique goals and aspirations. */
+
+width: 546px;
+height: 120px;
+
+/* regular/p */
+font-family: 'Poppins';
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 24px;
+/* or 150% */
+
+color: #ADB2B1;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame 23 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 16px 32px;
+gap: 16px;
+
+width: 152px;
+height: 56px;
+
+background: #2BB32A;
+border-radius: 64px;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+
+/* Learn More */
+
+width: 88px;
+height: 24px;
+
+font-family: 'M PLUS 1';
+font-style: normal;
+font-weight: 500;
+font-size: 16px;
+line-height: 24px;
+/* identical to box height, or 150% */
+
+color: #FFFFFF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* testimonial */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: flex-start;
+padding: 0px;
+gap: 32px;
+
+width: 1240px;
+height: 360px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 7;
+flex-grow: 0;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 48px 24px;
+gap: 32px;
+
+width: 392px;
+height: 360px;
+
+background: rgba(39, 50, 47, 0.24);
+backdrop-filter: blur(8px);
+/* Note: backdrop-filter has minimal browser support */
+border-radius: 32px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: flex-start;
+padding: 16px;
+gap: 10px;
+
+width: 56px;
+height: 56px;
+
+background: #3D544D;
+border-radius: 56px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Frame */
+
+width: 24px;
+height: 24px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Group */
+
+position: absolute;
+width: 18px;
+height: 16px;
+left: 3px;
+top: 4px;
+
+
+
+/* Vector */
+
+position: absolute;
+left: 12.5%;
+right: 56.27%;
+top: 16.67%;
+bottom: 16.67%;
+
+border: 1.5px solid #FFFFFF;
+border-radius: 3px;
+
+
+/* Vector */
+
+position: absolute;
+left: 56.27%;
+right: 12.5%;
+top: 16.67%;
+bottom: 16.67%;
+
+border: 1.5px solid #FFFFFF;
+border-radius: 3px;
+
+
+/* "Great session! Dani was super helpful. She shared some practical advice on how can lorem ip we go about refining our service offerings." */
+
+width: 344px;
+height: 96px;
+
+/* regular/p */
+font-family: 'Poppins';
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 24px;
+/* or 150% */
+
+color: #FFFFFF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: flex-start;
+padding: 0px;
+gap: 8px;
+
+width: 142px;
+height: 48px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+
+/* Ellipse */
+
+width: 48px;
+height: 48px;
+
+background: url(.png);
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+
+width: 86px;
+height: 44px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Hadid Khan */
+
+width: 86px;
+height: 24px;
+
+font-family: 'M PLUS 1';
+font-style: normal;
+font-weight: 500;
+font-size: 16px;
+line-height: 24px;
+/* identical to box height, or 150% */
+letter-spacing: -0.32px;
+
+color: #FFFFFF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* UIUX Designer */
+
+width: 84px;
+height: 20px;
+
+font-family: 'M PLUS 1';
+font-style: normal;
+font-weight: 400;
+font-size: 12px;
+line-height: 20px;
+/* identical to box height, or 167% */
+
+color: #ADB2B1;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 48px 24px;
+gap: 32px;
+
+width: 392px;
+height: 360px;
+
+background: rgba(39, 50, 47, 0.24);
+backdrop-filter: blur(8px);
+/* Note: backdrop-filter has minimal browser support */
+border-radius: 32px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: flex-start;
+padding: 16px;
+gap: 10px;
+
+width: 56px;
+height: 56px;
+
+background: #3D544D;
+border-radius: 56px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Frame */
+
+width: 24px;
+height: 24px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Group */
+
+position: absolute;
+width: 18px;
+height: 16px;
+left: 3px;
+top: 4px;
+
+
+
+/* Vector */
+
+position: absolute;
+left: 12.5%;
+right: 56.27%;
+top: 16.67%;
+bottom: 16.67%;
+
+border: 1.5px solid #FFFFFF;
+border-radius: 3px;
+
+
+/* Vector */
+
+position: absolute;
+left: 56.27%;
+right: 12.5%;
+top: 16.67%;
+bottom: 16.67%;
+
+border: 1.5px solid #FFFFFF;
+border-radius: 3px;
+
+
+/* "It's is both attractive and highly adaptable. It's exactly what I've been looking forefinitely wo lorem ipsum dolorth the investment." */
+
+width: 344px;
+height: 96px;
+
+font-family: 'M PLUS 1';
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 24px;
+/* or 150% */
+
+color: #FFFFFF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: flex-start;
+padding: 0px;
+gap: 8px;
+
+width: 155px;
+height: 48px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+
+/* Ellipse */
+
+width: 48px;
+height: 48px;
+
+background: url(.png);
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+
+width: 99px;
+height: 44px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Wade Warren */
+
+width: 99px;
+height: 24px;
+
+font-family: 'M PLUS 1';
+font-style: normal;
+font-weight: 500;
+font-size: 16px;
+line-height: 24px;
+/* identical to box height, or 150% */
+letter-spacing: -0.32px;
+
+color: #FFFFFF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Web Designer */
+
+width: 79px;
+height: 20px;
+
+font-family: 'M PLUS 1';
+font-style: normal;
+font-weight: 400;
+font-size: 12px;
+line-height: 20px;
+/* identical to box height, or 167% */
+
+color: #ADB2B1;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 48px 24px;
+gap: 32px;
+
+width: 392px;
+height: 360px;
+
+background: rgba(39, 50, 47, 0.24);
+backdrop-filter: blur(8px);
+/* Note: backdrop-filter has minimal browser support */
+border-radius: 32px;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: flex-start;
+padding: 16px;
+gap: 10px;
+
+width: 56px;
+height: 56px;
+
+background: #3D544D;
+border-radius: 56px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Frame */
+
+width: 24px;
+height: 24px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Group */
+
+position: absolute;
+width: 18px;
+height: 16px;
+left: 3px;
+top: 4px;
+
+
+
+/* Vector */
+
+position: absolute;
+left: 12.5%;
+right: 56.27%;
+top: 16.67%;
+bottom: 16.67%;
+
+border: 1.5px solid #FFFFFF;
+border-radius: 3px;
+
+
+/* Vector */
+
+position: absolute;
+left: 56.27%;
+right: 12.5%;
+top: 16.67%;
+bottom: 16.67%;
+
+border: 1.5px solid #FFFFFF;
+border-radius: 3px;
+
+
+/* "I am really satisfied with it. I'm good to go. It really saves me time and effort. It's is exactly what our business has been lacking. " */
+
+width: 344px;
+height: 96px;
+
+/* regular/p */
+font-family: 'Poppins';
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 24px;
+/* or 150% */
+
+color: #FFFFFF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: flex-start;
+padding: 0px;
+gap: 8px;
+
+width: 170px;
+height: 48px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+
+/* Ellipse */
+
+width: 48px;
+height: 48px;
+
+background: url(.png);
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+
+width: 114px;
+height: 44px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Jenny Wilson */
+
+width: 99px;
+height: 24px;
+
+font-family: 'M PLUS 1';
+font-style: normal;
+font-weight: 500;
+font-size: 16px;
+line-height: 24px;
+/* identical to box height, or 150% */
+letter-spacing: -0.32px;
+
+color: #FFFFFF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Trust Administrator */
+
+width: 114px;
+height: 20px;
+
+font-family: 'M PLUS 1';
+font-style: normal;
+font-weight: 400;
+font-size: 12px;
+line-height: 20px;
+/* identical to box height, or 167% */
+
+color: #ADB2B1;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* faq */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 0px;
+gap: 64px;
+
+width: 1020px;
+height: 666px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 8;
+flex-grow: 0;
+
+
+/* FAQs */
+
+width: 103px;
+height: 58px;
+
+font-family: 'M PLUS 1';
+font-style: normal;
+font-weight: 700;
+font-size: 40px;
+line-height: 58px;
+/* identical to box height */
+
+color: #FFFFFF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Frame 27 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 0px;
+gap: 24px;
+
+width: 1020px;
+height: 544px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame 25 */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px 0px 16px;
+gap: 16px;
+
+width: 1020px;
+height: 112px;
+
+border-bottom: 1.5px solid #ADB2B1;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 26 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: center;
+padding: 0px;
+gap: 30px;
+
+width: 1020px;
+height: 32px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* What credit score do I need to apply for a credit card? */
+
+width: 655px;
+height: 32px;
+
+font-family: 'Poppins';
+font-style: normal;
+font-weight: 700;
+font-size: 24px;
+line-height: 32px;
+/* identical to box height, or 133% */
+
+color: #FFFFFF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* - */
+
+width: 16px;
+height: 3.09px;
+
+background: #FFFFFF;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* The required credit score may vary depending on the specific credit card. Generally, a good to excellent credit score (typically 670 or above) increases your chances of approval for premium credit cards. */
+
+width: 1020px;
+height: 48px;
+
+/* regular/p */
+font-family: 'Poppins';
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 24px;
+/* or 150% */
+
+color: #ADB2B1;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 26 */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px 0px 16px;
+gap: 16px;
+
+width: 1020px;
+height: 48px;
+
+border-bottom: 1.5px solid #ADB2B1;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 26 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: center;
+padding: 0px;
+gap: 30px;
+
+width: 1020px;
+height: 32px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* How can I apply for a credit card online? */
+
+width: 495px;
+height: 32px;
+
+font-family: 'Poppins';
+font-style: normal;
+font-weight: 700;
+font-size: 24px;
+line-height: 32px;
+/* identical to box height, or 133% */
+
+color: #FFFFFF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* + */
+
+width: 16px;
+height: 16px;
+
+background: #FFFFFF;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Applying for a credit card online is simple. Just visit our website, select the desired credit card, and click on the "Apply Now" button. Follow the instructions, provide your information, and submit your application securely. */
+
+display: none;
+width: 1004px;
+height: 48px;
+
+/* regular/p */
+font-family: 'Poppins';
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 24px;
+/* or 150% */
+
+color: #ADB2B1;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 27 */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px 0px 16px;
+gap: 16px;
+
+width: 1020px;
+height: 48px;
+
+border-bottom: 1.5px solid #ADB2B1;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 26 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: center;
+padding: 0px;
+gap: 30px;
+
+width: 1020px;
+height: 32px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Are there any annual fees associated with the credit card? */
+
+width: 717px;
+height: 32px;
+
+font-family: 'Poppins';
+font-style: normal;
+font-weight: 700;
+font-size: 24px;
+line-height: 32px;
+/* identical to box height, or 133% */
+
+color: #FFFFFF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* + */
+
+width: 16px;
+height: 16px;
+
+background: #FFFFFF;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Annual fees may apply to some credit cards, but not all. Our credit card details page will specify if there are any annual fees associated with the card you're interested in. */
+
+display: none;
+width: 1020px;
+height: 48px;
+
+/* regular/p */
+font-family: 'Poppins';
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 24px;
+/* or 150% */
+
+color: #ADB2B1;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 28 */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px 0px 16px;
+gap: 16px;
+
+width: 1020px;
+height: 48px;
+
+border-bottom: 1.5px solid #ADB2B1;
+
+/* Inside auto layout */
+flex: none;
+order: 3;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 26 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: center;
+padding: 0px;
+gap: 30px;
+
+width: 1020px;
+height: 32px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* How long does it take to receive the credit card once approved? */
+
+width: 778px;
+height: 32px;
+
+font-family: 'Poppins';
+font-style: normal;
+font-weight: 700;
+font-size: 24px;
+line-height: 32px;
+/* identical to box height, or 133% */
+
+color: #FFFFFF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* + */
+
+width: 16px;
+height: 16px;
+
+background: #FFFFFF;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Once your credit card application is approved, it typically takes 7 to 10 business days to receive your physical card by mail. You can start using your virtual card immediately after approval for online purchases. */
+
+display: none;
+width: 1020px;
+height: 48px;
+
+/* regular/p */
+font-family: 'Poppins';
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 24px;
+/* or 150% */
+
+color: #ADB2B1;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 29 */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px 0px 16px;
+gap: 16px;
+
+width: 1020px;
+height: 48px;
+
+border-bottom: 1.5px solid #ADB2B1;
+
+/* Inside auto layout */
+flex: none;
+order: 4;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 26 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: center;
+padding: 0px;
+gap: 30px;
+
+width: 1020px;
+height: 32px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* How can I check my credit card balance and transactions? */
+
+width: 726px;
+height: 32px;
+
+font-family: 'Poppins';
+font-style: normal;
+font-weight: 700;
+font-size: 24px;
+line-height: 32px;
+/* identical to box height, or 133% */
+
+color: #FFFFFF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* + */
+
+width: 16px;
+height: 16px;
+
+background: #FFFFFF;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* You can easily check your credit card balance and transactions through our secure online banking portal or mobile app. Simply log in to your account to access your credit card information. */
+
+display: none;
+width: 1020px;
+height: 48px;
+
+/* regular/p */
+font-family: 'Poppins';
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 24px;
+/* or 150% */
+
+color: #ADB2B1;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 30 */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px 0px 16px;
+gap: 16px;
+
+width: 1020px;
+height: 48px;
+
+border-bottom: 1.5px solid #ADB2B1;
+
+/* Inside auto layout */
+flex: none;
+order: 5;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 26 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: center;
+padding: 0px;
+gap: 30px;
+
+width: 1020px;
+height: 32px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* What should I do if my credit card is lost or stolen? */
+
+width: 619px;
+height: 32px;
+
+font-family: 'Poppins';
+font-style: normal;
+font-weight: 700;
+font-size: 24px;
+line-height: 32px;
+/* identical to box height, or 133% */
+
+color: #FFFFFF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* + */
+
+width: 16px;
+height: 16px;
+
+background: #FFFFFF;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* If your credit card is lost or stolen, please notify us immediately through our customer support line or online banking. We will assist you in securing your account and issuing a replacement card. */
+
+display: none;
+width: 1020px;
+height: 48px;
+
+/* regular/p */
+font-family: 'Poppins';
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 24px;
+/* or 150% */
+
+color: #ADB2B1;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 31 */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px 0px 16px;
+gap: 16px;
+
+width: 1020px;
+height: 48px;
+
+border-bottom: 1.5px solid #ADB2B1;
+
+/* Inside auto layout */
+flex: none;
+order: 6;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 26 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: center;
+padding: 0px;
+gap: 30px;
+
+width: 1020px;
+height: 32px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Is my credit card information secure? */
+
+width: 461px;
+height: 32px;
+
+font-family: 'Poppins';
+font-style: normal;
+font-weight: 700;
+font-size: 24px;
+line-height: 32px;
+/* identical to box height, or 133% */
+
+color: #FFFFFF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* + */
+
+width: 16px;
+height: 16px;
+
+background: #FFFFFF;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Yes, we prioritize the security of your information. Our credit card systems use encryption and industry-standard security measures to protect your data, ensuring a safe and seamless experience. */
+
+display: none;
+width: 1020px;
+height: 48px;
+
+/* regular/p */
+font-family: 'Poppins';
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 24px;
+/* or 150% */
+
+color: #ADB2B1;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* footer */
+
+width: 1440px;
+height: 843px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 9;
+flex-grow: 0;
+
+
+/* cta */
+
+position: absolute;
+width: 1240px;
+height: 472px;
+left: 100px;
+top: 4234.25px;
+
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: flex-start;
+padding: 0px;
+gap: 16px;
+
+position: absolute;
+width: 1240px;
+height: 252.02px;
+left: calc(50% - 1240px/2);
+top: calc(50% - 252.02px/2 - 0.01px);
+
+border-radius: 48px;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 32px;
+
+width: 605px;
+height: 252.02px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Group */
+
+width: 605px;
+height: 156.02px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Easy Way to manage your finances */
+
+position: absolute;
+width: 604px;
+height: 112px;
+left: 1px;
+top: 0px;
+
+/* bold/h2 */
+font-family: 'Poppins';
+font-style: normal;
+font-weight: 700;
+font-size: 48px;
+line-height: 56px;
+/* or 117% */
+letter-spacing: -0.48px;
+
+color: #FFFFFF;
+
+
+
+/* Easy to use mobile app that support on android and ios. */
+
+position: absolute;
+width: 484px;
+height: 24px;
+left: 0px;
+top: 132.02px;
+
+font-family: 'M PLUS 1';
+font-style: normal;
+font-weight: 400;
+font-size: 18px;
+line-height: 24px;
+/* identical to box height, or 133% */
+letter-spacing: -0.03em;
+
+color: #ADB2B1;
+
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: flex-start;
+padding: 0px;
+gap: 24px;
+
+width: 349.06px;
+height: 64px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Badges/App_Store */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 16px;
+gap: 8px;
+
+width: 154.94px;
+height: 64px;
+
+background: #3D544D;
+border-radius: 16px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Vector */
+
+width: 122.94px;
+height: 32px;
+
+background: #FFFFFF;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Badges/Google_Play */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 16px;
+gap: 10px;
+
+width: 170.13px;
+height: 64px;
+
+background: #3D544D;
+border-radius: 16px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Vector */
+
+width: 138.13px;
+height: 32px;
+
+background: #FFFFFF;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* image 108 */
+
+position: absolute;
+width: 604px;
+height: 850.41px;
+right: -1px;
+top: 0px;
+
+background: url(image);
+
+
+/* footer */
+
+position: absolute;
+width: 1440px;
+height: 371px;
+left: 0px;
+top: 4706.25px;
+
+
+
+/* Rectangle 3 */
+
+position: absolute;
+width: 1440px;
+height: 371px;
+left: 0px;
+top: 4706.25px;
+
+background: rgba(40, 52, 48, 0.24);
+backdrop-filter: blur(8px);
+/* Note: backdrop-filter has minimal browser support */
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 80px;
+
+position: absolute;
+width: 1240px;
+height: 276px;
+left: 100px;
+top: 4766.25px;
+
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 32px;
+
+width: 1240px;
+height: 176px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 10px;
+
+width: 392px;
+height: 176px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* logo */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 0px;
+gap: 12px;
+
+width: 140px;
+height: 24px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Exclude */
+
+width: 24px;
+height: 24px;
+
+background: #2BB32A;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* GreenBank */
+
+width: 104px;
+height: 24px;
+
+font-family: 'M PLUS 1';
+font-style: normal;
+font-weight: 700;
+font-size: 20px;
+line-height: 24px;
+/* identical to box height, or 120% */
+letter-spacing: -0.03em;
+
+color: #FFFFFF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Discover the power of our secure and rewarding credit cards */
+
+width: 287px;
+height: 48px;
+
+font-family: 'M PLUS 1';
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 24px;
+/* or 150% */
+letter-spacing: -0.03em;
+
+color: #ADB2B1;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: flex-start;
+padding: 0px;
+gap: 32px;
+
+width: 816px;
+height: 160px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 16px;
+
+width: 180px;
+height: 160px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* About us */
+
+width: 71px;
+height: 24px;
+
+font-family: 'M PLUS 1';
+font-style: normal;
+font-weight: 700;
+font-size: 16px;
+line-height: 24px;
+/* identical to box height, or 150% */
+
+color: #FFFFFF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 8px;
+
+width: 180px;
+height: 120px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Investors */
+
+width: 71px;
+height: 24px;
+
+font-family: 'M PLUS 1';
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 24px;
+/* identical to box height, or 150% */
+
+color: #ADB2B1;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Features */
+
+width: 67px;
+height: 24px;
+
+font-family: 'M PLUS 1';
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 24px;
+/* identical to box height, or 150% */
+
+color: #ADB2B1;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Book a demo */
+
+width: 99px;
+height: 24px;
+
+font-family: 'M PLUS 1';
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 24px;
+/* identical to box height, or 150% */
+
+color: #ADB2B1;
+
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+
+/* Security */
+
+width: 65px;
+height: 24px;
+
+font-family: 'M PLUS 1';
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 24px;
+/* identical to box height, or 150% */
+
+color: #ADB2B1;
+
+
+/* Inside auto layout */
+flex: none;
+order: 3;
+flex-grow: 0;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 16px;
+
+width: 180px;
+height: 160px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 1;
+
+
+/* Products */
+
+width: 71px;
+height: 24px;
+
+font-family: 'M PLUS 1';
+font-style: normal;
+font-weight: 700;
+font-size: 16px;
+line-height: 24px;
+/* identical to box height, or 150% */
+
+color: #FFFFFF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 8px;
+
+width: 180px;
+height: 120px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Credits Cards */
+
+width: 105px;
+height: 24px;
+
+font-family: 'M PLUS 1';
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 24px;
+/* identical to box height, or 150% */
+
+color: #ADB2B1;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Gift Cards */
+
+width: 81px;
+height: 24px;
+
+font-family: 'M PLUS 1';
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 24px;
+/* identical to box height, or 150% */
+
+color: #ADB2B1;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Savings accounts */
+
+width: 133px;
+height: 24px;
+
+font-family: 'M PLUS 1';
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 24px;
+/* identical to box height, or 150% */
+
+color: #ADB2B1;
+
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+
+/* NFT */
+
+width: 34px;
+height: 24px;
+
+font-family: 'M PLUS 1';
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 24px;
+/* identical to box height, or 150% */
+
+color: #ADB2B1;
+
+
+/* Inside auto layout */
+flex: none;
+order: 3;
+flex-grow: 0;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 16px;
+
+width: 180px;
+height: 128px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+
+/* Useful Links */
+
+width: 97px;
+height: 24px;
+
+font-family: 'M PLUS 1';
+font-style: normal;
+font-weight: 700;
+font-size: 16px;
+line-height: 24px;
+/* identical to box height, or 150% */
+
+color: #FFFFFF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 8px;
+
+width: 180px;
+height: 88px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Free rewards */
+
+width: 98px;
+height: 24px;
+
+font-family: 'M PLUS 1';
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 24px;
+/* identical to box height, or 150% */
+
+color: #ADB2B1;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Documentation */
+
+width: 118px;
+height: 24px;
+
+font-family: 'M PLUS 1';
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 24px;
+/* identical to box height, or 150% */
+
+color: #ADB2B1;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Affiliate program */
+
+width: 130px;
+height: 24px;
+
+font-family: 'M PLUS 1';
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 24px;
+/* identical to box height, or 150% */
+
+color: #ADB2B1;
+
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 16px;
+
+width: 180px;
+height: 160px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 3;
+flex-grow: 0;
+
+
+/* Social */
+
+width: 48px;
+height: 24px;
+
+font-family: 'M PLUS 1';
+font-style: normal;
+font-weight: 700;
+font-size: 16px;
+line-height: 24px;
+/* identical to box height, or 150% */
+
+color: #FFFFFF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 8px;
+
+width: 180px;
+height: 120px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Changelog */
+
+width: 82px;
+height: 24px;
+
+font-family: 'M PLUS 1';
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 24px;
+/* identical to box height, or 150% */
+
+color: #ADB2B1;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* License */
+
+width: 59px;
+height: 24px;
+
+font-family: 'M PLUS 1';
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 24px;
+/* identical to box height, or 150% */
+
+color: #ADB2B1;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Site Maps */
+
+width: 76px;
+height: 24px;
+
+font-family: 'M PLUS 1';
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 24px;
+/* identical to box height, or 150% */
+
+color: #ADB2B1;
+
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+
+/* News */
+
+width: 41px;
+height: 24px;
+
+font-family: 'M PLUS 1';
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 24px;
+/* identical to box height, or 150% */
+
+color: #ADB2B1;
+
+
+/* Inside auto layout */
+flex: none;
+order: 3;
+flex-grow: 0;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: center;
+padding: 0px;
+gap: 482px;
+
+width: 1240px;
+height: 20px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* copyright 2023 DoraDesign All Rights Reserved */
+
+margin: 0 auto;
+width: 274px;
+height: 20px;
+
+font-family: 'M PLUS 1';
+font-style: normal;
+font-weight: 400;
+font-size: 12px;
+line-height: 20px;
+/* identical to box height, or 167% */
+
+color: #ADB2B1;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Group 11 */
+
+margin: 0 auto;
+width: 289px;
+height: 20px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* This page uses cookies. See cookies details here */
+
+position: absolute;
+width: 288px;
+height: 20px;
+left: 951px;
+top: 0px;
+
+font-family: 'Poppins';
+font-style: normal;
+font-weight: 400;
+font-size: 12px;
+line-height: 20px;
+/* identical to box height, or 167% */
+
+color: #ADB2B1;
+
+
+
+/* Vector 5 */
+
+position: absolute;
+width: 28px;
+height: 0px;
+left: 1212px;
+top: 17px;
+
+border: 1px solid #ADB2B1;

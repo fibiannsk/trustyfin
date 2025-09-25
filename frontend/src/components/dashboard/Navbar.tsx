@@ -13,6 +13,7 @@ import { useNavigate } from 'react-router-dom';
 import logotrustyfin from '../../assets/logotrustyfin.png';
 import { useAuth } from '../../context/AuthContext';
 import { useData } from "../../context/DataContext";
+import { useToast } from "../../hooks/use-toast";
 import BankUserSidebar from "./BankUserSidebar";
 
 
@@ -23,6 +24,7 @@ export const Navbar = () => {
   const { logout } = useAuth();
   const { userInfo } = useData();
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
    const dashboardmv = () => {
@@ -33,9 +35,18 @@ export const Navbar = () => {
     navigate('/user/profile');
  };
 
- const transferr = () => {
+  // 🚨 Block check for transfers
+  const transferr = () => {
+    if (userInfo?.blocked) {
+      toast({
+        title: "Action not allowed",
+        description: "Your account is blocked. Please contact support.",
+        variant: "destructive",
+      });
+      return; // stop navigation
+    }
     navigate('/user/transfer');
- };
+  };
 
  const transactionhistory = () => {
     navigate('/user/transactions');

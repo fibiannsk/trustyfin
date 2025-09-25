@@ -3,12 +3,13 @@ import { Toaster as Sonner } from "./components/ui/sonner";
 import { TooltipProvider } from "./components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-
+import BlockedRoute from "./blockedroute";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import AdminDashboard from "./pages/AdminDashboard";
 import CreateAccount from "./pages/AccountForm";
 import EditAccount from "./pages/Edit";
+import LandingApp from "./landingpage/LandingApp";
 import UserDashboard from "./pages/dashboard";
 import Transfer from "./pages/Transfer";
 import UserProfile from "./pages/profilepage";
@@ -28,6 +29,8 @@ import { CustomerManagement } from "./components/admin/CustomerManagement";
 import { TransactionMonitoring } from "./components/admin/TransactionMonitoring";
 import { SecurityCenter } from "./components/admin/SecurityCenter";
 import { Card, CardContent, CardHeader, CardTitle } from "./components/ui/card";
+import EditTransactionForm from "./pages/EditTransactionForm"; // add this
+
 
 const queryClient = new QueryClient();
 
@@ -41,7 +44,8 @@ const App = () => (
           <DataProvider>
             <Routes>
               {/* Public routes */}
-              <Route path="/" element={<Index />} />
+              <Route path="/" element={<LandingApp />} /> {/* 👈 landing page */}
+              <Route path="/login" element={<Index />} />
               <Route path="*" element={<NotFound />} />
 
               {/* Admin routes (protected, nested) */}
@@ -55,7 +59,11 @@ const App = () => (
               >
                 <Route index element={<DashboardOverview />} />
                 <Route path="customers" element={<CustomerManagement />} />
-                <Route path="transactions" element={<TransactionMonitoring />} />
+                  {/* Transactions nested routes */}
+                <Route path="transactions">
+                  <Route index element={<TransactionMonitoring />} />
+                  <Route path="edit/:txId" element={<EditTransactionForm />} />
+                </Route>
                 <Route path="security" element={<SecurityCenter />} />
 
                 <Route
@@ -168,7 +176,9 @@ const App = () => (
                 path="/user/transfer"
                 element={
                   <ProtectedRoute>
-                    <Transfer />
+                    <BlockedRoute>
+                      <Transfer />
+                    </BlockedRoute>
                   </ProtectedRoute>
                 }
               />
@@ -176,7 +186,9 @@ const App = () => (
                 path="/user/profile"
                 element={
                   <ProtectedRoute>
-                    <UserProfile />
+                    <BlockedRoute>
+                      <UserProfile />
+                    </BlockedRoute>
                   </ProtectedRoute>
                 }
               />
@@ -184,7 +196,9 @@ const App = () => (
                 path="/user/transactions"
                 element={
                   <ProtectedRoute>
-                    <Transacts />
+                    <BlockedRoute>
+                      <Transacts />
+                    </BlockedRoute>
                   </ProtectedRoute>
                 }
               />
@@ -192,7 +206,9 @@ const App = () => (
                 path="/user/profile/changepassword"
                 element={
                   <ProtectedRoute>
-                    <PasswdChanger />
+                    <BlockedRoute>
+                      <PasswdChanger />
+                    </BlockedRoute>
                   </ProtectedRoute>
                 }
               />

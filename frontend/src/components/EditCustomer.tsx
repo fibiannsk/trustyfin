@@ -158,6 +158,35 @@ const EditCustomerForm: React.FC<EditCustomerFormProps> = ({
           >
             {isLoading ? "Updating..." : "Update Customer"}
           </button>
+           {/* 🚨 Delete Button */}
+          <button
+            type="button"
+            className="flex-1 px-6 py-3 rounded-lg font-medium bg-destructive text-white hover:bg-destructive/90 transition-all duration-200"
+            onClick={async () => {
+              if (!window.confirm("Are you sure you want to delete this customer?")) return;
+            
+              try {
+                setIsLoading(true);
+                const res = await fetch(`http://127.0.0.1:5000/admin/user/${formData.accountNumber}`, {
+                  method: "DELETE",
+                  headers: { "Content-Type": "application/json" },
+                });
+                
+                if (res.ok) {
+                  navigate("/admin/customers");
+                } else {
+                  const err = await res.json();
+                  alert(err.error || "Failed to delete customer");
+                }
+              } catch (error) {
+                console.error("Delete failed:", error);
+              } finally {
+                setIsLoading(false);
+              }
+            }}
+            >
+            {isLoading ? "Deleting..." : "Delete Customer"}
+          </button>
         </div>
       </form>
     </div>
