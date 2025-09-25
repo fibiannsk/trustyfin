@@ -14,6 +14,28 @@ def safe_str(obj):
     except Exception:
         return None
 
+def build_full_name(user):
+    if not user:
+        return "Unknown"
+    parts = [
+        user.get("firstName", "").strip(),
+        user.get("middleName", "").strip(),
+        user.get("lastName", "").strip(),
+    ]
+    return " ".join([p for p in parts if p]).strip() or "Unknown"
+
+def format_timestamp(ts):
+    """Convert MongoDB timestamp (datetime or string) to a readable format."""
+    if not ts:
+        return ""
+    try:
+        if isinstance(ts, datetime):
+            return ts.strftime("%b %d, %Y %I:%M %p")
+        # if stored as ISO string
+        return datetime.fromisoformat(str(ts).replace("Z", "+00:00")).strftime("%b %d, %Y %I:%M %p")
+    except Exception:
+        return safe_str(ts)
+
 def format_date(dt, fmt="%Y-%m-%d"):
     if isinstance(dt, datetime):
         return dt.strftime(fmt)
@@ -96,17 +118,6 @@ def edit_user(email):
     db.users.update_one({'email': email}, {'$set': data})
     return jsonify({"message": "User account updated successfully"}), 200
 
-# Block a user's account
-@admin_blueprint.route('/users/<email>/block', methods=['PUT'])
-def block_user(email):
-    db.users.update_one({'email': email}, {'$set': {'blocked': True}})
-    return jsonify({"message": "User account blocked successfully"}), 200
-
-# Unblock a user's account
-@admin_blueprint.route('/users/<email>/unblock', methods=['PUT'])
-def unblock_user(email):
-    db.users.update_one({'email': email}, {'$set': {'blocked': False}})
-    return jsonify({"message": "User account unblocked successfully"}), 200
 
 # ---------------- Get All Users and Transactions ----------------
 @admin_blueprint.route("/all-data", methods=["GET"])
@@ -137,16 +148,38 @@ def get_all_data():
         # Fetch transactions
         transactions = list(db.transactions.find({}))
         formatted_transactions = []
+
         for tx in transactions:
             try:
+                # get sender (initiator) info
+                user_id = tx.get("user_id")
+                user = None
+
+                if user_id:
+                    if isinstance(user_id, str):
+                        if ObjectId.is_valid(user_id):
+                            user = db.users.find_one({"_id": ObjectId(user_id)})
+                        else:
+                            user = db.users.find_one({"_id": user_id})
+                    else:
+                        user = db.users.find_one({"_id": user_id})
+
                 formatted_transactions.append({
                     "_id": safe_str(tx.get("_id")),
-                    "user_id": safe_str(tx.get("user_id")),
+                    "user_id": safe_str(user_id),
+                    "initiator_name": build_full_name(user),
+                    "initiator_account": user.get("accountNumber") if user else "Unknown",
+                    "from_account": tx.get("from_account", ""),
+                    "beneficiary_bank": tx.get("beneficiary_bank", ""),
+                    "beneficiary_account": tx.get("beneficiary_account", ""),
+                    "beneficiary_name": tx.get("beneficiary_name", ""),
                     "amount": tx.get("amount", 0),
+                    "narration": tx.get("narration", ""),
+                    "timestamp": format_timestamp(tx.get("timestamp")),  # ✅ formatted
                     "type": tx.get("type", ""),
-                    "status": tx.get("status", ""),
-                    "createdAt": tx.get("createdAt")  # optional, or format if needed
+                    "status": tx.get("status", "")
                 })
+
             except Exception as e:
                 print(f"Error formatting transaction {tx.get('_id')}: {e}")
                 continue
@@ -226,6 +259,160 @@ def update_user(accountNumber):
     except Exception as e:
         import traceback
         traceback.print_exc()
+        return jsonify({"error": "Internal server error"}), 500
+
+@admin_blueprint.route("/user/<accountNumber>", methods=["DELETE"])
+def delete_user(accountNumber):
+    try:
+        user = db.users.find_one({"accountNumber": accountNumber})
+        if not user:
+            return jsonify({"error": "User not found"}), 404
+
+        db.users.delete_one({"accountNumber": accountNumber})
+
+        return jsonify({"message": "User deleted successfully"}), 200
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        return jsonify({"error": "Internal server error"}), 500
+
+
+from bson import ObjectId
+from flask import request, jsonify
+
+@admin_blueprint.route('/user/<user_id>/status', methods=['PATCH'])
+def update_user_status(user_id):
+    data = request.get_json()
+
+    if "blocked" not in data:
+        return jsonify({"error": "Missing 'blocked' field"}), 400
+
+    blocked_status = bool(data["blocked"])
+
+    try:
+        # Convert string ID to ObjectId
+        object_id = ObjectId(user_id)
+    except Exception:
+        return jsonify({"error": "Invalid user ID"}), 400
+
+    result = db.users.update_one(
+        {"_id": object_id},
+        {"$set": {"blocked": blocked_status}}
+    )
+
+    if result.matched_count == 0:
+        return jsonify({"error": "User not found"}), 404
+
+    message = (
+        "User account blocked successfully"
+        if blocked_status
+        else "User account unblocked successfully"
+    )
+
+    return jsonify({"message": message}), 200
+
+
+@admin_blueprint.route("/transactions/<string:tx_id>", methods=["PATCH"])
+def update_transaction(tx_id):
+    try:
+        data = request.get_json()
+        if not data:
+            return jsonify({"error": "No data provided"}), 400
+
+        # ensure valid ObjectId
+        try:
+            tx_obj_id = ObjectId(tx_id)
+        except:
+            return jsonify({"error": "Invalid transaction ID"}), 400
+
+        transaction = db.transactions.find_one({"_id": tx_obj_id})
+        if not transaction:
+            return jsonify({"error": "Transaction not found"}), 404
+
+        # ✅ Allowed fields to update (added timestamp)
+        allowed_fields = [
+            "amount",
+            "type",
+            "beneficiary_name",
+            "beneficiary_account",
+            "beneficiary_bank",
+            "narration",
+            "status",
+            "timestamp",  # ✅ included here
+        ]
+
+        update_data = {}
+
+        for field in allowed_fields:
+            if field in data:
+                value = data[field]
+
+                # 🔧 Normalize timestamp to datetime
+                if field == "timestamp" and value:
+                    import datetime
+                    if isinstance(value, datetime.datetime):
+                        update_data["timestamp"] = value
+                    elif isinstance(value, (int, float)):
+                        # assume epoch milliseconds
+                        update_data["timestamp"] = datetime.datetime.fromtimestamp(
+                            value / 1000
+                        )
+                    elif isinstance(value, str):
+                        try:
+                            # try ISO format first
+                            update_data["timestamp"] = datetime.datetime.fromisoformat(
+                                value.replace("Z", "+00:00")
+                            )
+                        except ValueError:
+                            try:
+                                # try your UI’s format "Sep 22, 2025 06:16 AM"
+                                update_data["timestamp"] = datetime.datetime.strptime(
+                                    value, "%b %d, %Y %I:%M %p"
+                                )
+                            except Exception:
+                                return jsonify({"error": f"Invalid timestamp format: {value}"}), 400
+                else:
+                    update_data[field] = value
+
+        if update_data:
+            db.transactions.update_one(
+                {"_id": tx_obj_id},
+                {"$set": update_data}
+            )
+
+        # ✅ Fetch updated transaction
+        updated_tx = db.transactions.find_one({"_id": tx_obj_id})
+
+        # format timestamp safely
+        ts_value = None
+        if "timestamp" in updated_tx and updated_tx["timestamp"]:
+            try:
+                ts_value = updated_tx["timestamp"].isoformat()
+            except Exception:
+                ts_value = str(updated_tx["timestamp"])
+
+        response = {
+            "message": "Transaction updated successfully",
+            "transaction": {
+                "id": str(updated_tx["_id"]),
+                "user_id": str(updated_tx.get("user_id")),
+                "from_account": updated_tx.get("from_account"),
+                "beneficiaryBank": updated_tx.get("beneficiary_bank"),
+                "beneficiaryAccount": updated_tx.get("beneficiary_account"),
+                "beneficiaryName": updated_tx.get("beneficiary_name"),
+                "amount": updated_tx.get("amount"),
+                "narration": updated_tx.get("narration"),
+                "type": updated_tx.get("type"),
+                "status": updated_tx.get("status", "pending"),
+                "timestamp": ts_value,
+            },
+        }
+
+        return jsonify(response), 200
+
+    except Exception as e:
+        print("❌ Error updating transaction:", e)
+        import traceback; traceback.print_exc()
         return jsonify({"error": "Internal server error"}), 500
 
 

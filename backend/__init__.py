@@ -3,9 +3,12 @@ from flask import Flask, jsonify
 from dotenv import load_dotenv
 from flask_jwt_extended import JWTManager
 from flask_cors import CORS   # ✅ import here too
+from flask import Flask, render_template
 
 from .superadmin import ensure_super_admin
 from .extensions import db
+from .extensions import mail
+from .celery_app import make_celery
 
 # Import blueprints
 from .routes.profile import profile_blueprint
@@ -15,12 +18,14 @@ from .routes.auth.auth import auth_blueprint
 
 jwt = JWTManager()
 
+
 def create_app(config_name="default"):
     # Load environment variables
     load_dotenv()
 
     app = Flask(
         __name__,
+        template_folder="landing/templates",
         static_url_path="/static",
         static_folder=os.path.join(os.getcwd(), "static")
     )
@@ -38,6 +43,19 @@ def create_app(config_name="default"):
     app.config["SESSION_PERMANENT"] = False
     app.config["SESSION_TYPE"] = "filesystem"
     app.config['DEBUG'] = True
+
+    # ✅ Gmail SMTP configuration (loaded from env for safety)
+    app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+    app.config['MAIL_PORT'] = 587
+    app.config['MAIL_USE_TLS'] = True
+    app.config['MAIL_USERNAME'] = os.getenv("MAIL_USERNAME")     # your Gmail
+    app.config['MAIL_PASSWORD'] = os.getenv("MAIL_PASSWORD")     # your App Password
+    app.config['MAIL_DEFAULT_SENDER'] = ("TrustyFin Bank", os.getenv("MAIL_USERNAME"))
+
+
+    mail.init_app(app)
+    celery = make_celery(app)  # bind celery to app  # 👈 create a Mail instance (will be initialized later)
+
 
     # ✅ CORS setup (official way)
     CORS(
@@ -76,9 +94,10 @@ def create_app(config_name="default"):
     app.register_blueprint(transfer_blueprint, url_prefix="/transfer")
     app.register_blueprint(auth_blueprint, url_prefix="/auth")
 
+   # 👇 homepage route
     @app.route("/")
-    def init_superadmin():
+    def home():
         ensure_super_admin(db)
-        return {"message": "Super admin check complete."}
+        return render_template("landing_page.html")
 
     return app

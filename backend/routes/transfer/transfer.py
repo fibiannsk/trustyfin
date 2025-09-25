@@ -1,17 +1,22 @@
+from flask import current_app
 from flask import Blueprint, request, jsonify
 from backend.extensions import db
 from datetime import datetime
 from flask_jwt_extended import jwt_required, get_jwt_identity
+from backend.decorators import block_check_required
 
 transfer_blueprint = Blueprint('transfer', __name__)
 
 # ----------------- Transfer Endpoint -----------------
 @transfer_blueprint.route('/', methods=['POST'])
 @jwt_required()
+@block_check_required
 def transfer():
     sender_id = get_jwt_identity()
     data = request.get_json()
     print("📩 Full Incoming Data:", data)
+
+    from backend.tasks.email_tasks import send_transaction_email_task   # 👈 import celery task
 
     from_account = data.get('fromAccount')
     beneficiary_bank = data.get('beneficiaryBank')
@@ -54,6 +59,16 @@ def transfer():
     if balance < amount:
         return jsonify({"error": "Oops! Insufficient balance"}), 400
 
+
+     # ----------------- Helper: Mask Account -----------------
+    def mask_account_number(account_number: str) -> str:
+        if len(account_number) < 6:
+            return account_number  # too short, return as-is
+        return f"{account_number[0]}XX..{account_number[-2]}X"
+
+    masked_from_account = mask_account_number(from_account)
+    masked_beneficiary_account = mask_account_number(beneficiary_account)
+
     # Deduct from sender
     new_balance = int(sender['balance']) - int(amount)
 
@@ -62,14 +77,21 @@ def transfer():
         {"$set": {"balance": new_balance}}
     )
 
+    # Build sender full name once
+    sender_name = f"{sender.get('firstName', '')} {sender.get('lastName', '')}".strip()
+    if not sender_name:
+        sender_name = "Customer"
 
     # Record debit transaction
     sender_transaction = {
         'user_id': sender_id,
+        'initiator_name': sender_name,   # 👈 added here
         "transaction_id": transaction_id,
         'from_account': from_account,
+        'masked_from_account': masked_from_account,
         'beneficiary_bank': beneficiary_bank,
         'beneficiary_account': beneficiary_account,
+        'masked_beneficiary_account': masked_beneficiary_account,
         'beneficiary_name': beneficiary_name,
         'amount': amount,
         'narration': narration,
@@ -77,6 +99,35 @@ def transfer():
         'type': 'debit'
     }
     db.transactions.insert_one(sender_transaction)
+
+    # Enqueue debit email notification
+    try:
+        customer_name = f"{sender.get('firstName', '')} {sender.get('lastName', '')}".strip()
+        if not customer_name:
+            customer_name = "Customer"
+
+        payload = {
+            "email": sender.get("email"),
+            "customer_name": customer_name,
+            "amount": f"${amount:.2f}",
+            "transaction_type": "DEBIT",  # keep consistent with CREDIT
+            "currency": sender.get("currency", "USD"),
+            "maskedAccountNumber": masked_sender_account,
+            "narration": narration,
+            "reference": transaction_id,
+            "dateTime": datetime.now().strftime("%d-%b-%Y %H:%M"),
+            "availableBalance": f"{new_balance:,.2f}",
+            "clearedBalance": f"{new_balance:,.2f}",
+            "template": "transaction",
+            "accountNumber": sender.get("accountNumber"),
+            "status": sender.get("status", "Active"),
+        }
+
+        send_transaction_email_task.delay(payload)
+        
+    except Exception as e:
+        current_app.logger.exception("❌ Failed to enqueue debit email task: %s", e)
+
 
     # Expense record
     expense = {
@@ -100,10 +151,13 @@ def transfer():
 
         credit_transaction = {
             'user_id': str(recipient['_id']),  # recipient's user ID
+            'initiator_name': sender_name,   # 👈 added here
             "transaction_id": transaction_id,
             'from_account': from_account,
+            'masked_from_account': masked_from_account,
             'beneficiary_bank': beneficiary_bank,
             'beneficiary_account': beneficiary_account,
+            'masked_beneficiary_account': masked_beneficiary_account,
             'beneficiary_name': beneficiary_name,
             'amount': amount,
             'narration': narration,
@@ -111,6 +165,31 @@ def transfer():
             'type': 'credit'
         }
         db.transactions.insert_one(credit_transaction)
+    
+    # Enqueue credit email notification
+        try:
+            # Combine firstName and lastName into a full name
+            customer_name = f"{recipient.get('firstName', '')} {recipient.get('lastName', '')}".strip()
+            if not customer_name:
+                customer_name = "Customer"
+
+            payload = {
+                "email": recipient['email'],
+                "customer_name": recipient.get("fullName", "Customer"),
+                "amount": f"${amount:.2f}",
+                "transaction_type": "CREDIT",
+                "currency": "USD",
+                "maskedAccountNumber": masked_beneficiary_account,
+                "narration": narration,
+                "reference": transaction_id,
+                "dateTime": datetime.now().strftime("%d-%b-%Y %H:%M"),
+                "availableBalance": f"{recipient_new_balance:,.2f}",
+                "clearedBalance": f"{recipient_new_balance:,.2f}",
+                "template": "transaction"
+            }
+            send_transaction_email_task.delay(payload)
+        except Exception as e:
+            current_app.logger.exception("❌ Failed to enqueue credit email task: %s", e)
 
     # ✅ Save Beneficiary (for both internal & external transfers)
     if save_beneficiary:
@@ -198,6 +277,7 @@ def get_beneficiaries():
 # ----------------- Get User Transactions (Paginated) -----------------
 @transfer_blueprint.route("/transactions", methods=["GET"])
 @jwt_required()
+@block_check_required
 def get_transactions():
     user_id = get_jwt_identity()
 

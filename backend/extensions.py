@@ -1,6 +1,9 @@
 import os
 from pymongo import MongoClient
 from dotenv import load_dotenv
+# backend/extensions.py
+from flask_mail import Mail
+from celery import Celery
 
 # Load environment variables from .env
 load_dotenv()
@@ -13,3 +16,5 @@ mongo_client = MongoClient(MONGO_URI)
 
 # Select the default database (or specify one explicitly)
 db = mongo_client.get_database("bnkin")  # replace "bnkin" with your db name if needed
+
+mail = Mail()
