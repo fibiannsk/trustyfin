@@ -1,17 +1,44 @@
-# Python
+# ======================
+# Python / Flask
+# ======================
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
+*.db
+*.sqlite3
+*.log
+
+# Virtual environments
 venv/
+.env/
 .env
 
-# Node
+# IDE settings
+.vscode/
+.idea/
+
+# ======================
+# Node.js / Next.js / React
+# ======================
 node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# OS
+# Next.js build output
+.next/
+out/
+
+# ======================
+# OS / Misc
+# ======================
 .DS_Store
 Thumbs.db
+
+# ======================
+# Coverage / Testing
+# ======================
+coverage/
+*.cover
+*.lcov
