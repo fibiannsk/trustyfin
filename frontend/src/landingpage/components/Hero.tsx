@@ -2,11 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Icon from './AppIcon';
 import { Button } from './ui/button';
+import logotrustyfin from '../../assets/logotrustyfin.png';
+import { useNavigate } from "react-router-dom";
 
 const HeroSection = () => {
   const [typewriterText, setTypewriterText] = useState('');
   const [customerCount, setCustomerCount] = useState(100000);
   const fullText = 'Banking Made Simple';
+  const navigate = useNavigate(); // 👈 create navigate function
 
   useEffect(() => {
     let index = 0;
@@ -34,6 +37,10 @@ const HeroSection = () => {
 
   const handleSeeHowItWorks = () => {
     document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const handleSignIn = () => {
+    navigate("/login"); // 👈 navigate to /login
   };
 
   return (
@@ -149,11 +156,13 @@ const HeroSection = () => {
               {/* Dashboard Header */}
               <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 bg-gradient-to-r from-[#002868] to-[#BF0A30] rounded-lg flex items-center justify-center">
-                    <Icon name="Building2" size={20} color="white" />
-                  </div>
+                  <img 
+                      src={logotrustyfin} 
+                      alt="trustyfin logo" 
+                      className="h-16 w-auto mx-auto"
+                  />
                   <div>
-                    <div className="font-semibold text-[#002868]">Bank of America</div>
+                    <div className="font-semibold text-[#002868]">TrustyFin Bank</div>
                     <div className="text-sm text-gray-600">Welcome back, Sarah</div>
                   </div>
                 </div>

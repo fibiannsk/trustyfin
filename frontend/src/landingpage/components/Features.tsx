@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from "react";
 import { Card, CardContent } from "./ui/card";
 import { 
   Smartphone, 
@@ -53,12 +54,42 @@ const features = [
   }
 ];
 
+// 👇 Hook to trigger animation on scroll
+function useInView(options?: IntersectionObserverInit) {
+  const ref = useRef<HTMLDivElement | null>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    if (!ref.current) return;
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        setIsVisible(true);
+        observer.unobserve(entry.target); // animate once
+      }
+    }, options);
+
+    observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, [options]);
+
+  return { ref, isVisible };
+}
+
 export function Features() {
+  const header = useInView({ threshold: 0.2 });
+  const stats = useInView({ threshold: 0.2 });
+
   return (
     <section id="features" className="py-20 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <div className="inline-flex items-center px-4 py-2 bg-[#e31837]/10 text-[#e31837] rounded-full mb-4">
+        {/* Header */}
+        <div
+          ref={header.ref}
+          className={`text-center mb-16 transition-all duration-700 ${
+            header.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+          }`}
+        >
+          <div className="inline-flex items-center px-4 py-2 bg-[#e31837]/10 text-[#e31837] rounded-full mb-4 animate-bounce-slow">
             <span>✨ Features</span>
           </div>
           <h2 className="text-4xl font-bold text-gray-900 mb-4">
@@ -71,39 +102,63 @@ export function Features() {
           </p>
         </div>
 
+        {/* Features Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {features.map((feature, index) => (
-            <Card key={index} className="border-0 shadow-lg hover:shadow-xl transition-shadow duration-300">
-              <CardContent className="p-6">
-                <div className="w-12 h-12 bg-gradient-to-br from-[#e31837] to-[#012169] rounded-lg flex items-center justify-center mb-4">
-                  <feature.icon className="h-6 w-6 text-white" />
-                </div>
-                <h3 className="font-bold text-gray-900 mb-2">{feature.title}</h3>
-                <p className="text-gray-600 text-sm leading-relaxed">{feature.description}</p>
-              </CardContent>
-            </Card>
-          ))}
+          {features.map((feature, index) => {
+            const item = useInView({ threshold: 0.15 });
+            return (
+              <div
+                key={index}
+                ref={item.ref}
+                className={`transition-all duration-700 delay-[${index * 150}ms]
+                  ${item.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}
+                `}
+              >
+                <Card
+                  className="border-0 shadow-lg hover:shadow-2xl transform hover:-translate-y-2 hover:scale-[1.02] transition-all duration-500"
+                >
+                  <CardContent className="p-6">
+                    <div className="w-12 h-12 bg-gradient-to-br from-[#e31837] to-[#012169] rounded-lg flex items-center justify-center mb-4 animate-pulse-slow">
+                      <feature.icon className="h-6 w-6 text-white" />
+                    </div>
+                    <h3 className="font-bold text-gray-900 mb-2">{feature.title}</h3>
+                    <p className="text-gray-600 text-sm leading-relaxed">{feature.description}</p>
+                  </CardContent>
+                </Card>
+              </div>
+            );
+          })}
         </div>
 
         {/* Stats Section */}
-        <div className="mt-20 bg-gradient-to-r from-[#012169] to-[#e31837] rounded-2xl p-8 lg:p-12">
+        <div
+          ref={stats.ref}
+          className={`mt-20 bg-gradient-to-r from-[#012169] to-[#e31837] rounded-2xl p-8 lg:p-12 transition-all duration-700 ${
+            stats.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+          }`}
+        >
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 text-center text-white">
-            <div>
-              <div className="text-3xl lg:text-4xl font-bold mb-2">2M+</div>
-              <div className="text-white/80">Happy Customers</div>
-            </div>
-            <div>
-              <div className="text-3xl lg:text-4xl font-bold mb-2">$50B+</div>
-              <div className="text-white/80">Assets Under Management</div>
-            </div>
-            <div>
-              <div className="text-3xl lg:text-4xl font-bold mb-2">99.9%</div>
-              <div className="text-white/80">Uptime Guarantee</div>
-            </div>
-            <div>
-              <div className="text-3xl lg:text-4xl font-bold mb-2">4.8★</div>
-              <div className="text-white/80">App Store Rating</div>
-            </div>
+            {[
+              { value: "2M+", label: "Happy Customers" },
+              { value: "$50B+", label: "Assets Under Management" },
+              { value: "99.9%", label: "Uptime Guarantee" },
+              { value: "4.8★", label: "App Store Rating" },
+            ].map((stat, i) => {
+              const statItem = useInView({ threshold: 0.2 });
+              return (
+                <div
+                  key={i}
+                  ref={statItem.ref}
+                  className={`transition-all duration-700 delay-[${i * 200}ms]
+                    ${statItem.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}
+                    transform hover:scale-105
+                  `}
+                >
+                  <div className="text-3xl lg:text-4xl font-bold mb-2">{stat.value}</div>
+                  <div className="text-white/80">{stat.label}</div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>

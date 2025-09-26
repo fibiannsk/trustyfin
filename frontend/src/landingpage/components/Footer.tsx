@@ -1,49 +1,34 @@
 import { Button } from "./ui/button";
 import { Separator } from "./ui/separator";
-import { 
-  Facebook, 
-  Twitter, 
-  Instagram, 
-  Linkedin, 
+import {
+  Facebook,
+  Twitter,
+  Instagram,
+  Linkedin,
   Youtube,
   MapPin,
   Phone,
-  Mail
+  Mail,
 } from "lucide-react";
+import logotrustyfin from "../../assets/logotrustyfin.png";
 
 const footerLinks = {
-  "Banking": [
+  Banking: [
     "Checking Accounts",
     "Savings Accounts",
     "Credit Cards",
     "Personal Loans",
     "Mortgages",
-    "Auto Loans"
+    "Auto Loans",
   ],
-  "Investing": [
-    "Investment Accounts",
-    "Retirement Planning",
-    "Robo-Advisor",
-    "Trading Platform",
-    "Financial Planning",
-    "Education Resources"
-  ],
-  "Business": [
-    "Business Checking",
-    "Business Loans",
-    "Merchant Services",
-    "Payroll Solutions",
-    "Cash Management",
-    "Business Credit Cards"
-  ],
-  "Support": [
+  Support: [
     "Contact Us",
     "Help Center",
     "Security Center",
     "Find ATM/Branch",
     "Mobile App",
-    "Online Banking"
-  ]
+    "Online Banking",
+  ],
 };
 
 export function Footer() {
@@ -54,26 +39,34 @@ export function Footer() {
           {/* Company Info */}
           <div className="lg:col-span-2">
             <div className="flex items-center space-x-2 mb-6">
-              <div className="w-10 h-10 bg-gradient-to-br from-[#e31837] to-white rounded-lg flex items-center justify-center">
-                <span className="text-[#012169] font-bold text-xl">T</span>
+              <div className="w-10 h-7 flex items-center justify-center">
+                <img 
+                    src={logotrustyfin} 
+                    alt="trustyfin logo" 
+                    className="h-16 w-auto mx-auto"
+                    />
               </div>
               <span className="text-2xl font-bold">TrustyFin</span>
             </div>
-            
+
             <p className="text-white/80 mb-6 leading-relaxed">
-              TrustyFin is a modern digital bank committed to making financial services 
-              accessible, secure, and transparent for everyone. Join millions who trust 
-              us with their financial future.
+              TrustyFin is a modern digital bank committed to making financial
+              services accessible, secure, and transparent for everyone. Join
+              millions who trust us with their financial future.
             </p>
 
             <div className="space-y-3 mb-6">
               <div className="flex items-center space-x-3 text-white/80">
                 <MapPin className="h-4 w-4 flex-shrink-0" />
-                <span className="text-sm">123 Financial District, New York, NY 10004</span>
+                <span className="text-sm">
+                  123 Financial District, New York, NY 10004
+                </span>
               </div>
               <div className="flex items-center space-x-3 text-white/80">
                 <Phone className="h-4 w-4 flex-shrink-0" />
-                <span className="text-sm">1-800-TRUSTY-FIN (1-800-878-7893)</span>
+                <span className="text-sm">
+                  1-800-TRUSTY-FIN (1-800-878-7893)
+                </span>
               </div>
               <div className="flex items-center space-x-3 text-white/80">
                 <Mail className="h-4 w-4 flex-shrink-0" />
@@ -83,19 +76,39 @@ export function Footer() {
 
             {/* Social Links */}
             <div className="flex items-center space-x-4">
-              <Button variant="ghost" size="sm" className="p-2 text-white/80 hover:text-white hover:bg-white/10">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="p-2 text-white/80 hover:text-white hover:bg-white/10"
+              >
                 <Facebook className="h-5 w-5" />
               </Button>
-              <Button variant="ghost" size="sm" className="p-2 text-white/80 hover:text-white hover:bg-white/10">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="p-2 text-white/80 hover:text-white hover:bg-white/10"
+              >
                 <Twitter className="h-5 w-5" />
               </Button>
-              <Button variant="ghost" size="sm" className="p-2 text-white/80 hover:text-white hover:bg-white/10">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="p-2 text-white/80 hover:text-white hover:bg-white/10"
+              >
                 <Instagram className="h-5 w-5" />
               </Button>
-              <Button variant="ghost" size="sm" className="p-2 text-white/80 hover:text-white hover:bg-white/10">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="p-2 text-white/80 hover:text-white hover:bg-white/10"
+              >
                 <Linkedin className="h-5 w-5" />
               </Button>
-              <Button variant="ghost" size="sm" className="p-2 text-white/80 hover:text-white hover:bg-white/10">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="p-2 text-white/80 hover:text-white hover:bg-white/10"
+              >
                 <Youtube className="h-5 w-5" />
               </Button>
             </div>
@@ -108,8 +121,8 @@ export function Footer() {
               <ul className="space-y-2">
                 {links.map((link) => (
                   <li key={link}>
-                    <a 
-                      href="#" 
+                    <a
+                      href="#"
                       className="text-white/80 hover:text-white transition-colors text-sm"
                     >
                       {link}
@@ -126,11 +139,19 @@ export function Footer() {
         {/* Bottom Section */}
         <div className="flex flex-col lg:flex-row justify-between items-center space-y-6 lg:space-y-0">
           <div className="flex flex-wrap items-center gap-6 text-sm text-white/60">
-            <span>© 2024 TrustyFin. All rights reserved.</span>
-            <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
-            <a href="#" className="hover:text-white transition-colors">Terms of Service</a>
-            <a href="#" className="hover:text-white transition-colors">Accessibility</a>
-            <a href="#" className="hover:text-white transition-colors">Sitemap</a>
+            <span>© 2025 TrustyFin. All rights reserved.</span>
+            <a href="#" className="hover:text-white transition-colors">
+              Privacy Policy
+            </a>
+            <a href="#" className="hover:text-white transition-colors">
+              Terms of Service
+            </a>
+            <a href="#" className="hover:text-white transition-colors">
+              Accessibility
+            </a>
+            <a href="#" className="hover:text-white transition-colors">
+              Sitemap
+            </a>
           </div>
 
           <div className="flex items-center space-x-6 text-sm text-white/60">
@@ -150,9 +171,11 @@ export function Footer() {
         {/* Regulatory Text */}
         <div className="mt-8 pt-6 border-t border-white/20">
           <p className="text-xs text-white/50 leading-relaxed">
-            TrustyFin is a trademark of TrustyFin Bank, N.A. Member FDIC. Investment and insurance products are not FDIC insured, 
-            are not bank guaranteed, and may lose value. Investment products are offered through TrustyFin Advisors LLC, 
-            member SIPC. Insurance products are offered through TrustyFin Insurance Agency LLC.
+            TrustyFin is a trademark of TrustyFin Bank, N.A. Member FDIC.
+            Investment and insurance products are not FDIC insured, are not bank
+            guaranteed, and may lose value. Investment products are offered
+            through TrustyFin Advisors LLC, member SIPC. Insurance products are
+            offered through TrustyFin Insurance Agency LLC.
           </p>
         </div>
       </div>

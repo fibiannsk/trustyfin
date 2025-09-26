@@ -4,6 +4,16 @@ from backend.extensions import db
 from datetime import datetime
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from backend.decorators import block_check_required
+import hashlib
+
+
+
+def color_from_text(text: str) -> str:
+    """
+    Generate a consistent HEX color from a string (narration).
+    """
+    hex_digest = hashlib.md5(text.encode("utf-8")).hexdigest()
+    return f"#{hex_digest[:6]}"
 
 transfer_blueprint = Blueprint('transfer', __name__)
 
@@ -227,19 +237,26 @@ def get_transaction_summary():
     # Fetch only this user's transactions
     transactions = list(db.transactions.find({"user_id": user_id}))
 
-    income = sum(t.get("amount", 0) for t in transactions if t.get("type") == "credit")
-    expenses = sum(t.get("amount", 0) for t in transactions if t.get("type") == "debit")
+    def safe_amount(value):
+        """Convert amount to float safely, default 0 on error."""
+        try:
+            return float(value)
+        except (ValueError, TypeError):
+            return 0.0
+
+    income = sum(safe_amount(t.get("amount", 0)) for t in transactions if t.get("type") == "credit")
+    expenses = sum(safe_amount(t.get("amount", 0)) for t in transactions if t.get("type") == "debit")
     net_income = income - expenses
 
-    # Format timestamps for JSON response
-    formatted_transactions = [
-        {
-            **t,
+    # Format transactions for JSON response
+    formatted_transactions = []
+    for t in transactions:
+        formatted_transactions.append({
+            **{k: v for k, v in t.items() if k != "_id"},  # copy everything except raw _id
             "_id": str(t["_id"]),  # ✅ convert ObjectId to string
+            "amount": safe_amount(t.get("amount", 0)),  # ✅ always numeric
             "timestamp": t["timestamp"].isoformat() if "timestamp" in t else None
-        }
-        for t in transactions
-    ]
+        })
 
     # Collect unique beneficiaries from debit transactions
     beneficiaries = {}
@@ -263,6 +280,7 @@ def get_transaction_summary():
         "transactions": formatted_transactions,
         "beneficiaries": list(beneficiaries.values())  # ✅ unique list
     }), 200
+
 
 @transfer_blueprint.route("/beneficiaries", methods=['GET'])
 @jwt_required()
@@ -329,3 +347,69 @@ def get_transactions():
         "pages": (total + limit - 1) // limit,  # total pages (ceiling division)
         "transactions": formatted
     }), 200
+
+
+@transfer_blueprint.route("/transactions/spending-chart", methods=["GET", "OPTIONS"])
+def spending_chart_options():
+    # Handle the preflight CORS OPTIONS request
+    if request.method == "OPTIONS":
+        return "", 204
+    return protected_spending_chart()
+
+
+@jwt_required()
+def protected_spending_chart():
+    user_id = get_jwt_identity()
+
+    now = datetime.utcnow()
+    start_of_month = datetime(now.year, now.month, 1)
+
+    # ✅ fetch only this month’s debit transactions for this user
+    transactions = list(db.transactions.find({
+        "user_id": user_id,
+        "type": "debit",
+        "timestamp": {"$gte": start_of_month}
+    }))
+
+    def safe_amount(value):
+        try:
+            return float(value)
+        except (ValueError, TypeError):
+            return 0.0
+
+    # ✅ group spending by narration
+    spending_summary = {}
+    for t in transactions:
+        narration = t.get("narration", "Other") or "Other"
+        amount = safe_amount(t.get("amount", 0))
+        spending_summary[narration] = spending_summary.get(narration, 0) + amount
+
+    total_spending = sum(spending_summary.values())
+
+    # ✅ build chart data
+    chart_data = []
+    other_total = 0
+
+    for narration, total in spending_summary.items():
+        percent = (total / total_spending) * 100 if total_spending else 0
+        if percent < 5:  # merge small categories into "Other"
+            other_total += total
+        else:
+            chart_data.append({
+                "name": narration,
+                "value": total,
+                "color": color_from_text(narration)
+            })
+
+    # ✅ add "Other" if needed
+    if other_total > 0:
+        chart_data.append({
+            "name": "Other",
+            "value": other_total,
+            "color": "#6B7280"
+        })
+
+    # ✅ sort biggest → smallest
+    chart_data.sort(key=lambda x: x["value"], reverse=True)
+
+    return jsonify(chart_data), 200

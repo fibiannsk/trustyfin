@@ -2,31 +2,34 @@ import { Button } from "./ui/button";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import logotrustyfin from "../../assets/logotrustyfin.png";
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
 
-   const handleSignIn = () => {
+  const handleSignIn = () => {
     navigate("/login"); // 👈 navigate to /login
   };
 
   return (
-    <header className="bg-white shadow-sm sticky top-0 z-50">
+    <header className="bg-white shadow-sm sticky top-0 z-50 font-inter">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <div className="flex items-center">
-            <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-gradient-to-br from-[#e31837] to-[#012169] rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-lg">T</span>
-              </div>
-              <span className="text-2xl font-bold text-[#012169]">TrustyFin</span>
-            </div>
+          <div className="flex items-center space-x-3">
+            <img
+              src={logotrustyfin}
+              alt="trustyfin logo"
+              className="h-16 w-auto mx-auto"
+            />
+            <span className="text-2xl font-bold text-[#012169] font-inter">
+              TrustyFin
+            </span>
           </div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-8">
+          <nav className="hidden md:flex items-center space-x-8 font-inter">
             <a href="#services" className="text-gray-700 hover:text-[#e31837] transition-colors">
               Services
             </a>
@@ -45,11 +48,12 @@ export function Header() {
           </nav>
 
           {/* CTA Buttons */}
-          <div className="hidden md:flex items-center space-x-4">
-            <Button 
-              variant="outline" className="border-[#012169] text-[#012169] hover:bg-[#012169] hover:text-white"
+          <div className="hidden md:flex items-center space-x-4 font-inter">
+            <Button
+              variant="outline"
+              className="border-[#012169] text-[#012169] hover:bg-[#012169] hover:text-white"
               onClick={handleSignIn}
-              >
+            >
               Sign In
             </Button>
             <Button className="bg-[#e31837] hover:bg-[#c41230] text-white">
@@ -71,7 +75,7 @@ export function Header() {
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <div className="md:hidden">
+          <div className="md:hidden font-inter">
             <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white border-t">
               <a
                 href="#services"
