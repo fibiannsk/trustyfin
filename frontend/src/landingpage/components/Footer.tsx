@@ -59,18 +59,18 @@ export function Footer() {
               <div className="flex items-center space-x-3 text-white/80">
                 <MapPin className="h-4 w-4 flex-shrink-0" />
                 <span className="text-sm">
-                  123 Financial District, New York, NY 10004
+                  121 Commerce Street, Dallas, TX 75201
                 </span>
               </div>
               <div className="flex items-center space-x-3 text-white/80">
                 <Phone className="h-4 w-4 flex-shrink-0" />
                 <span className="text-sm">
-                  1-800-TRUSTY-FIN (1-800-878-7893)
+                  +1-254-400-6117
                 </span>
               </div>
               <div className="flex items-center space-x-3 text-white/80">
                 <Mail className="h-4 w-4 flex-shrink-0" />
-                <span className="text-sm">support@trustyfin.com</span>
+                <span className="text-sm">support@trustyfin.icu</span>
               </div>
             </div>
 

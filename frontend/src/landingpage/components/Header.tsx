@@ -12,6 +12,10 @@ export function Header() {
     navigate("/login"); // 👈 navigate to /login
   };
 
+  const handleAbout = () => {
+    navigate("/About"); // 👈 navigate to /login
+  };
+
   return (
     <header className="bg-white shadow-sm sticky top-0 z-50 font-inter">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -39,11 +43,10 @@ export function Header() {
             <a href="#security" className="text-gray-700 hover:text-[#e31837] transition-colors">
               Security
             </a>
-            <a href="#about" className="text-gray-700 hover:text-[#e31837] transition-colors">
+            <a 
+              onClick={handleAbout} 
+              className="text-gray-700 hover:text-[#e31837] transition-colors">
               About
-            </a>
-            <a href="#contact" className="text-gray-700 hover:text-[#e31837] transition-colors">
-              Contact
             </a>
           </nav>
 
@@ -99,21 +102,20 @@ export function Header() {
                 Security
               </a>
               <a
-                href="#about"
                 className="block px-3 py-2 text-gray-700 hover:text-[#e31837] transition-colors"
-                onClick={() => setIsMenuOpen(false)}
+                onClick={() => {
+                  handleAbout();
+                  setIsMenuOpen(false);
+                }}
               >
                 About
               </a>
-              <a
-                href="#contact"
-                className="block px-3 py-2 text-gray-700 hover:text-[#e31837] transition-colors"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Contact
-              </a>
               <div className="px-3 py-2 space-y-2">
-                <Button variant="outline" className="w-full border-[#012169] text-[#012169] hover:bg-[#012169] hover:text-white">
+                <Button 
+                  variant="outline" 
+                  className="w-full border-[#012169] text-[#012169] hover:bg-[#012169] hover:text-white"
+                  onClick={handleSignIn}
+                  >
                   Sign In
                 </Button>
                 <Button className="w-full bg-[#e31837] hover:bg-[#c41230] text-white">

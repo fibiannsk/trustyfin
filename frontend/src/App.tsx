@@ -10,6 +10,8 @@ import AdminDashboard from "./pages/AdminDashboard";
 import CreateAccount from "./pages/AccountForm";
 import EditAccount from "./pages/Edit";
 import LandingApp from "./landingpage/LandingApp";
+import PrivacySupport from "./privacy/Privacy";
+import About from "./About/About";
 import UserDashboard from "./pages/dashboard";
 import Transfer from "./pages/Transfer";
 import UserProfile from "./pages/profilepage";
@@ -45,6 +47,7 @@ const App = () => (
             <Routes>
               {/* Public routes */}
               <Route path="/" element={<LandingApp />} /> {/* 👈 landing page */}
+              <Route path="/About" element={<About />} />
               <Route path="/login" element={<Index />} />
               <Route path="*" element={<NotFound />} />
 
@@ -178,6 +181,16 @@ const App = () => (
                   <ProtectedRoute>
                     <BlockedRoute>
                       <Transfer />
+                    </BlockedRoute>
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/user/privacy"
+                element={
+                  <ProtectedRoute>
+                    <BlockedRoute>
+                      <PrivacySupport />
                     </BlockedRoute>
                   </ProtectedRoute>
                 }

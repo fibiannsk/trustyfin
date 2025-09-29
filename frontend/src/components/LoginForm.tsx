@@ -304,14 +304,6 @@ const LoginForm = () => {
               animate={{ opacity: 1 }}
               transition={{ delay: 0.6, duration: 0.5 }}
             >
-              <Button
-                type="button"
-                variant="outline"
-                className="w-full py-3 text-base font-medium border-2 hover:bg-muted/50 transition-all duration-300"
-              >
-                <Fingerprint className="h-5 w-5 mr-2 text-primary" />
-                Login with Biometric
-              </Button>
             </motion.div>
           </motion.form>
 

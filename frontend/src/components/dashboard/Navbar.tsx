@@ -13,7 +13,6 @@ import { useNavigate } from 'react-router-dom';
 import logotrustyfin from '../../assets/logotrustyfin.png';
 import { useAuth } from '../../context/AuthContext';
 import { useData } from "../../context/DataContext";
-import { useToast } from "../../hooks/use-toast";
 import BankUserSidebar from "./BankUserSidebar";
 
 
@@ -24,7 +23,6 @@ export const Navbar = () => {
   const { logout } = useAuth();
   const { userInfo } = useData();
   const navigate = useNavigate();
-  const { toast } = useToast();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
    const dashboardmv = () => {
@@ -35,18 +33,13 @@ export const Navbar = () => {
     navigate('/user/profile');
  };
 
-  // 🚨 Block check for transfers
-  const transferr = () => {
-    if (userInfo?.blocked) {
-      toast({
-        title: "Action not allowed",
-        description: "Your account is blocked. Please contact support.",
-        variant: "destructive",
-      });
-      return; // stop navigation
-    }
+ const privacy = () => {
+    navigate('/user/privacy');
+ };
+
+ const transferr = () => {
     navigate('/user/transfer');
-  };
+ };
 
  const transactionhistory = () => {
     navigate('/user/transactions');
@@ -85,9 +78,11 @@ export const Navbar = () => {
               className="text-gray-500 hover:text-blue-600 font-medium transition-colors">
               Transfers
             </button>
-            <a href="#" className="text-gray-500 hover:text-blue-600 font-medium transition-colors">
+            <button 
+              onClick={privacy} 
+              className="text-gray-500 hover:text-blue-600 font-medium transition-colors">
               Privacy & Support
-            </a>
+            </button>
           </div>
 
           {/* Right side actions */}

@@ -44,7 +44,7 @@ const HeroSection = () => {
   };
 
   return (
-    <section className="relative min-h-screen bg-gradient-to-br from-[#002868] via-white to-[#BF0A30] text-gray-900 overflow-hidden">
+    <section className="relative min-h-screen -mb-8 bg-gradient-to-br from-[#002868] via-white to-[#BF0A30] text-gray-900 overflow-hidden">
       {/* Animated Background Elements */}
       <div className="absolute inset-0">
         <motion.div
@@ -95,7 +95,7 @@ const HeroSection = () => {
               <Button
                 size="lg"
                 onClick={handleSeeHowItWorks}
-                className="border-2 border-[#BF0A30] text-[#BF0A30] hover:bg-[#BF0A30] hover:text-white rounded-2xl transition-colors duration-300"
+                className="text-white bg-[#BF0A30]  rounded-2xl transform hover:scale-105 transition-all duration-300"
               >
                 See How It Works
               </Button>
@@ -264,6 +264,21 @@ const HeroSection = () => {
           </motion.div>
         </div>
       </div>
+      <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-[0] rotate-180">
+  <svg
+    data-name="Layer 1"
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 1200 120"
+    preserveAspectRatio="none"
+    className="relative block w-[156%] h-[74px]"
+  >
+    <path
+      d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z"
+      className="fill-white"
+    ></path>
+  </svg>
+</div>
+
     </section>
   );
 };
